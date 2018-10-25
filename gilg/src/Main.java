@@ -29,11 +29,8 @@ public class Main {
 
     public static boolean checkRequest(int turn, String input, City[] cities){
         if(input.matches("([Aa])([Dd])([Dd]) ([Bb])([Ll])([Oo])([Cc])([Kk])")){ //add block
-            if(cities[turn].addBlock()){
-                return true;
-            }
-            else
-                return false;
+            cities[turn].addBlock();
+            return true;
         }
         else if(input.matches("([Aa])([Dd])([Dd]) ([Hh])([Oo])([Mm])([Ee]) \\d+ \\d+ \\d+")){ //add home
             int blockId, numberOfFloors, numberOfUnits;
@@ -71,21 +68,15 @@ public class Main {
             int blockId;
             String[] splitedInput = input.split(" ");
             blockId = Integer.parseInt(splitedInput[2]);
-            if(cities[turn].addBazaar(blockId)){
-                return true;
-            }
-            else
-                return false;
+            cities[turn].addBazaar(blockId);
+            return true;
         }
         else if(input.matches("([Re])([Ee])([Mm])([Oo])([Vv])([Ee]) \\d+")){ //remove block
             int blockId;
             String[] splitedInput = input.split(" ");
             blockId = Integer.parseInt(splitedInput[1]);
-            if(cities[turn].removeBlock(blockId)){
-                return true;
-            }
-            else
-                return false;
+            cities[turn].removeBlock(blockId);
+            return true;
         }
         else if(input.matches("([Re])([Ee])([Mm])([Oo])([Vv])([Ee]) \\d+ \\d+")){ //remove bazaar and army and defense
             int blockId, unitId;
@@ -124,18 +115,18 @@ public class Main {
                     numberOfUnitToAdd++;
                 }
             }
-            if(cities[turn].upgradeHome(blockId, numberOfFloorToAdd, numberOfUnitToAdd)){
+            if(cities[turn].upgradeHome(blockId, homeId, numberOfFloorToAdd, numberOfUnitToAdd)){
                 return true;
             }
             else
                 return false;
         }
-        else if(input.matches("([Uu])([Pp])([Gg])([Rr])([Aa])([Dd])([Ee]) \\d+ \\d+")){ //upgrade army and defense
+        else if(input.matches("([Uu])([Pp])([Gg])([Rr])([Aa])([Dd])([Ee]) \\d+ \\d+")){ //upgrade army and defense or bazaar
             int blockId, unitId;
             String[] splitedInput = input.split(" ");
             blockId = Integer.parseInt(splitedInput[1]);
             unitId = Integer.parseInt(splitedInput[2]);
-            if(cities[turn].upgradeArmyOrDefense(blockId, unitId)){
+            if(cities[turn].upgradeArmyOrDefenseOrbazaar(blockId, unitId)){
                 return true;
             }
             else
@@ -155,7 +146,7 @@ public class Main {
             int blockId;
             String[] splitedInput = input.split(" ");
             blockId = Integer.parseInt(splitedInput[1]);
-            if(cities[turn].loot(blockId)){
+            if(cities[turn].loot(blockId, cities[(turn + 1) % 2])){
                 return true;
             }
             else

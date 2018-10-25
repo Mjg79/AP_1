@@ -14,10 +14,14 @@ public class Block {
     boolean flag_defense = false;
     int ID ;
 
-    public void UpgradeBlock(){
-        capacity += 5;
-        if(level < 3)
-        level += 1;
+    public boolean UpgradeBlock(){
+        if(level < 3){
+            capacity += 5;
+            level += 1;
+            return true;
+        }
+        else
+            return false;
     }
 
     public int getCapacity(){
@@ -34,57 +38,83 @@ public class Block {
         return false;
     }
 
-    public void addHome(int numOfFloors, int numOfUnit) {
+    public boolean addHome(int numOfFloors, int numOfUnit) {
         Home home = new Home();
-        for (int i = 0; i < numOfFloors - 1; i++) {
+        if(numOfFloors < 3 | numOfFloors > 6 | numOfUnit > 4 | numOfUnit < 1)
+            return false;
+        for (int i = 0; i < numOfFloors; i++) {
             home.addFloor();
         }
         for (Floor f : home.getFloors()) {
             f.addUnit(numOfUnit);
         }
         buildings.add(home);
+        return true;
     }
 
     public void addArmy() {
         buildings.add(new Army());
     }
 
-    public void addDefense() {
-        flag_defense = true;
-        buildings.add(new Defense());
+    public boolean addDefense() {
+        if(!flag_defense){
+            flag_defense = true;
+            buildings.add(new Defense());
+            return true;
+        }
+        else
+            return false;
     }
 
     public void addBazaar() {
         buildings.add(new Bazaar());
     }
 
-    public void UpgradeHome(int homeID , int floorNum , int unitNum) {
+    public boolean UpgradeHome(int homeID , int floorNum , int unitNum) {
+        if(floorNum < 3 | floorNum > 6 | unitNum < 1 | unitNum > 4)
+            return false;
         Home home = (Home) buildings.get(homeID);
         for(int i = 0 ; i < floorNum ; i++)
          home.addFloor();
         for (Floor f : home.getFloors())
             f.addUnit(unitNum);
+        return true;
     }
 
-    public void UpgradeArmy() {
+    public boolean UpgradeArmy() {
             for(Building instance : buildings)
                 if(instance instanceof Army)
-                    ((Army) instance).addLevel();
+                    if(((Army) instance).getLevel() < 5){
+                        ((Army) instance).addLevel();
+                        return true;
+                    }
+                    else
+                        return false;
+            return false;
     }
 
-    public void UpgradeBazaar(int id) {
+    public boolean UpgradeBazaar(int id) {
         Bazaar bazaar = (Bazaar) buildings.get(id);
-        buildings.remove(id);
-        bazaar.addLevel();
-        buildings.add(id, bazaar);
+        if(bazaar.getLevel() < 3){
+            buildings.remove(id); //todo: why
+            bazaar.addLevel();
+            buildings.add(id, bazaar);
+            return true;
+        }
+        else
+            return false;
     }
 
-    public void UpgradeDefense() {
+    public boolean UpgradeDefense() {
         for(Building b : buildings)
-            if(b instanceof Defense) {
-                ((Defense) b).addLevel();
-                break;
-            }
+            if(b instanceof Defense)
+                if(((Defense) b).getLevel() < 5){
+                    ((Defense) b).addLevel();
+                    return true;
+                }
+                else
+                    return false;
+        return false;
     }
 
     public void removeBazaar(int id){

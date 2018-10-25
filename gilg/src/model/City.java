@@ -21,39 +21,65 @@ public class City {
     public void removeBlock(int index){
         blocks.set(index-1,null);
     }
-    public void addHome(int index,int numOfFloors,int numOfUnits){
-        blocks.get(index-1).addHome(numOfFloors,numOfUnits);
+    public boolean addHome(int index,int numOfFloors,int numOfUnits){
+        if(blocks.get(index-1).addHome(numOfFloors,numOfUnits))
+            return true;
+        else
+            return false;
     }
-    public void addArmy(int index){
-        flagArmy = true;
-        IDArmy = index-1;
-        blocks.get(index-1).addArmy();
+    public boolean addArmy(int index){
+        if(!flagArmy){
+            flagArmy = true;
+            IDArmy = index-1;
+            blocks.get(index-1).addArmy();
+            return true;
+        }
+        else
+            return false;
     }
     public boolean getArmyCheck(){
         return flagArmy;
     }
-    public void addDefense(int index){
-        blocks.get(index-1).addDefense();
+    public boolean addDefense(int index){
+        if(blocks.get(index-1).addDefense())
+            return true;
+        else
+            return false;
     }
     public void addBazaar(int index){
         blocks.get(index-1).addBazaar();
     }
-    public void upgradeBlock(int index){
-        blocks.get(index-1).UpgradeBlock();
+    public boolean upgradeBlock(int index){
+        if(blocks.get(index-1).UpgradeBlock())
+            return true;
+        else
+            return false;
     }
-    public void upgradeArmy(int index){
-        blocks.get(index-1).UpgradeArmy();
+    public boolean upgradeArmy(int index){
+        if(blocks.get(index-1).UpgradeArmy())
+            return true;
+        else
+            return false;
     }
-    public void upgradeHome(int index,int ID){
-        blocks.get(index-1).UpgradeHome(ID);
+    public boolean upgradeHome(int index,int ID, int numberOfFloorToAdd, int numberOfUnitToAdd){
+        if(blocks.get(index-1).UpgradeHome(ID, numberOfFloorToAdd, numberOfUnitToAdd))
+            return true;
+        else
+            return false;
     }
-    public void upgradeDefense(int index){
-        blocks.get(index-1).UpgradeDefense();
+    public boolean upgradeDefense(int index){
+        if(blocks.get(index-1).UpgradeDefense())
+            return true;
+        else
+            return false;
     }
-    public void upgradeBazaar(int index,int unitID){
-        blocks.get(index-1).UpgradeBazaar(unitID);
+    public boolean upgradeBazaar(int index,int unitID){
+        if(blocks.get(index-1).UpgradeBazaar(unitID))
+            return true;
+        else
+            return false;
     }
-    public boolean remove(int blockID,int unitID){
+    public boolean removeBazaarOrArmyOrDefense(int blockID,int unitID){
         if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Home) {
             return false;
         }else if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Bazaar){
@@ -65,6 +91,27 @@ public class City {
         }
         return true;
     }
+
+    public boolean upgradeArmyOrDefenseOrbazaar(int blockID,int unitID){
+        if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Army) {
+            if(upgradeArmy(blockID))
+                return true;
+            else
+                return false;
+        }else if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Defense){
+            if(upgradeDefense(blockID))
+                return true;
+            else
+                return false;
+        }else if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Bazaar){
+            if(upgradeBazaar(blockID, unitID))
+                return true;
+            else
+                return false;
+        }
+        return true;
+    }
+
     public void setMoney() {
         money = moneyPlus;
         for (Block block:blocks){
@@ -83,7 +130,7 @@ public class City {
         return money;
     }
 
-    public void attack(int blockID, City city) {
+    public boolean attack(int blockID, City city) {
         Block block = city.blocks.get(blockID-1);
         Defense defense = block.getDefense();
         Block A = blocks.get(IDArmy);
@@ -93,13 +140,19 @@ public class City {
                 scorePlus+=building.getScore();
             }
             city.removeBlock(blockID);
+            return true;
         }
+        else
+            return false;
     }
-    public void loot (int blockID, City city) {
+    public boolean loot (int blockID, City city) {
         Block block = city.blocks.get(blockID-1);
         if (block.getDefense()==null){
             moneyPlus+=block.getBuildings().size()*500;
+            return true;
         }
+        else
+            return false;
     }
 
 
