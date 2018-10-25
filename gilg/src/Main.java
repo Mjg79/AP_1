@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         City[] cities = new City[2];
+        for(int i = 0; i < 2; i++)
+            cities[i] = new City();
         String input = null;
         int turn = 0;
         while(true){
@@ -14,7 +16,7 @@ public class Main {
             if(input.matches("([Yy])([Ii])([Ee])([Ll])([Dd])")){
                 break;
             }
-            else if(input.matches("([Dd])([On])([Nn])([Ee])")){
+            else if(input.matches("([Dd])([Oo])([Nn])([Ee])")){
                 turn++;
 
             }
