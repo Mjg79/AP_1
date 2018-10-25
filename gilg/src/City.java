@@ -16,6 +16,18 @@ public class City {
     public void removeBlock(int index){
         blocks.set(index,null);
     }
+    public void addHome(int index,int numOfFloors,int numOfUnits){
+        blocks.get(index).addHome(numOfFloors,numOfUnits);
+    }
+    public void addArmy(int index){
+        blocks.get(index).addArmy();
+    }
+    public void addDefense(int index){
+        blocks.get(index).addDefense();
+    }
+    public void addBazaar(int index){
+        blocks.get(index).addBazaar();
+    }
 
 
 }
