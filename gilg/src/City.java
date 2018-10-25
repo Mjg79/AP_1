@@ -69,7 +69,16 @@ public class City {
             }
         }
     }
-    public void attack(int blockID,City city) {
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void attack(int blockID, City city) {
         Block block = city.blocks.get(blockID-1);
         Defense defense = block.getDefense();
         Block A = blocks.get(IDArmy);
