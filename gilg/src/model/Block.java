@@ -12,11 +12,7 @@ public class Block {
     private ArrayList<Building> buildings = new ArrayList<>();
     private int capacity = 15;
     boolean flag_defense = false;
-
-    private Army army = new Army();
     int ID ;
-    private int limit = 15;
-
 
     public void UpgradeBlock(){
         capacity += 5;
@@ -46,8 +42,7 @@ public class Block {
     }
 
     public void addArmy() {
-        army = new Army();
-        buildings.add(army);
+        buildings.add(new Army());
     }
 
     public void addDefense() {
@@ -67,8 +62,9 @@ public class Block {
     }
 
     public void UpgradeArmy() {
-        if (army != null)
-            army.addLevel();
+            for(Building instance : buildings)
+                if(instance instanceof Army)
+                    ((Army) instance).addLevel();
     }
 
     public void UpgradeBazaar(int id) {
@@ -89,9 +85,23 @@ public class Block {
         }
     }
 
-//    public void remove
-    public void upgrade(){
-        this.level++;
-        this.limit+=5;
+    public void removeBazaar(int id){
+        for(Building b : buildings)
+            if(b.getID() == id)
+             b = null;
     }
+
+    public void removeArmy(){
+        for(Building b : buildings)
+            if(b instanceof Army)
+                b = null;
+    }
+
+    public void removeDefense(){
+        for(Building b : buildings)
+            if(b instanceof Defense)
+                b = null;
+    }
+
+
 }
