@@ -62,14 +62,6 @@ public class City {
         }
     }
 
-    public void setScore() {
-        score=scorePlus;
-        for (Block block:blocks){
-            for (Building building:block.getBuildings()) {
-                score+=building.getScore();
-            }
-        }
-    }
 
     public int getScore() {
         return score;
@@ -96,5 +88,12 @@ public class City {
         if (block.getDefense()==null){
             moneyPlus+=block.getBuildings().size()*500;
         }
+    }
+
+
+    public void setScore(){
+        int score = scorePlus;
+        for (Block b : blocks)
+            score += b.scoreBlock();
     }
 }
