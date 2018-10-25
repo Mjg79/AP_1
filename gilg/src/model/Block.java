@@ -50,8 +50,10 @@ public class Block {
     }
 
     public void addDefense() {
-        flag_defense = true;
-        buildings.add(new Defense());
+        if(!flag_defense) {
+            flag_defense = true;
+            buildings.add(new Defense());
+        }
     }
 
     public void addBazaar() {
@@ -73,10 +75,9 @@ public class Block {
     }
 
     public void UpgradeBazaar(int id) {
-        Bazaar bazaar = (Bazaar) buildings.get(id);
-        buildings.remove(id);
-        bazaar.addLevel();
-        buildings.add(id, bazaar);
+     for(Building b : buildings)
+         if(b.getID() == id)
+             ((Bazaar) b).addLevel();
     }
 
     public void UpgradeDefense() {
