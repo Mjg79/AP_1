@@ -76,8 +76,10 @@ public class Block {
 
     public void UpgradeDefense(int id) {
         for(Building b : buildings)
-            if(b instanceof Defense)
+            if(b instanceof Defense) {
                 ((Defense) b).addLevel();
+                break;
+            }
     }
 
     public void removeBazaar(int id){
