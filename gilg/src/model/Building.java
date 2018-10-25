@@ -1,3 +1,5 @@
+package model;
+
 public abstract class Building {
     private int ID;
     private int blockID;
@@ -27,6 +29,10 @@ public abstract class Building {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public void setDay() {
+        this.day++;
     }
 
     public void setScore(int score) {
