@@ -12,8 +12,11 @@ public class Block {
     private ArrayList<Building> buildings = new ArrayList<>();
     private int capacity = 15;
     boolean flag_defense = false;
+
     private Army army = new Army();
-    int ID;
+    int ID ;
+    private int limit = 15;
+
 
     public void UpgradeBlock(){
         capacity += 5;
@@ -86,5 +89,9 @@ public class Block {
         }
     }
 
-    public void remove
+//    public void remove
+    public void upgrade(){
+        this.level++;
+        this.limit+=5;
+    }
 }
