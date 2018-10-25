@@ -1,16 +1,16 @@
 public class Defense extends Building{
-    private double level = 0.2;
+    private int level = 1;
     private int workers = 30;
 
     public void addLevel() {
-        Level += 0.2;
+        this.level += 1;
     }
 
     public int getLevel() {
-        return Level;
+        return this.level;
     }
 
     public int getNumWorker() {
-        return workers ;
+        return workers;
     }
 }
