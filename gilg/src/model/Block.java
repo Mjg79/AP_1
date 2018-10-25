@@ -12,6 +12,7 @@ public class Block {
     private ArrayList <Building> buildings = new ArrayList<>();
     boolean flag_defense = false;
     int ID ;
+    private int limit = 15;
 
     public void addHome(int numOfFloors , int numOfUnit){
         Home home = new Home();
@@ -46,5 +47,9 @@ public class Block {
 
     public void UpgradeArmy(){
 
+    }
+    public void upgrade(){
+        this.level++;
+        this.limit+=5;
     }
 }
