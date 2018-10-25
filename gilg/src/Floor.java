@@ -1,10 +1,10 @@
 public class Floor {
-    private int numOFUnits=1;
+    private int numOFUnits=0;
 
     public int Persons() {
         return numOFUnits*5;
     }
-    public void addUnit(){
-        this.numOFUnits+=1;
+    public void addUnit(int x){
+        this.numOFUnits+=x;
     }
 }

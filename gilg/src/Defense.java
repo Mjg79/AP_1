@@ -7,7 +7,7 @@ public class Defense extends Building{
     }
 
     public int getLevel() {
-        return this.level;
+        return level;
     }
 
     public int getNumWorker() {

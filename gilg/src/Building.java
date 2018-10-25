@@ -29,6 +29,10 @@ public abstract class Building {
         this.money = money;
     }
 
+    public void setDay() {
+        this.day++;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }

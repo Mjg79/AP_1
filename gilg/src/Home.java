@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Home extends Building{
-    private ArrayList<Floor> Floors = new ArrayList<>();
+    ArrayList<Floor> Floors = new ArrayList<>();
     private int numOfFloors=1;
     public void addFloor(){
         this.numOfFloors+=1;
