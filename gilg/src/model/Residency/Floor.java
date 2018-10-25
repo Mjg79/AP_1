@@ -21,7 +21,7 @@ public class Floor {
     }
     public int floorScore(){
         int score = 0;
-        int numPeople = 0;
+        int numPeople = numOfPersons();
         return 3 + numPeople * 2 + totalUnitScore();
     }
 
