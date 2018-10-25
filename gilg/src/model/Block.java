@@ -75,14 +75,9 @@ public class Block {
     }
 
     public void UpgradeDefense(int id) {
-        Defense defense = null;
-        for (Building b : buildings) {
-            if (b.getID() == id) {
-                defense = (Defense) b;
-                defense.addLevel();
-                break;
-            }
-        }
+        for(Building b : buildings)
+            if(b instanceof Defense)
+                ((Defense) b).addLevel();
     }
 
     public void removeBazaar(int id){
@@ -102,6 +97,18 @@ public class Block {
             if(b instanceof Defense)
                 b = null;
     }
+    public Army getArmy(){
+        for(Building b : buildings)
+            if(b instanceof Army)
+                return (Army) b;
+            return null;
+    }
 
+    public Defense getDefense(){
+        for(Building b : buildings)
+            if(b instanceof Defense)
+                return (Defense) b;
+            return null;
+    }
 
 }
