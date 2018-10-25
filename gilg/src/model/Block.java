@@ -36,7 +36,7 @@ public class Block {
 
     public void addHome(int numOfFloors, int numOfUnit) {
         Home home = new Home();
-        for (int i = 0; i < numOfFloors; i++) {
+        for (int i = 0; i < numOfFloors - 1; i++) {
             home.addFloor();
         }
         for (Floor f : home.getFloors()) {
@@ -58,11 +58,12 @@ public class Block {
         buildings.add(new Bazaar());
     }
 
-    public void UpgradeHome(int homeID) {
+    public void UpgradeHome(int homeID , int floorNum , int unitNum) {
         Home home = (Home) buildings.get(homeID);
-        home.addFloor();
+        for(int i = 0 ; i < floorNum ; i++)
+         home.addFloor();
         for (Floor f : home.getFloors())
-            f.addUnit(1);
+            f.addUnit(unitNum);
     }
 
     public void UpgradeArmy() {
