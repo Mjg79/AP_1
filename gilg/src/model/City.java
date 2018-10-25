@@ -1,5 +1,5 @@
-import model.Block;
-import model.Building;
+package model;
+
 import model.GilgArmy.Army;
 import model.GilgArmy.Defense;
 
@@ -12,6 +12,7 @@ public class City {
     private int score;
     private int scorePlus;
     private int money;
+    private int moneyPlus;
     public void addBlock(){
         Block block = new Block();
         this.blocks.add(block);
@@ -53,7 +54,7 @@ public class City {
     }
 
     public void setMoney() {
-        money = 0;
+        money = moneyPlus;
         for (Block block:blocks){
             for (Building building:block.getBuildings()) {
                 money+=building.getMoney();
@@ -62,7 +63,7 @@ public class City {
     }
 
     public void setScore() {
-        score=0;
+        score=scorePlus;
         for (Block block:blocks){
             for (Building building:block.getBuildings()) {
                 score+=building.getScore();
@@ -83,13 +84,17 @@ public class City {
         Defense defense = block.getDefense();
         Block A = blocks.get(IDArmy);
         Army army = A.getArmy();
-        if (defense.getNumWorker()==0){
-
-        }else {
-            if (defense.getNumWorker()<=army.getNumOfWorkers()){
-                block.removeDefense();
-
+        if (defense.getLevel()<=army.getLevel()){
+            for (Building building:block.getBuildings()) {
+                scorePlus+=building.getScore();
             }
+            city.removeBlock(blockID);
+        }
+    }
+    public void loot (int blockID, City city) {
+        Block block = city.blocks.get(blockID-1);
+        if (block.getDefense()==null){
+            moneyPlus+=block.getBuildings().size()*500;
         }
     }
 }

@@ -1,4 +1,4 @@
-//import model.City;
+import model.City;
 
 import java.util.Scanner;
 

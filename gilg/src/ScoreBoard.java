@@ -1,3 +1,5 @@
+import model.City;
+
 public class ScoreBoard {
     private int score = 0;
     private int money = 0;
