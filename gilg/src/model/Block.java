@@ -94,14 +94,15 @@ public class Block {
     }
 
     public boolean UpgradeBazaar(int id) {
-     for(Building b : buildings)
-         if(b.getID() == id)
-             if((Bazaar)b.getLevel() < 3){
-                 ((Bazaar) b).addLevel();
-                 return true;
-             }
-             else
-                 return false;
+        for(Building b : buildings)
+            if(b.getID() == id)
+                if(((Bazaar)b).getLevel() < 3){
+                    ((Bazaar) b).addLevel();
+                    return true;
+                }
+                else
+                    return false;
+        return false;
     }
 
     public boolean UpgradeDefense() {
