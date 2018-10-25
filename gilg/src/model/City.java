@@ -2,6 +2,7 @@ package model;
 
 import model.GilgArmy.Army;
 import model.GilgArmy.Defense;
+import model.Residency.Home;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,18 @@ public class City {
     public void upgradeBazaar(int index,int unitID){
         blocks.get(index-1).UpgradeBazaar(unitID);
     }
-
+    public boolean remove(int blockID,int unitID){
+        if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Home) {
+            return false;
+        }else if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Bazaar){
+            blocks.get(blockID-1).removeBazaar(unitID);
+        }else if (blocks.get(blockID-1).getBuildings().get(unitID) instanceof Army){
+            blocks.get(blockID-1).removeArmy();
+        }else {
+            blocks.get(blockID-1).removeDefense();
+        }
+        return true;
+    }
     public void setMoney() {
         money = moneyPlus;
         for (Block block:blocks){
