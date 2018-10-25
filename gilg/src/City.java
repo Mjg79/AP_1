@@ -75,7 +75,7 @@ public class City {
         Block A = blocks.get(IDArmy);
         Army army = A.getArmy();
         if (defense.getNumWorker()==0){
-            loot();
+
         }else {
             if (defense.getNumWorker()<=army.getNumOfWorkers()){
                 block.removeDefense();

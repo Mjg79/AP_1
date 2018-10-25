@@ -24,6 +24,10 @@ public class Block {
         return capacity;
     }
 
+    public ArrayList<Building> getBuildings(){
+        return buildings;
+    }
+
     public boolean canAdd(){
         if(capacity > buildings.size())
             return true;
@@ -74,7 +78,7 @@ public class Block {
         buildings.add(id, bazaar);
     }
 
-    public void UpgradeDefense(int id) {
+    public void UpgradeDefense() {
         for(Building b : buildings)
             if(b instanceof Defense) {
                 ((Defense) b).addLevel();
