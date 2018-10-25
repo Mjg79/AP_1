@@ -1,5 +1,5 @@
 package model;
-
+import java.lang.Math;
 public class Bazaar extends Building {
     private int level =1;
     private int numOfWorkers = 20;
@@ -15,5 +15,9 @@ public class Bazaar extends Building {
 
     public int getNumOfWorkers() {
         return numOfWorkers;
+    }
+
+    public int bazaarScore(){
+        return (int) Math.pow(5 , getDay());
     }
 }

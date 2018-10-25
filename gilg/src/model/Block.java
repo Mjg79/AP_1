@@ -117,4 +117,21 @@ public class Block {
             return null;
     }
 
+    public int scoreBlock(){
+        int score = 0;
+        for(Building b : buildings) {
+            if (b instanceof Home)
+                score += ((Home) b).homeScore();
+            if(b instanceof Army)
+                score += ((Army) b).scoreArmy();
+            if(b instanceof Defense)
+                score += ((Defense) b).scoreDefense();
+            if(b instanceof Bazaar)
+                score += ((Bazaar) b).bazaarScore();
+        }
+        return score;
+    }
+
+
+
 }

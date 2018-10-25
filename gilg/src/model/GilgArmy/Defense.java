@@ -1,5 +1,5 @@
 package model.GilgArmy;
-
+import java.lang.Math;
 import model.Building;
 
 public class Defense extends Building {
@@ -16,5 +16,9 @@ public class Defense extends Building {
 
     public int getNumWorker() {
         return workers;
+    }
+
+    public int scoreDefense(){
+        return (int) Math.pow(15 , getDay());
     }
 }
