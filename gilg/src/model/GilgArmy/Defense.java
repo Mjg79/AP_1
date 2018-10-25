@@ -1,4 +1,8 @@
-public class Defense extends Building{
+package model.GilgArmy;
+
+import model.Building;
+
+public class Defense extends Building {
     private int level = 1;
     private int workers = 30;
 

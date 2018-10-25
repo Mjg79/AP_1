@@ -1,4 +1,6 @@
-public class Bazaar extends Building{
+package model;
+
+public class Bazaar extends Building {
     private int level =1;
     private int numOfWorkers = 20;
 

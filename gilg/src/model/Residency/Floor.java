@@ -1,3 +1,5 @@
+package model.Residency;
+
 public class Floor {
     private int numOFUnits=0;
 

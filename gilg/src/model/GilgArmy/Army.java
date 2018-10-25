@@ -1,4 +1,8 @@
-public class Army extends Building{
+package model.GilgArmy;
+
+import model.Building;
+
+public class Army extends Building {
     private int level=1;
     private int numOfSoldiers ;
     public void addLevel(){
