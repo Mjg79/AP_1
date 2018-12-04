@@ -5,9 +5,8 @@ import Model.ProductsAndForage.Product;
 
 import java.util.ArrayList;
 
-public class WorkShop extends Element {
-    private boolean isInWorking = false;
-    private ArrayList<String> kindOfInputProduct;//to determine that what kind of input we need to get from wareHouse
+public abstract class WorkShop extends Element {
+    private boolean isInWorking = false;    private ArrayList<String> kindOfInputProduct;//to determine that what kind of input we need to get from wareHouse
     private String kindOfOutputProduct;//to determine that what kind of output we need to give to the map
     private ArrayList<Product> outputProduct;
     private int maxInputNumber;
