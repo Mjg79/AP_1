@@ -6,70 +6,109 @@ import Model.ProductsAndForage.Product;
 import java.util.ArrayList;
 
 public abstract class WorkShop extends Element {
-    private boolean isInWorking = false;    private ArrayList<String> kindOfInputProduct;//to determine that what kind of input we need to get from wareHouse
-    private String kindOfOutputProduct;//to determine that what kind of output we need to give to the map
-    private ArrayList<Product> outputProduct;
+    private boolean isInWorking = false;
+    private ArrayList<Product> inputProducts;
+    private Product kindOfOutputProduct;
+    //private ArrayList<Product> outputProduct;
     private int maxInputNumber;
     private int maxOutputNumber;
-    private double startTimeForWorking;
-    private double lastTimeForWorking;
+    private double workTime = 15;
+    private double workStartTime;
+    private double workEndTime;
+    private int inputNumbers;
 
-    {
-        //TODO: intialize all workshops
+    public WorkShop(ArrayList<Product> inputProducts) {
+        this.inputProducts = inputProducts;
     }
 
-    public void startWorking(ArrayList<Integer> count, double startTime) {
-        boolean isItHaveOneZeroCount = false;
-        for (Integer integer: count)
-            if (integer == 0) {
-                isItHaveOneZeroCount = true;
-                break;
-            }
-
-            if (!isInWorking && !isItHaveOneZeroCount) {
-             isInWorking = true;
-             this.startTimeForWorking = startTime;
-             this.lastTimeForWorking = startTime + 15;//every Work should be done at 15 seconds
-         }
-
-         //TODO: specific number of outputs
-    }
-
-
-    public ArrayList<String> getKindOfInputProduct() {
-        return kindOfInputProduct;
-    }
-
-    public String getKindOfOutputProduct() {
-        return kindOfOutputProduct;
-    }
-
-    public boolean checkWorkShopForDistributingOutputs(double time) {// checking it at turn function in map.java
-       if (isInWorking && time > lastTimeForWorking) {
+    public boolean checkWorkDone(double time) {
+       if (isInWorking &&( time > workEndTime)) {
            isInWorking = false;
+           workEndTime = 0;
+           workStartTime = 0;
            return true;
        }
        return false;
     }
 
-    public ArrayList<Product> distributeOutputs(double time) {
-        return outputProduct;
+    public void startWork(double time,int number){
+        if (!isInWorking){
+            isInWorking = true;
+            workStartTime = time;
+            workEndTime = time+workTime;
+            inputNumbers = number;
+        }
     }
 
-    public boolean getIsInWorking() {
+    public boolean isInWorking() {
         return isInWorking;
     }
 
-    @Override
-    public void move (double finalX, double finalY) {
-        //nothing
+    public void setInWorking(boolean inWorking) {
+        isInWorking = inWorking;
     }
 
-    @Override
-    public void upgrade() {
-       maxInputNumber++;
-       maxOutputNumber++;
-       level++;
+    public ArrayList<Product> getInputProducts() {
+        return inputProducts;
+    }
+
+    public void setInputProducts(ArrayList<Product> inputProducts) {
+        this.inputProducts = inputProducts;
+    }
+
+    public Product getKindOfOutputProduct() {
+        return kindOfOutputProduct;
+    }
+
+    public void setKindOfOutputProduct(Product kindOfOutputProduct) {
+        this.kindOfOutputProduct = kindOfOutputProduct;
+    }
+
+    public int getMaxInputNumber() {
+        return maxInputNumber;
+    }
+
+    public void setMaxInputNumber(int maxInputNumber) {
+        this.maxInputNumber = maxInputNumber;
+    }
+
+    public int getMaxOutputNumber() {
+        return maxOutputNumber;
+    }
+
+    public void setMaxOutputNumber(int maxOutputNumber) {
+        this.maxOutputNumber = maxOutputNumber;
+    }
+
+    public double getWorkTime() {
+        return workTime;
+    }
+
+    public void setWorkTime(double workTime) {
+        this.workTime = workTime;
+    }
+
+    public double getWorkStartTime() {
+        return workStartTime;
+    }
+
+    public void setWorkStartTime(double workStartTime) {
+        this.workStartTime = workStartTime;
+    }
+
+    public double getWorkEndTime() {
+        return workEndTime;
+    }
+
+    public void setWorkEndTime(double workEndTime) {
+        this.workEndTime = workEndTime;
+    }
+
+    public int getInputNumbers() {
+        return inputNumbers;
+    }
+
+    public void setInputNumbers(int inputNumbers) {
+        this.inputNumbers = inputNumbers;
     }
 }
-//TODO: check for TODO functions please !!
