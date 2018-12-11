@@ -4,7 +4,7 @@ import Model.ElementAndBoxAndDirection.Element;
 
 public class Well extends Element {
     private int current = 0;
-    private boolean isInCharge = false;
+    private boolean isInCharging = false;
     private double firstTimeForCharge;
     private double lastTimeForCharge;
     private boolean haveOpportunityForExploitingFromWell = true;// make sure that we can use from well
@@ -20,31 +20,37 @@ public class Well extends Element {
         //TODO: nothing
     }
 
+    public boolean isHaveOpportunityForExploitingFromWell() {
+        return haveOpportunityForExploitingFromWell;
+    }
+
     @Override
     public void upgrade() {
-      level++ ;
+        level++;
 
     }
 
     public void chargeWell(double time) {
-        if (current == 0 && !isInCharge) {
-            isInCharge = true;
+        if (current == 0 && !isInCharging) {
+            isInCharging = true;
             firstTimeForCharge = time;
             lastTimeForCharge = time + 5;//in 5 seconds it charges itself completely
         }
     }
 
-    public void disChargeWell () {
-        if (current != 0 && haveOpportunityForExploitingFromWell) {
+    public boolean canDisChargeWell() {
+        if (current != 0 && haveOpportunityForExploitingFromWell && !isInCharging) {
             current--;
+            return true;
         } else
             haveOpportunityForExploitingFromWell = false;
+        return false;
     }
 
     public void checkWell(double time) {
-        if (time > lastTimeForCharge && isInCharge) {
+        if (time > lastTimeForCharge && isInCharging) {
             haveOpportunityForExploitingFromWell = true;
-            isInCharge = false;
+            isInCharging = false;
         }
     }
 

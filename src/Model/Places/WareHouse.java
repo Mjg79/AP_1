@@ -15,10 +15,10 @@ public class WareHouse extends Element {
     private static int maxKindOfAnimal = 3;
     private int numOfKindOfAnimalEnteredInYet = 0;
     {
-     volume = 40;
-     level = 0;
-     x = 20;//truly is a constant for specifying the x of wareHouse in map
-     y = 40;//truly is a constant for specifying the y of wareHouse in map
+        volume = 40;
+        level = 0;
+        x = 20;//truly is a constant for specifying the x of wareHouse in map
+        y = 40;//truly is a constant for specifying the y of wareHouse in map
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WareHouse extends Element {
                 if (numOfKindOfAnimalEnteredInYet <= maxKindOfAnimal)
                     goods.put(element.getName(), count);
             }
-          }
+        }
 
     }
 
@@ -69,17 +69,21 @@ public class WareHouse extends Element {
                 }
 
         }    else {// if element is not a liveStock
-              if (goods.get(element.getName()) == 1) {
-                  goods.remove(element.getName());
-                  current -= element.getVolume();
-                  return element;
-              } else if (goods.get(element.getName()) > 1) {
-                  int previousCount = goods.get(element.getName());
-                  goods.put(element.getName(), --previousCount);
-                  return element;
-              }
+            if (goods.get(element.getName()) == 1) {
+                goods.remove(element.getName());
+                current -= element.getVolume();
+                return element;
+            } else if (goods.get(element.getName()) > 1) {
+                int previousCount = goods.get(element.getName());
+                goods.put(element.getName(), --previousCount);
+                return element;
+            }
         }
         return null;
+    }
+
+    public int getCurrent() {
+        return current;
     }
 
     public HashMap<Element, Integer> giveAllOfAnElement(Element element) {// for give all of a thing to truck
@@ -100,8 +104,5 @@ public class WareHouse extends Element {
         return null;
     }
 
-  public static void main(String[] args){
-   HashMap<Element, Integer> good = new HashMap<>();
-  }
 
 }//TODO: it's complete
