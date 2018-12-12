@@ -12,6 +12,8 @@ import Model.Places.WorkShop;
 import Model.ProductsAndForage.Product;
 import Model.ProductsAndForage.Forage.Forage;
 import Model.Transportation.Truck;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
+
 import java.util.Date;
 import java.util.Iterator;
 
@@ -313,10 +315,21 @@ public class Map {
             workShop.startWorking(this.farmTime);
     }
 
+    //////////////////////////CHECKING_WORKSHOP_FOR_GETTING_OUTPUT/////////////////
     public void checkWorkshopForGettingOutput(WorkShop workShop) {
-        if(workShop.checkWorkShopForDistributingOutputs(farmTime))
-        //getOutputs from workshop
+        if(workShop.checkWorkShopForDistributingOutputs(farmTime)) {
+            ArrayList<Product> goods = workShop.distributeOutputs(this.farmTime);
+            this.addProductProducedByWorkshops(workShop, goods);
+        }
+    }
 
+    private void addProductProducedByWorkshops(WorkShop workShop, ArrayList<Product> goods) {
+        if (workShop.getY() < 5)
+            for (Product product: goods)
+                cells[(int) workShop.getX()][(int) workShop.getY() + 3].addElement(product);
+        else if (workShop.getY() > 35)
+            for (Product product: goods)
+                cells[(int) workShop.getX()][(int) workShop.getY() - 3].addElement(product);
     }
 
 }
