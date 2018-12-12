@@ -8,6 +8,7 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.Places.WareHouse;
 import Model.Places.Well;
+import Model.Places.WorkShop;
 import Model.ProductsAndForage.Product;
 import Model.ProductsAndForage.Forage.Forage;
 import Model.Transportation.Truck;
@@ -38,6 +39,7 @@ public class Map {
         if (budget >= 100) {
             Chicken chicken = new Chicken(this.farmTime);
             liveStocks.add(chicken);
+            wareHouse.addGoodOrLiveStock(chicken, 1);
             cells[(int) chicken.getX()][(int) chicken.getY()].getLiveStocks().add(chicken);
             budgetDecreament(100);
         }
@@ -47,6 +49,7 @@ public class Map {
         if (budget >= 1000) {
             Ostrich ostrich = new Ostrich(this.farmTime);
             liveStocks.add(ostrich);
+            wareHouse.addGoodOrLiveStock(ostrich, 1);
             cells[(int) ostrich.getX()][(int) ostrich.getY()].getLiveStocks().add(ostrich);
             budgetDecreament(1000);
         }
@@ -57,6 +60,7 @@ public class Map {
         if (budget >= 10000) {
             Cow cow = new Cow(this.farmTime);
             liveStocks.add(cow);
+            wareHouse.addGoodOrLiveStock(cow, 1);
             cells[(int) cow.getX()][(int) cow.getY()].getLiveStocks().add(cow);
             budgetDecreament(10000);
         }
@@ -281,7 +285,8 @@ public class Map {
 
     }
 
-    public void killWildAnimalsByDogs() {
+    ///////////////////////////KILLED_WILD_ANIMALS_BY_DOGS/////////////////////////
+    public void killedWildAnimalsByDogs() {
         for (Dog dog : dogs)
             if (!cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().isEmpty()) {
                 cells[(int) dog.getX()][(int) dog.getY()].removeElement(dog);
@@ -297,8 +302,23 @@ public class Map {
 
     }
 
+    ///////////////////////////CHARGE_WELL/////////////////////////////////////////
     public void chargeWell() {
         well.chargeWell(farmTime);
     }
+
+    //////////////////////////START_WORKSHOP//////////////////////////////////////
+    public void startWorkshop(WorkShop workShop) {
+        if (!workShop.isInWorking() && wareHouse.isItPossibleForStartingWorkshop(workShop))
+            workShop.startWorking(this.farmTime);
+    }
+
+    public void checkWorkshopForGettingOutput(WorkShop workShop) {
+        if(workShop.checkWorkShopForDistributingOutputs(farmTime))
+        //getOutputs from workshop
+
+    }
+
 }
 
+ 

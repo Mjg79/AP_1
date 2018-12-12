@@ -1,19 +1,15 @@
 package Model.Places;
 
-import Model.Animal.Animal;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.ElementAndBoxAndDirection.Element;
-import Model.ProductsAndForage.Product;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class WareHouse extends Element {
     private int current = 0; // current is 0 because at first we don't have anything in wareHouse
     private HashMap<String, Integer> goods = new HashMap<>();
     private HashMap<String, Integer> liveStocks = new HashMap<>();
-    private static int maxKindOfAnimal = 3;
-    private int numOfKindOfAnimalEnteredInYet = 0;
+
     {
         volume = 40;
         level = 0;
@@ -47,16 +43,14 @@ public class WareHouse extends Element {
             if (liveStocks.containsKey(element.getName())) {
                 int previousCount = liveStocks.get(element.getName());
                 goods.put(element.getName(), previousCount + count);
-            } else {
-                numOfKindOfAnimalEnteredInYet++;
-                if (numOfKindOfAnimalEnteredInYet <= maxKindOfAnimal)
-                    goods.put(element.getName(), count);
-            }
+            } else
+                goods.put(element.getName(), count);
+
         }
 
     }
 
-    public Element giveOneNumberFromAnElement(Element element)  {// for give a thing to truck
+    public Element giveOneNumberFromAnElement(Element element) {// for give a thing to truck
         if (element instanceof LiveStock) {// if element is a liveStock
             if (liveStocks.containsKey(element.getName()))
                 if (liveStocks.get(element.getName()) == 1) {
@@ -68,7 +62,7 @@ public class WareHouse extends Element {
                     return element;
                 }
 
-        }    else {// if element is not a liveStock
+        } else {// if element is not a liveStock
             if (goods.get(element.getName()) == 1) {
                 goods.remove(element.getName());
                 current -= element.getVolume();
@@ -104,5 +98,24 @@ public class WareHouse extends Element {
         return null;
     }
 
+    public boolean isItPossibleForStartingWorkshop(WorkShop workShop) {
+        int min = workShop.getMaxNumberOfProducts();
 
-}//TODO: it's complete
+        for (String string : workShop.getNameOfInputProducts()) {
+            if (!this.goods.containsKey(string))
+                return false;
+            if (this.goods.get(string) < min)
+                min = this.goods.get(string);
+        }
+
+        for (String string : workShop.getNameOfInputProducts())
+            //decrease number of all products by min that used by workshop
+            goods.put(string, goods.get(string) - min);
+
+        //it means that we have min numbers for starting the workshop;
+        workShop.setPossibleNumberOfOutputProducts(min);
+        return true;
+    }
+
+
+}
