@@ -1,4 +1,4 @@
-package Model.Places.Workshop;
+package Model.Places;
 
 import Model.ElementAndBoxAndDirection.Element;
 import Model.ProductsAndForage.Product;

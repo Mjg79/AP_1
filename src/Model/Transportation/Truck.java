@@ -9,35 +9,66 @@ public class Truck extends Element {
     private ArrayList<Box> boxes = new ArrayList<>();
     private int wallet = 0;
     private int numOfBoxes = 2;
+    private double sellTime;
     private double startTimeForSellingElements;
     private double endTimeForSellingElements;
 
-    {
-        //TODO:checkBlockInitialize
-        for (int i = 0; i < numOfBoxes; i++)
-            boxes.add(new Box());
-    }
 
     @Override
     public void move(double finalX, double finalY) {
-        //TODO: nothing to do ;
+        // it's for movement of it in map
     }
 
     @Override
     public void upgrade() {
-        numOfBoxes++;
+        // it needs some detail for increasing volume,numOfboxes and decreasing sellTime and so on
     }
 
-    public void putElementInBox(Element element, int count) {
-        for (Box box: boxes)
-            box.addElement(element, count);
-
+    public ArrayList<Box> getBoxes() {
+        return boxes;
     }
 
-    public void sellBoxes() {
-        for (Box box: boxes)
-            if (box.getElement() != null)
-               ;// wallet +=
+    public void setBoxes(ArrayList<Box> boxes) {
+        this.boxes = boxes;
     }
 
+    public int getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(int wallet) {
+        this.wallet = wallet;
+    }
+
+    public int getNumOfBoxes() {
+        return numOfBoxes;
+    }
+
+    public void setNumOfBoxes(int numOfBoxes) {
+        this.numOfBoxes = numOfBoxes;
+    }
+
+    public double getSellTime() {
+        return sellTime;
+    }
+
+    public void setSellTime(double sellTime) {
+        this.sellTime = sellTime;
+    }
+
+    public double getStartTimeForSellingElements() {
+        return startTimeForSellingElements;
+    }
+
+    public void setStartTimeForSellingElements(double startTimeForSellingElements) {
+        this.startTimeForSellingElements = startTimeForSellingElements;
+    }
+
+    public double getEndTimeForSellingElements() {
+        return endTimeForSellingElements;
+    }
+
+    public void setEndTimeForSellingElements(double endTimeForSellingElements) {
+        this.endTimeForSellingElements = endTimeForSellingElements;
+    }
 }
