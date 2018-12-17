@@ -11,10 +11,10 @@ import Model.Places.Well;
 import Model.Places.WorkShop;
 import Model.ProductsAndForage.Product;
 import Model.ProductsAndForage.Forage.Forage;
+import Model.Transportation.Helicopter;
 import Model.Transportation.Truck;
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class Map {
@@ -28,6 +28,7 @@ public class Map {
     private WareHouse wareHouse;
     private Well well;
     private Truck truck;
+    private Helicopter helicopter;
     private double farmTime = 0;
     private int budget = 1000;
 ///////////////////////it's not complete/////////////////////////
@@ -36,6 +37,9 @@ public class Map {
         budget -= amount;
     }
 
+    public int makeRandomNumbers() {
+        return (int) (Math.random() * (35 - 5) + 5);
+    }
     //////////////////////////////BUY_ANIMAL_BY_STRING///////////////////
     public void addChicken() {
         if (budget >= 100) {
@@ -317,7 +321,7 @@ public class Map {
 
     //////////////////////////CHECKING_WORKSHOP_FOR_GETTING_OUTPUT/////////////////
     public void checkWorkshopForGettingOutput(WorkShop workShop) {
-        if(workShop.checkWorkShopForDistributingOutputs(farmTime)) {
+        if (workShop.checkWorkShopForDistributingOutputs(farmTime)) {
             ArrayList<Product> goods = workShop.distributeOutputs(this.farmTime);
             this.addProductProducedByWorkshops(workShop, goods);
         }
@@ -325,13 +329,62 @@ public class Map {
 
     private void addProductProducedByWorkshops(WorkShop workShop, ArrayList<Product> goods) {
         if (workShop.getY() < 5)
-            for (Product product: goods)
+            for (Product product : goods)
                 cells[(int) workShop.getX()][(int) workShop.getY() + 3].addElement(product);
         else if (workShop.getY() > 35)
-            for (Product product: goods)
+            for (Product product : goods)
                 cells[(int) workShop.getX()][(int) workShop.getY() - 3].addElement(product);
     }
 
-}
+    /////////////////////////ADD_ELEMENT_TO_TRUCK//////////////////////////////////
+    private void addOneElementToTruck(Element element) {
+        this.truck.putElementInTrunk(this.wareHouse.giveOneNumberFromAnElement(element), 1);
+    }
 
- 
+    private void addAllOfAnElementToTruck(Element element) {
+        HashMap<Element, Integer> reference = this.wareHouse.giveAllOfAnElement(element);
+        this.truck.putElementInTrunk(element, reference.get(element));
+    }
+
+    public void addElementToTruck(Element element, int count) {
+        if (wareHouse.isHaveThisElement(element) && this.truck.isInWareHouse()) {
+            if (count == 1)
+                this.addAllOfAnElementToTruck(element);
+            else
+                this.addOneElementToTruck(element);
+            this.wareHouse.addGoodOrLiveStock(element, this.truck.getCountReturnToWareHouse());
+        }
+    }
+
+    ////////////////////////GO_TRUCK////////////////////////////////////////////////
+    public void goTruckForSelling() {
+        budget += this.truck.startWorking(this.farmTime);
+    }
+
+    ///////////////////////CHECK_TRUCK_IS_IN_wareHouse/////////////////////////////
+    public void checkIsTruckInWareHouse() {
+        this.truck.checkWasTruckCameBackFromBazar(farmTime);
+    }
+
+
+
+    ////////////////////////ADD_ELEMENT_IN_HELICOPTER//////////////////////////////
+    public void addElementToHelicopter(Element element) {
+        this.helicopter.putOneCountOfAnElementInHelicopter(element, budget);
+    }
+
+    ////////////////////////HELICOPTER_START_WORKING/////////////////////////////////
+    public void goHelicopter() {
+        budget = this.helicopter.startWorking(farmTime);
+    }
+
+    ///////////////////////CHECK_HELICOPTER_COME_BACK_FROM_BAZAR/////////////////////
+    public void checkHelicopterCameBackFromBazar() {
+        if (this.helicopter.checkWasHelicopterCameBackFromBazar(farmTime)) {
+            for (Element element: helicopter.getSalesGoods())
+                cells[makeRandomNumbers()][makeRandomNumbers()].addElement(element);
+        }
+    }
+
+
+}
