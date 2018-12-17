@@ -5,9 +5,9 @@ import Model.ProductsAndForage.Product;
 
 import java.util.ArrayList;
 
-public abstract class WorkShop extends Element {
+public class WorkShop extends Element {
     private boolean isInWorking = false;
-    private ArrayList<Product> inputProducts;
+    private ArrayList<Class> inputProducts;
     private Product kindOfOutputProduct;
     //private ArrayList<Product> outputProduct;
     private int maxInputNumber;
@@ -16,9 +16,20 @@ public abstract class WorkShop extends Element {
     private double workStartTime;
     private double workEndTime;
     private int inputNumbers;
+    private int updateCost;
 
-    public WorkShop(ArrayList<Product> inputProducts) {
+    public int getUpdateCost() {
+        return updateCost;
+    }
+
+    public void setUpdateCost(int updateCost) {
+        this.updateCost = updateCost;
+    }
+
+    public WorkShop(ArrayList<Class> inputProducts, int updateCost)
+    {
         this.inputProducts = inputProducts;
+        this.updateCost = updateCost;
     }
 
     public boolean checkWorkDone(double time) {
@@ -48,11 +59,11 @@ public abstract class WorkShop extends Element {
         isInWorking = inWorking;
     }
 
-    public ArrayList<Product> getInputProducts() {
+    public ArrayList<Class> getInputProducts() {
         return inputProducts;
     }
 
-    public void setInputProducts(ArrayList<Product> inputProducts) {
+    public void setInputProducts(ArrayList<Class> inputProducts) {
         this.inputProducts = inputProducts;
     }
 
@@ -111,4 +122,15 @@ public abstract class WorkShop extends Element {
     public void setInputNumbers(int inputNumbers) {
         this.inputNumbers = inputNumbers;
     }
+
+    @Override
+    public void move(double finalX, double finalY) {}
+
+    @Override
+    public void upgrade() {
+        maxInputNumber++;
+        maxOutputNumber++;
+        //change in its picture
+    }
+
 }

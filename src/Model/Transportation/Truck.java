@@ -10,8 +10,9 @@ public class Truck extends Element {
     private int wallet = 0;
     private int numOfBoxes = 2;
     private double sellTime;
-    private double startTimeForSellingElements;
-    private double endTimeForSellingElements;
+    private double startTime;
+    private double endTime;
+    private boolean isAvailable = true;
 
 
     @Override
@@ -56,19 +57,51 @@ public class Truck extends Element {
         this.sellTime = sellTime;
     }
 
-    public double getStartTimeForSellingElements() {
-        return startTimeForSellingElements;
+    public double getStartTime() {
+        return startTime;
     }
 
-    public void setStartTimeForSellingElements(double startTimeForSellingElements) {
-        this.startTimeForSellingElements = startTimeForSellingElements;
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
-    public double getEndTimeForSellingElements() {
-        return endTimeForSellingElements;
+    public double getEndTime() {
+        return endTime;
     }
 
-    public void setEndTimeForSellingElements(double endTimeForSellingElements) {
-        this.endTimeForSellingElements = endTimeForSellingElements;
+    public void setEndTime(double endTime) {
+        this.endTime = endTime;
+    }
+
+    public void removeBox(Box box){
+        boxes.remove(box);
+    }
+
+    public void removeBox(int index){
+        boxes.remove(index);
+    }
+
+    public void addBox(Box box){
+        boxes.add(box);
+        wallet+=box.getCost();// must have a method that return the value
+    }
+
+    public void addToABox(Element element,int index , int count){
+        boxes.get(index).addElement(element, count);
+    }
+
+    public void sell(double time){//need to be synced with boxes
+        startTime = time;
+        endTime = time+sellTime;
+        isAvailable = false;
+    }
+
+    public boolean checkDone(double time){
+        if (time >= endTime){
+            isAvailable = true;
+            endTime=0;
+            startTime=0;
+        }
+        return isAvailable;
     }
 }
