@@ -9,10 +9,13 @@ import Model.MapAndCell.Map;
 import Model.Products.Product;
 import View.View;
 
+import java.io.*;
 import java.util.ArrayList;
 
+import static javafx.scene.input.KeyCode.G;
+
 public class Controller {
-    private Map map = new Map();
+    private Map map;
     private View view = new View();
     private String instruction;
     private ArrayList<Element> elements;
@@ -188,5 +191,34 @@ public class Controller {
 
     public void goHelicopter() {
         map.goHelicopter();
+    }
+
+    public void saveGame(String path) {
+        Gson serializer = new Gson();
+        try {
+            OutputStreamWriter writer = new OutputStreamWriter(
+                    new FileOutputStream(path));
+            serializer.toJson(this.map, Map.class, serializer);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadGame(String path) {
+        Gson deserializer = new Gson();
+        try {
+            this.map = deserializer.fromJson(new FileReader(path), Map.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void runMap(String name) {
+        this.map = new Map(name);
+    }
+
+    public void loadCustom(String path) {
+        //TODO: load the address of specific file
     }
 }

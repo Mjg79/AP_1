@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class Map {
+    private String name;
     private ArrayList<LiveStock> liveStocks = new ArrayList<>();
     private ArrayList<WildAnimal> wildAnimals = new ArrayList<>();
     private ArrayList<Cat> cats = new ArrayList<>();
@@ -33,6 +34,15 @@ public class Map {
     private int budget = 1000;
     private ArrayList<WorkShop> workshops = new ArrayList<>();
     private ArrayList<String> workShopName = new ArrayList<>();
+
+
+    public Map(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     private void budgetDecreament(int amount) {
         budget -= amount;
