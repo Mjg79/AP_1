@@ -15,6 +15,7 @@ public class WareHouse extends Element {
         level = 0;
         x = 20;//truly is a constant for specifying the x of wareHouse in map
         y = 40;//truly is a constant for specifying the y of wareHouse in map
+        moneyForUpgrading = 150;
     }
 
     @Override
@@ -23,31 +24,22 @@ public class WareHouse extends Element {
     }
 
     @Override
-    public void upgrade() {
-        level++;
-        volume *= 4;
+    public boolean upgrade() {
+        if(level < 3) {// maximum level is 3
+            level++;
+            volume += 80;
+            moneyForUpgrading += 50;
+            return true;
+        }
+        return false;
     }
 
-    public void addGoodOrLiveStock(Element element, int count) {
-        if (!(element instanceof LiveStock)) {// if it is not a live stock
-            if ((volume - current) >= element.getVolume() * count) {
-                if (goods.containsKey(element.getName())) {
-                    int previousCount = goods.get(element.getName());
-                    goods.put(element.getName(), previousCount + count);
-                } else {
-                    goods.put(element.getName(), count);
-                }
-            }
+    public HashMap<String, Integer> getGoods() {
+        return goods;
+    }
 
-        } else {// if it is a live stock
-            if (liveStocks.containsKey(element.getName())) {
-                int previousCount = liveStocks.get(element.getName());
-                goods.put(element.getName(), previousCount + count);
-            } else
-                goods.put(element.getName(), count);
-
-        }
-
+    public HashMap<String, Integer> getLiveStocks() {
+        return liveStocks;
     }
 
     public Element giveOneNumberFromAnElement(Element element) {// for give a thing to truck
@@ -76,8 +68,37 @@ public class WareHouse extends Element {
         return null;
     }
 
+    public void addGoodOrLiveStock(Element element, int count) {
+        if (!(element instanceof LiveStock)) {// if it is not a live stock
+            if ((volume - current) >= element.getVolume() * count) {
+                if (goods.containsKey(element.getName())) {
+                    int previousCount = goods.get(element.getName());
+                    goods.put(element.getName(), previousCount + count);
+                } else {
+                    goods.put(element.getName(), count);
+                }
+            }
+
+        } else {// if it is a live stock
+            if (liveStocks.containsKey(element.getName())) {
+                int previousCount = liveStocks.get(element.getName());
+                goods.put(element.getName(), previousCount + count);
+            } else
+                goods.put(element.getName(), count);
+
+        }
+
+    }
+
     public int getCurrent() {
         return current;
+    }
+
+    public boolean isHaveThisElement(Element element) {
+        for (String element1 : goods.keySet())
+            if (element.getName().equals(element1))
+                return true;
+        return false;
     }
 
     public HashMap<Element, Integer> giveAllOfAnElement(Element element) {// for give all of a thing to truck
@@ -116,6 +137,5 @@ public class WareHouse extends Element {
         workShop.setPossibleNumberOfOutputProducts(min);
         return true;
     }
-
 
 }

@@ -1,15 +1,18 @@
 package Model.Animal;
 
-import Model.ProductsAndForage.Product;
+import Model.Products.Product;
 
 import java.util.ArrayList;
 
 public class Cat extends Animal {
-    private double normalSpeed = 1; // 3 cell per 0.33 second
-    private double speedForCollecting = 3;
+    private static final double speedForCollecting = 4;
+    private static final double speedNormally = 2;
     private ArrayList<Product> collectProducts;
+
     {
-      level = 0;
+        speed = speedNormally;
+        name = "cat";
+        moneyForUpgrading = 100;
     }
 
     @Override
@@ -17,37 +20,20 @@ public class Cat extends Animal {
         //nothing
     }
 
-    //TODO: for cat the move function differs from other elements
-    public void move(double finalX, double finalY, String condition) {
-       if (condition.equals("pickup")) {
-           //TODO: pickup product from map by BFS from x,y to finalX,finalY
-       }
 
-       if (condition.equals("random")) {
-           //TODO: move randomly
-       }
+    public int getLevel() {
+        return level;
     }
-
     @Override
-    public void upgrade() {
-        level++;
+    public boolean upgrade() {
+        if (level == 0) {
+            speed += 2;
+            level++;
+            return true;
+        }
+        return false;
     }
 
-    public double getNormalSpeed() {
-        return normalSpeed;
-    }
-
-    public void setNormalSpeed(double normalSpeed) {
-        this.normalSpeed = normalSpeed;
-    }
-
-    public double getSpeedForCollecting() {
-        return speedForCollecting;
-    }
-
-    public void setSpeedForCollecting(double speedForCollecting) {
-        this.speedForCollecting = speedForCollecting;
-    }
 
     public void setCollectProducts(ArrayList<Product> products) {
         this.collectProducts = products;

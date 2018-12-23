@@ -1,82 +1,69 @@
 package Model.Animal.LiveStocks;
 
 import Model.Animal.Animal;
+import Model.Products.Product;
 
 public class LiveStock extends Animal {
     private double speed = 1; // 1 cell per 0.33 second
-    private boolean isEatingForage = false;
-    private double startTimeForEatingForage;
-    private boolean isDead = false;
+    private double startTimeForEatingForage = -5;//just for denying some requests from the start of game
     private double startTimeBeingInMap;
-    private double hungerLevel = 8;
     private static final double maxHungerLevel = 8;
-    private double firstTimeReleasingEgg;
-    //TODO:check out for releasing egg:how and when continuously
+    private double hungerLevel = maxHungerLevel;
+    private boolean mustEatForage = false;
 
-    public double getStartTimeBeingInMap() {
-        return startTimeBeingInMap;
+
+    public double getStartTimeForEatingForage() {
+        return this.startTimeForEatingForage;
+    }
+
+
+    public void setStartTimeForEatingForage(double time) {
+        this.startTimeForEatingForage = time;
     }
 
     public LiveStock(double startBeingInMap) {
         this.startTimeBeingInMap = startBeingInMap;
     }
 
-    //check it out: private egg EggProduct
 
 
     @Override
     public void move(double finalX, double finalY) {
-        //nothing
-    }
-    //TODO:function move for live stocks differ from other elements
-    public void move(double finalX, double finalY, String condition) {
-        if(condition.equals("emergency")) {
-            //TODO:BFS from X,Y to finalX,finalY
-        }
-        if (condition.equals("random")) {
-            //TODO:move randomly tu finalX, finalY
-        }
+
     }
 
-    public void setIsEatingForage(boolean check) {
-        isEatingForage = check;
+
+    public void mustEatForage(boolean check) {
+        this.mustEatForage = check;
     }
 
-    public void setHungerLevel() {
-        hungerLevel--;
+    public boolean isMustEatForage() {
+        return this.mustEatForage;
     }
 
-    public void setFirstTimeReleasingEgg(double time) {
-        firstTimeReleasingEgg = time;
+    public void changeHungerLevel(double number) {
+        hungerLevel += number;
     }
 
-    public double getFirstTimeReleasingEgg() {
-        return firstTimeReleasingEgg;
+    public double getHungerLevel() {
+        return hungerLevel;
     }
 
-    //TODO:check this function later for checking in turn that uses in map
     public void checkLiveStock() {
-        if (isEatingForage) {
-            //not move
-        }
-
-        else
-        {
-            //move it
-        }
+        if(this.hungerLevel <= 3)
+            this.mustEatForage(true);
+        if(this.hungerLevel >= 7)
+            this.mustEatForage(false);
     }
 
-    public void setIsDead(boolean check) {
-        isDead = check;
+
+    public double getStartTimeBeingInMap() {
+        return startTimeBeingInMap;
     }
 
-    public boolean getIsDead() {
-        return isDead;
+    public Product releaseProduct(double time) {
+        return new Product(time);
     }
 
-    @Override
-    public void upgrade() {
-        //nothing
-    }
+
 }
-//TODO: it's complete

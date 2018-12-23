@@ -8,7 +8,7 @@ public abstract class Element {
     protected int volume;
     protected int price;
     protected String name;
-
+    protected double moneyForUpgrading;
     public abstract void move(double finalX, double finalY);
 
     public double getX () {
@@ -27,7 +27,10 @@ public abstract class Element {
         return direction;
     }
 
-    public abstract void upgrade();
+    public int getLevel() {
+        return level;
+    }
+    public abstract boolean upgrade();
 
     public int getVolume() {
         return volume;
@@ -41,5 +44,7 @@ public abstract class Element {
         return name;
     }
 
-
+    public double getMoneyForUpgrading() {
+        return moneyForUpgrading;
+    }
 }
