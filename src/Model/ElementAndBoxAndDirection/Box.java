@@ -1,40 +1,54 @@
 package Model.ElementAndBoxAndDirection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Box{
-    private int volume;
-    private int current;
-    private HashMap<Element, Integer> element;
+    private int volume = 40;
+    private int current = 0;
+    private ArrayList<Element> elements = new ArrayList<>();
 
-    {
-     current = 0;
-     volume = 10;
-    }
-
-    public void addElement(Element elementEntry, int count) {
-        if(this.element.size() == 0 &&
-             elementEntry.getVolume() * count <= (volume - current)) {
-             this.element.put(elementEntry, count);
-            current += elementEntry.getVolume() * count;// increase the occupied space (current) in Box
+    public void addElement(Element elementEntry) {
+        if(this.elements.size() == 0 || (elementEntry.getClass() == elements.get(0).getClass() &&
+                elementEntry.getVolume() <= (volume - current))) {
+            this.elements.add(elementEntry);
+            current += elementEntry.getVolume();// increase the occupied space (current) in Box
         }
     }
 
     public void removeElement() {
         current = 0;
-        element.clear();
+        elements.clear();
     }
 
-    public HashMap<Element, Integer> getElement() {
-        return element;
-    }
-
-    public int getCurrent() {
-        return current;
+    public int getCost() {
+        int cost = 0;
+        for(Element element : elements)
+            cost += element.getPrice();
+        return cost;
     }
 
     public int getVolume() {
         return volume;
     }
 
-}//TODO: it's complete
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public int getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(int current) {
+        this.current = current;
+    }
+
+    public ArrayList<Element> getElements() {
+        return elements;
+    }
+
+    public void setElements(ArrayList<Element> elements) {
+        this.elements = elements;
+    }
+}

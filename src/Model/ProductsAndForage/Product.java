@@ -30,7 +30,8 @@ public class Product extends Element {
 
     @Override
     public void move(double finalX, double finalY) {
-        //TODO:nothing
+        this.x = finalX;
+        this.y = finalY;
     }
 
     @Override

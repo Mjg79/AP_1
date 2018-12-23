@@ -87,7 +87,9 @@ public class Truck extends Element {
     }
 
     public void addToABox(Element element,int index , int count){
-        boxes.get(index).addElement(element, count);
+        for (int i=0;i<count;i++) {
+            boxes.get(index).addElement(element);
+        }
     }
 
     public void sell(double time){//need to be synced with boxes
@@ -103,5 +105,13 @@ public class Truck extends Element {
             startTime=0;
         }
         return isAvailable;
+    }
+
+    public int price(){
+        int price = 0;
+        for(Box box:boxes){
+            price += box.getCost();
+        }
+        return price;
     }
 }
