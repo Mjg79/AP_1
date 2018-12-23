@@ -89,9 +89,6 @@ public class Helicopter extends Element {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
 
     public double getBuyTime() {
         return buyTime;
