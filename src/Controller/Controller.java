@@ -120,6 +120,20 @@ public class Controller {
             isIdentified = true;
         }
 
+        if (getInstruction().matches("loadGame\\s.+")) {
+            this.loadGame(split[1]);
+            isIdentified = true;
+        }
+
+        if (getInstruction().matches("saveGame\\s.+")) {
+            this.saveGame(split[1]);
+            isIdentified = true;
+        }
+
+        if (getInstruction().matches("runMap\\s.+")) {
+            this.runMap(split[1]);
+            isIdentified = true;
+        }
         if (!isIdentified)
             System.out.println("command not found!");
     }
