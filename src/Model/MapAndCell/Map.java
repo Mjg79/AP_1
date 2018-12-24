@@ -143,7 +143,6 @@ public class Map {
     }
 
     //////////////////////////////MOVE_ANIMAL///////////////////////////
-    //TODO: FIND THE BEST BFS
     private void BFS(Animal animal, double i, double j) {
         animal.moveWisely(i, j);
     }
