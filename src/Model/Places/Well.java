@@ -11,6 +11,7 @@ public class Well extends Element {
     private boolean haveOpportunityForExploitingFromWell = true;// make sure that we can use from well
 
     {
+        current = 5;
         volume = 5;
         level = 0;
         name = "well";
@@ -75,6 +76,7 @@ public class Well extends Element {
 
     public void checkWell(double time) {
         if (time > lastTimeForCharge && isInCharging) {
+            current = volume;
             haveOpportunityForExploitingFromWell = true;
             isInCharging = false;
         }

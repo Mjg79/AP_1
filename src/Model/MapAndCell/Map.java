@@ -176,12 +176,12 @@ public class Map {
 
     //////////////////////////////PLANT_FORAGE//////////////////////////
     public void plantForage(int x, int y, double time) {
-
         if ((x > 5 && x < 35 && y > 5 && y < 35) && well.canDisChargeWell()) {
             forages.add(new Forage(farmTime));
             for (int i = -1; i < 2; i++)
-                for (int j = -1; j < 2; j++)
+                for (int j = -1; j < 2; j++) {
                     cells[x + i][y + j].addElement(new Forage(farmTime));
+                }
         }
     }
 
@@ -528,14 +528,19 @@ public class Map {
         this.pickUpByCatAndPutInWareHouse();
     }
 
+    //////////////////WELL_TURN//////////////////////////////////////////////
+    private void wellTurn() {
+        this.well.checkWell(farmTime);
+    }
+
+    /////////////////TURN////////////////////////////////////////////////////
     public void turnMap(double increase) {
         farmTime += increase;
-
         this.liveStockTurn();
         this.wildAnimalTurn();
         this.dogTurn();
         this.catTurn();
-
+        this.wellTurn();
         for (WorkShop workShop : workshops)
             this.checkWorkshopForGettingOutput(workShop);
 
