@@ -4,9 +4,9 @@ import Model.ElementAndBoxAndDirection.Direction;
 import Model.ElementAndBoxAndDirection.Element;
 
 public abstract class Animal extends Element {
-    double speed;
-    private boolean isKilled = false;
-    boolean isMoved = false;
+    protected double speed;
+    boolean isKilled = false;
+    private boolean isMoved = false;
     {
         speed = 1;
         direction = Direction.getRandomDirection();

@@ -16,7 +16,7 @@ import java.util.Scanner;
 import static javafx.scene.input.KeyCode.G;
 
 public class Controller {
-    private Map map = new Map("map1");
+    private Map map;
     private View view = new View();
     private String instruction;
     private ArrayList<Element> elements = new ArrayList<>();
@@ -239,11 +239,23 @@ public class Controller {
     }
 
     public static void main(String[] args) {
+
         Controller controller = new Controller();
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("do you want to load a game ? : [yes]/[no]");
+
+        if (scanner.nextLine().toLowerCase().equals("yes")) {
+            System.out.println("enter your path: ");
+            controller.loadGame(scanner.nextLine());
+        } else {
+            System.out.print("enter your mapName: ");
+            controller.runMap(scanner.nextLine());
+        }
+        while (scanner.hasNextLine()) {
             controller.setInstruction(scanner.nextLine());
             controller.operateInstruction();
         }
     }
 }
+

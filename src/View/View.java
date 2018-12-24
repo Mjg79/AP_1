@@ -1,7 +1,11 @@
 package View;
 
+import Model.Animal.LiveStocks.LiveStock;
+import Model.Animal.WildAnimals.WildAnimal;
 import Model.ElementAndBoxAndDirection.Box;
 import Model.MapAndCell.Map;
+
+import java.util.Scanner;
 
 public class View {
     private Map map;
@@ -44,9 +48,27 @@ public class View {
         System.out.println("Well: \n" + "Level: " + map.getWell().getLevel() + " ,Current: "
                 + map.getWell().getCurrent() + " ,Volume: " + map.getWell().getVolume()
                 + " ,isCharging: " + map.getWell().isInCharging() + " ,price: " + map.getWell().getPrice()
-                + "\n" + " ,moneyForUpgrading: " + map.getWell().getMoneyForUpgrading());
+                + "\n" + " ,moneyForUpgrading: " + map.getWell().getMoneyForUpgrading() +
+                " ,startTimeForCharging: " + map.getWell().getFirstTimeForCharge() +
+                " ,endTimeForCharging: " + map.getWell().getLastTimeForCharge());
     }
 
+    private void printMap() {
+        System.out.println("Map: \n" + "farmTime: " + map.getFarmTime() + " ,budget: " + map.getBudget() + "\n" +
+                " ,LiveStocks: ");
+        for (LiveStock liveStock: map.getLiveStocks())
+            System.out.println("liveStockX: " + liveStock.getX() + " ,liveStockY: " + liveStock.getY() +
+                    " ,liveStockType: " + liveStock.getName() +
+                    " ,timeEntered: " + liveStock.getStartTimeBeingInMap() +
+                    " ,hungerLevel: " + liveStock.getHungerLevel());
+        System.out.println("WildAnimals: ");
+        for (WildAnimal wildAnimal: map.getWildAnimals())
+            System.out.println("wildAnimalX: " + wildAnimal.getX() + " ,wildAnimalY: " + wildAnimal.getY()
+                    + " ,isCaged: " + wildAnimal.isCaged());
+        this.printWell();
+        this.printWareHouse();
+
+    }
 
     private void printWeavingFactory() {
     }
@@ -67,7 +89,7 @@ public class View {
     }
 
 
-    public void print(Map map, String string) {//TODO: print map and info
+    public void print(Map map, String string) {//TODO: print info
         this.map = map;
         if (string.equals("truck"))
             this.printTruck();
@@ -89,6 +111,8 @@ public class View {
             this.printSpinnery();
         if (string.equals("WeavingFactory"))
             this.printWeavingFactory();
+        if (string.equals("map"))
+            this.printMap();
     }
 
 }

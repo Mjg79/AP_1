@@ -3,10 +3,9 @@ package Model.Animal;
 import Model.ElementAndBoxAndDirection.Direction;
 
 public class Dog extends Animal {
-    private double speed = 3;//3 cell per 0.33 second
-    private boolean isKilled = false;
 
     {
+        speed = 2;
         price = 0;
         volume = 0;
         level = 0;

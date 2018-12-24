@@ -585,22 +585,28 @@ public class Map {
     public void upgrade(String name) {
         switch (name) {
             case "truck":
-                this.upgradeTruck();
+                if (budget >= this.getTruck().getMoneyForUpgrading())
+                    this.upgradeTruck();
                 break;
             case "helicopter":
-                this.upgradeHelicopter();
+                if (budget >= this.getTruck().getMoneyForUpgrading())
+                    this.upgradeHelicopter();
                 break;
             case "wareHouse":
-                this.upgradeWareHouse();
+                if (budget >= this.getTruck().getMoneyForUpgrading())
+                    this.upgradeWareHouse();
                 break;
             case "well":
-                this.upgradeWell();
+                if (budget >= this.getTruck().getMoneyForUpgrading())
+                    this.upgradeWell();
                 break;
             case "cat":
-                this.upgradeCat();
+                if (budget >= this.getTruck().getMoneyForUpgrading())
+                    this.upgradeCat();
                 break;
             default:
-                upgradeWorkshop(name);
+                if (budget >= this.getWorkshops().get(0).getMoneyForUpgrading())
+                    upgradeWorkshop(name);
                 break;
 
         }
