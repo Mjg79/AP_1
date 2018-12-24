@@ -26,38 +26,32 @@ public class Map {
     private ArrayList<Forage> forages = new ArrayList<>();
     private ArrayList<Product> products = new ArrayList<>();
     private Cell[][] cells = new Cell[41][41];
-    private WareHouse wareHouse;
-    private Well well;
-    private Truck truck;
-    private Helicopter helicopter;
+    private WareHouse wareHouse = new WareHouse();
+    private Well well = new Well();
+    private Truck truck = new Truck();
+    private Helicopter helicopter = new Helicopter();
     private double farmTime = 0;
     private int budget = 1000;
     private ArrayList<WorkShop> workshops = new ArrayList<>();
     private ArrayList<String> workShopName = new ArrayList<>();
 
+    {
+        for (int i = 0; i < 41; i++)
+            for (int j = 0; j < 41; j++)
+                cells[i][j] = new Cell();
+    }
 
     public Map(String name) {
         this.name = name;
     }
 
+    /////////////////////////SETTER_AND_GETTER///////////////////////
     public String getName() {
         return name;
     }
 
-    private void budgetDecreament(int amount) {
-        budget -= amount;
-    }
-
     public double getFarmTime() {
         return farmTime;
-    }
-
-    private boolean isBudgetEnough(int amount) {
-        if (budget >= amount) {
-            budget -= amount;
-            return true;
-        }
-        return false;
     }
 
     public WareHouse getWareHouse() {
@@ -80,8 +74,57 @@ public class Map {
         return workshops;
     }
 
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public ArrayList<LiveStock> getLiveStocks() {
+        return liveStocks;
+    }
+
+    public ArrayList<WildAnimal> getWildAnimals() {
+        return wildAnimals;
+    }
+
+    public ArrayList<Cat> getCats() {
+        return cats;
+    }
+
+    public ArrayList<Dog> getDogs() {
+        return dogs;
+    }
+
+    public ArrayList<Forage> getForages() {
+        return forages;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public ArrayList<String> getWorkShopName() {
+        return workShopName;
+    }
+
+    //////////////////////////GENERATE_RANDOM_NUMBER_FOR_RANDOM_PLACE_AND_JOBS_RELATED_TO_BUDGET///////
     private int makeRandomNumbers() {
         return (int) (Math.random() * (35 - 5) + 5);
+    }
+
+    private void budgetDecreament(int amount) {
+        budget -= amount;
+    }
+
+    private boolean isBudgetEnough(int amount) {
+        if (budget >= amount) {
+            budget -= amount;
+            return true;
+        }
+        return false;
     }
 
     //////////////////////////////BUY_ANIMAL_BY_STRING///////////////////

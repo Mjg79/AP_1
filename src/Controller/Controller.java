@@ -1,5 +1,5 @@
 package Controller;
-
+import com.google.gson.Gson;
 import Model.Animal.Cat;
 import Model.Animal.Dog;
 import Model.Animal.LiveStocks.LiveStock;
@@ -11,25 +11,27 @@ import View.View;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static javafx.scene.input.KeyCode.G;
 
 public class Controller {
-    private Map map;
+    private Map map = new Map("map1");
     private View view = new View();
     private String instruction;
-    private ArrayList<Element> elements;
+    private ArrayList<Element> elements = new ArrayList<>();
     private boolean isIdentified = false;
 
     {
-        elements.add(new LiveStock(0));
+        elements.add(new LiveStock(0, "chicken"));
+        elements.add(new LiveStock(0, "cow"));
         elements.add(new Dog());
         elements.add(new Cat());
         elements.add(new WildAnimal());
-        elements.add(new Product(0));
+        elements.add(new Product(0, "cake"));
     }
 
-    public void setInstruction(String string) {
+    private void setInstruction(String string) {
         this.instruction = string;
     }
 
@@ -45,9 +47,9 @@ public class Controller {
         return false;
     }
 
-    public void operateInstruction() {
+    private void operateInstruction() {
         isIdentified = false;
-        String[] split = getInstruction().split("\\s");
+        String[] split = instruction.split("\\s");
         if (getInstruction().matches("buy\\s(chicken|ostrich|cow)")) {
             this.buyAnimal(split[1]);
             isIdentified = true;
@@ -115,7 +117,7 @@ public class Controller {
         }
 
         if (getInstruction().matches("print\\s(wareHouse|truck|helicopter|well|CakeBakery|CookieBakery|" +
-                "EggPowderPlant|SewingFactory|Spinnery|WeavingFactory)")) {//TODO: viewPrint map and info
+                "EggPowderPlant|SewingFactory|Spinnery|WeavingFactory|map|info)")) {
             this.viewPrint(split[1]);
             isIdentified = true;
         }
@@ -191,7 +193,7 @@ public class Controller {
         map.goTruck();
     }
 
-    public void addHelicopter(String name) {
+    private void addHelicopter(String name) {
         for (Element element : elements)
             if (element.getName().equals(name)) {
                 map.addElementToHelicopter(element);
@@ -199,27 +201,27 @@ public class Controller {
             }
     }
 
-    public void clearHelicopter() {
+    private void clearHelicopter() {
         map.clearHelicopter();
     }
 
-    public void goHelicopter() {
+    private void goHelicopter() {
         map.goHelicopter();
     }
 
-    public void saveGame(String path) {
+    private void saveGame(String path) {
         Gson serializer = new Gson();
         try {
             OutputStreamWriter writer = new OutputStreamWriter(
                     new FileOutputStream(path));
-            serializer.toJson(this.map, Map.class, serializer);
+            serializer.toJson(this.map, Map.class, writer);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadGame(String path) {
+    private void loadGame(String path) {
         Gson deserializer = new Gson();
         try {
             this.map = deserializer.fromJson(new FileReader(path), Map.class);
@@ -228,11 +230,20 @@ public class Controller {
         }
     }
 
-    public void runMap(String name) {
+    private void runMap(String name) {
         this.map = new Map(name);
     }
 
-    public void loadCustom(String path) {
+    private void loadCustom(String path) {
         //TODO: load the address of specific file
+    }
+
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
+            controller.setInstruction(scanner.nextLine());
+            controller.operateInstruction();
+        }
     }
 }
