@@ -1,5 +1,14 @@
-package Model.ProductsAndForage;
+package Model.Products;
 
 public enum ProductTypes {
-    cake, cloth, cookie, egg, kamva, knitWear, poweredEgg, specialCotton, wool;
+    egg, // for chicken
+    feather, // for ostrich
+    horn, //for cow
+    cake,
+    cloth,
+    cookie,
+    flour,
+    powderedEgg,
+    sewing,
+    wool,
 }

@@ -1,23 +1,12 @@
-package Model.ProductsAndForage.Forage;
+package Model.Products.Forage;
 
-import Model.ElementAndBoxAndDirection.Element;
+import Model.Products.Product;
 
-public class Forage extends Element {
-
-    public Forage(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public void move(double finalX, double finalY) {
-        //nothing
-    }
-
-    @Override
-    public void upgrade() {
-        //nothing to do
+public class Forage extends Product {
+    public Forage(double firstTime)
+    {
+        super(firstTime, "forage");
     }
 }
 
-//TODO: it's complete
+
