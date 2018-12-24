@@ -1,6 +1,9 @@
 package Model.Animal.LiveStocks;
 
 import Model.Animal.Animal;
+import Model.Products.LiveStockProducts.Egg;
+import Model.Products.LiveStockProducts.Feather;
+import Model.Products.LiveStockProducts.Horn;
 import Model.Products.Product;
 
 public class LiveStock extends Animal {
@@ -10,7 +13,13 @@ public class LiveStock extends Animal {
     private static final double maxHungerLevel = 8;
     private double hungerLevel = maxHungerLevel;
     private boolean mustEatForage = false;
+    private AnimalType type;
+    private double priceForSale;
 
+
+    public AnimalType getType() {
+        return type;
+    }
 
     public double getStartTimeForEatingForage() {
         return this.startTimeForEatingForage;
@@ -21,10 +30,44 @@ public class LiveStock extends Animal {
         this.startTimeForEatingForage = time;
     }
 
-    public LiveStock(double startBeingInMap) {
+    public LiveStock(double startBeingInMap, String type) {
         this.startTimeBeingInMap = startBeingInMap;
+
+        if (type.equals("chicken")) {
+            this.type = AnimalType.chicken;
+            price = 100;
+            volume = 2;
+            level = 0;
+            name = "chicken";
+            priceForSale = 50;
+        }
+
+        if (type.equals("cow")) {
+            this.type = AnimalType.cow;
+            price = 10000;
+            volume = 10;
+            level = 0;
+            name = "cow";
+            priceForSale = 5000;
+        }
+
+        if (type.equals("ostrich")) {
+            this.type = AnimalType.ostrich;
+            price = 1000;
+            volume = 5;
+            level = 0;
+            name = "ostrich";
+            priceForSale = 500;
+        }
     }
 
+    public Product releaseProduct(double time) {
+        if (type.equals(AnimalType.chicken))
+            return new Egg(time);
+        if (type.equals(AnimalType.ostrich))
+            return new Feather(time);
+        return new Horn(time);
+    }
 
 
     @Override
@@ -61,9 +104,10 @@ public class LiveStock extends Animal {
         return startTimeBeingInMap;
     }
 
-    public Product releaseProduct(double time) {
-        return new Product(time);
-    }
 
+    public static void main(String[] args) {
+        AnimalType type = AnimalType.cow;
+        System.out.println(type);
+    }
 
 }

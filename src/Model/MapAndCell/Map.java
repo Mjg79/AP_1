@@ -87,7 +87,7 @@ public class Map {
     //////////////////////////////BUY_ANIMAL_BY_STRING///////////////////
     private void addChicken() {
         if (budget >= 100) {
-            Chicken chicken = new Chicken(this.farmTime);
+            LiveStock chicken = new LiveStock(this.farmTime, "chicken");
             liveStocks.add(chicken);
             wareHouse.addGoodOrLiveStock(chicken, 1);
             cells[(int) chicken.getX()][(int) chicken.getY()].getLiveStocks().add(chicken);
@@ -97,7 +97,7 @@ public class Map {
 
     private void addOstrich() {
         if (budget >= 1000) {
-            Ostrich ostrich = new Ostrich(this.farmTime);
+            LiveStock ostrich = new LiveStock(this.farmTime, "ostrich");
             liveStocks.add(ostrich);
             wareHouse.addGoodOrLiveStock(ostrich, 1);
             cells[(int) ostrich.getX()][(int) ostrich.getY()].getLiveStocks().add(ostrich);
@@ -108,7 +108,7 @@ public class Map {
 
     private void addCow() {
         if (budget >= 10000) {
-            Cow cow = new Cow(this.farmTime);
+            LiveStock cow = new LiveStock(this.farmTime, "cow");
             liveStocks.add(cow);
             wareHouse.addGoodOrLiveStock(cow, 1);
             cells[(int) cow.getX()][(int) cow.getY()].getLiveStocks().add(cow);
