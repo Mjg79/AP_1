@@ -3,8 +3,10 @@ package View;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.ElementAndBoxAndDirection.Box;
+import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 
+import java.security.Key;
 import java.util.Scanner;
 
 public class View {
@@ -12,7 +14,7 @@ public class View {
 
 
     private void printTruck() {
-        System.out.println("Truck: " + " ,Level: " + map.getTruck().getLevel()
+        System.out.println("\nTruck: " + " ,Level: " + map.getTruck().getLevel()
                 + " ,wallet: " + map.getTruck().getWallet()
                 + " ,isInWorking: " + !map.getTruck().isInWareHouse() + "\n"
                 + " ,BoxNumbers: " + map.getTruck().getNumOfBoxes() + " ,boxContents: "
@@ -23,7 +25,7 @@ public class View {
     }
 
     private void printHeliCopter() {
-        System.out.println("Helicopter: " + " ,Level: " + map.getHelicopter().getLevel() + " ,Cost: "
+        System.out.println("\nHelicopter: " + " ,Level: " + map.getHelicopter().getLevel() + " ,Cost: "
                 + map.getHelicopter().getAllCost() + " ,MapBudget: " + map.getHelicopter().getMapBudget()
                 + " ,isInWorking: " + !map.getHelicopter().isInWareHouse() + "\n" + " ,BoxNumbers: "
                 + map.getHelicopter().getNumOfBoxes() + " ,LastTimeForWorking: " +
@@ -34,18 +36,18 @@ public class View {
     }
 
     private void printWareHouse() {
-        System.out.println("wareHouse: \n" + "Level: " + map.getWareHouse().getLevel() + " ,Current: "
+        System.out.println("\nwareHouse: \n" + "Level: " + map.getWareHouse().getLevel() + " ,Current: "
                 + map.getWareHouse().getCurrent() + " ,Volume: " + map.getWareHouse().getVolume()
                 + " ,products: ");
-        for (String name: map.getWareHouse().getGoods().keySet())
+        for (String name : map.getWareHouse().getGoods().keySet())
             System.out.println("productName: " + name + " ,Count: " + map.getWareHouse().getGoods().get(name));
-        for (String liveStockName: map.getWareHouse().getLiveStocks().keySet())
+        for (String liveStockName : map.getWareHouse().getLiveStocks().keySet())
             System.out.println("liveStockName: " + liveStockName + " ,Count: " +
                     map.getWareHouse().getLiveStocks().get(liveStockName));
     }
 
     private void printWell() {
-        System.out.println("Well: \n" + "Level: " + map.getWell().getLevel() + " ,Current: "
+        System.out.println("\nWell: \n" + "Level: " + map.getWell().getLevel() + " ,Current: "
                 + map.getWell().getCurrent() + " ,Volume: " + map.getWell().getVolume()
                 + " ,isCharging: " + map.getWell().isInCharging() + " ,price: " + map.getWell().getPrice()
                 + "\n" + " ,moneyForUpgrading: " + map.getWell().getMoneyForUpgrading() +
@@ -55,19 +57,30 @@ public class View {
 
     private void printMap() {
         System.out.println("Map: \n" + "farmTime: " + map.getFarmTime() + " ,budget: " + map.getBudget() + "\n" +
-                " ,LiveStocks: ");
-        for (LiveStock liveStock: map.getLiveStocks())
+                "\nLiveStocks: ");
+        for (LiveStock liveStock : map.getLiveStocks())
             System.out.println("liveStockX: " + liveStock.getX() + " ,liveStockY: " + liveStock.getY() +
-                    " ,liveStockType: " + liveStock.getName() +
+                    ",Direction: " + liveStock.getDirection() + "\nliveStockType: " + liveStock.getName() +
                     " ,timeEntered: " + liveStock.getStartTimeBeingInMap() +
-                    " ,hungerLevel: " + liveStock.getHungerLevel());
-        System.out.println("WildAnimals: ");
-        for (WildAnimal wildAnimal: map.getWildAnimals())
+                    " ,hungerLevel: " + liveStock.getHungerLevel() + " ,timeStartForEating: "
+                    + liveStock.getStartTimeForEatingForage());
+        System.out.println("\nWildAnimals: ");
+        for (WildAnimal wildAnimal : map.getWildAnimals())
             System.out.println("wildAnimalX: " + wildAnimal.getX() + " ,wildAnimalY: " + wildAnimal.getY()
                     + " ,isCaged: " + wildAnimal.isCaged());
         this.printWell();
         this.printWareHouse();
+    }
 
+    private void printInfo() {
+        System.out.println("Info: ");
+        System.out.println("budget: " + map.getBudget() + " ,timeLast: " + map.getFarmTime());
+        System.out.println("\nmissionNeeds: ");
+        for (String string: map.getMissionNeeds().keySet())
+            System.out.println("element: " + string + " ,purposeNumber: " + map.getMissionNeeds().get(string));
+        System.out.println("\nelementGatheredForMissionNeedsUntilNow: ");
+        for (String string: map.getGatherElements().keySet())
+            System.out.println("element: " + string + " ,gatherYet: " + map.getGatherElements().get(string));
     }
 
     private void printWeavingFactory() {
@@ -89,7 +102,7 @@ public class View {
     }
 
 
-    public void print(Map map, String string) {//TODO: print info
+    public void print(Map map, String string) {
         this.map = map;
         if (string.equals("truck"))
             this.printTruck();
@@ -113,6 +126,8 @@ public class View {
             this.printWeavingFactory();
         if (string.equals("map"))
             this.printMap();
+        if (string.equals("info"))
+            this.printInfo();
     }
 
 }

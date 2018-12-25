@@ -8,9 +8,13 @@ import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
 import Model.Products.Product;
 import View.View;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static javafx.scene.input.KeyCode.G;
@@ -21,6 +25,8 @@ public class Controller {
     private String instruction;
     private ArrayList<Element> elements = new ArrayList<>();
     private boolean isIdentified = false;
+    private HashMap<String, Integer> missionNeeds = new HashMap<>();
+    private ArrayList<String> listOfElements = new ArrayList<>();
 
     {
         elements.add(new LiveStock(0, "chicken"));
@@ -29,6 +35,22 @@ public class Controller {
         elements.add(new Cat());
         elements.add(new WildAnimal());
         elements.add(new Product(0, "cake"));
+
+        listOfElements.add("egg");
+        listOfElements.add("feather");
+        listOfElements.add("horn");
+        listOfElements.add("cake");
+        listOfElements.add("powderedEgg");
+        listOfElements.add("cake");
+        listOfElements.add("cookie");
+        listOfElements.add("flour");
+        listOfElements.add("cake");
+        listOfElements.add("sewing");
+        listOfElements.add("cloth");
+        listOfElements.add("wool");
+        listOfElements.add("chicken");
+        listOfElements.add("ostrich");
+        listOfElements.add("cow");
     }
 
     private void setInstruction(String string) {
@@ -231,19 +253,36 @@ public class Controller {
     }
 
     private void runMap(String name) {
-        this.map = new Map(name);
+        this.map = new Map(name, getMissionNeeds());
     }
 
     private void loadCustom(String path) {
         //TODO: load the address of specific file
     }
 
-    public static void main(String[] args) {
+    private void setMissionNeeds(String path) throws FileNotFoundException {
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) parser.parse(new FileReader(path));
+        for (String name: listOfElements)
+            if (jsonObject.has(name)) {
+                int num = jsonObject.get(name).getAsInt();
+                missionNeeds.put(name, num);
+            }
+    }
+
+    private HashMap<String, Integer> getMissionNeeds() {
+        return missionNeeds;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
 
         Controller controller = new Controller();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("do you want to load a game ? : [yes]/[no]");
+        System.out.println("set your mission: ");
+        controller.setMissionNeeds(scanner.nextLine());
+
+        System.out.println("Do you want to load a game ? : [yes]/[no]");
 
         if (scanner.nextLine().toLowerCase().equals("yes")) {
             System.out.println("enter your path: ");
@@ -252,6 +291,8 @@ public class Controller {
             System.out.print("enter your mapName: ");
             controller.runMap(scanner.nextLine());
         }
+
+
         while (scanner.hasNextLine()) {
             controller.setInstruction(scanner.nextLine());
             controller.operateInstruction();

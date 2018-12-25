@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class Map {
+
     private String name;
     private ArrayList<LiveStock> liveStocks = new ArrayList<>();
     private ArrayList<WildAnimal> wildAnimals = new ArrayList<>();
@@ -34,18 +35,33 @@ public class Map {
     private int budget = 1000;
     private ArrayList<WorkShop> workshops = new ArrayList<>();
     private ArrayList<String> workShopName = new ArrayList<>();
+    private HashMap<String, Integer> missionNeeds = new HashMap<>();
+    private HashMap<String, Integer> gatherElements = new HashMap<>();
 
     {
         for (int i = 0; i < 41; i++)
             for (int j = 0; j < 41; j++)
-                cells[i][j] = new Cell();
+                cells[i][j] = new Cell(i, j);
+
     }
 
-    public Map(String name) {
+    public Map(String name, HashMap<String, Integer> missionNeeds) {
         this.name = name;
+        this.missionNeeds = missionNeeds;
+        for (String needs: missionNeeds.keySet())
+            gatherElements.put(needs, 0);
     }
 
     /////////////////////////SETTER_AND_GETTER///////////////////////
+
+    public HashMap<String, Integer> getMissionNeeds() {
+        return missionNeeds;
+    }
+
+    public HashMap<String, Integer> getGatherElements() {
+        return gatherElements;
+    }
+
     public String getName() {
         return name;
     }
@@ -159,6 +175,18 @@ public class Map {
         }
 
     }
+    //////////////////////////CHECK_MISSION_NEEDS/////////////////////////
+    private void gatherForMissionNeeds(String purpose) {
+        for (String needs: missionNeeds.keySet())
+            if (needs.equals(purpose)) {
+                gatherElements.put(purpose, gatherElements.get(purpose) + 1);
+                break;
+            }
+        if (gatherElements.equals(missionNeeds)) {
+            System.out.println("mission completed.");
+            System.exit(0);
+        }
+    }
 
     public void buyAnimal(String stringName) {
         switch (stringName) {
@@ -172,6 +200,7 @@ public class Map {
                 this.addCow();
                 break;
         }
+        this.gatherForMissionNeeds(stringName);
     }
 
     //////////////////////////////PLANT_FORAGE//////////////////////////
@@ -190,7 +219,7 @@ public class Map {
         animal.moveWisely(i, j);
     }
 
-
+    //////////////////MOVE_LIVE_STOCKS//////////////////////////////////
     private void moveLiveStocks() {
         for (LiveStock liveStock : this.liveStocks) {
             if (this.farmTime - liveStock.getStartTimeForEatingForage() < 2)//if it is eating don't move the liveStock
@@ -218,35 +247,37 @@ public class Map {
                             closestForageX = i;
                             closestForageY = j;
                         }
-                    }
+                    } //for finding closest forage to liveStock
+                liveStock.changeHungerLevel(-0.5);
                 this.BFS(liveStock, closestForageX, closestForageY);
             } else { // liveStock should move randomly
+                liveStock.changeHungerLevel(-0.5);
                 liveStock.changeDirectionByKnowingCurrentPostition();
-                liveStock.moveRandomly();
+                liveStock.moveRandomly(1);
             }
             cells[(int) liveStock.getX()][(int) liveStock.getY()].getLiveStocks().add(liveStock);
         }
 
     }
-
+    //////////////////////////MOVE_WILD_ANIMALS//////////////////
     private void moveWildAnimals() {
         for (WildAnimal wildAnimal : wildAnimals) {
             if (wildAnimal.isCaged())
                 continue;
             cells[(int) wildAnimal.getX()][(int) wildAnimal.getY()].removeElement(wildAnimal);
             wildAnimal.changeDirectionByKnowingCurrentPostition();
-            wildAnimal.moveRandomly();
+            wildAnimal.moveRandomly(1);
             cells[(int) wildAnimal.getX()][(int) wildAnimal.getY()].getWildAnimals().add(wildAnimal);
         }
     }
-
+    ////////////////////////MOVE_DOG//////////////////////////
     private void moveDogs() {
 
         for (Dog dog : dogs) {
             cells[(int) dog.getX()][(int) dog.getY()].removeElement(dog);
             if (wildAnimals.isEmpty()) {
                 dog.changeDirectionByKnowingCurrentPostition();
-                dog.moveRandomly();
+                dog.moveRandomly(1);
             } else {
                 int closestWildAnimalX = 0;
                 int closestWildAnimalY = 0;
@@ -272,14 +303,14 @@ public class Map {
             cells[(int) dog.getX()][(int) dog.getY()].getDogs().add(dog);
         }
     }
-
+    /////////////////////MOVE_CAT//////////////////////////////
     private void moveCats() {
         catLoop:
         for (Cat cat : cats) {
             cells[(int) cat.getX()][(int) cat.getY()].removeElement(cat);
             if (products.isEmpty()) {
                 cat.changeDirectionByKnowingCurrentPostition();
-                cat.moveRandomly();
+                cat.moveRandomly(1);
             } else {
                 int closestProductX = 0;
                 int closestProductY = 0;
@@ -290,7 +321,7 @@ public class Map {
                         continue catLoop;
                     } else if (products.indexOf(product) == products.size() - 1) {
                         cat.changeDirectionByKnowingCurrentPostition();
-                        cat.moveRandomly();
+                        cat.moveRandomly(1);
                     }
                 }
             }
@@ -298,7 +329,7 @@ public class Map {
         }
 
     }
-
+    ///////////////MOVE_ALL_ANIMALS/////////////////////////////////////////
     public void moveAnimals() {
         this.moveLiveStocks();
         this.moveWildAnimals();
@@ -330,6 +361,7 @@ public class Map {
             if ((farmTime - liveStock.getStartTimeBeingInMap()) % 10 == 0) {
                 cells[(int) liveStock.getX()][(int) liveStock.getY()].addElement(liveStock.releaseProduct(farmTime));
                 products.add(liveStock.releaseProduct(farmTime));
+                this.gatherForMissionNeeds(liveStock.releaseProduct(farmTime).getName());
             }
     }
 
@@ -352,6 +384,7 @@ public class Map {
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
                 wareHouse.addGoodOrLiveStock(product, 1);
                 cells[x][y].removeElement(product);
+                this.gatherForMissionNeeds(product.getName());
                 product.setIsPickedUp(true);
             }
 
@@ -384,7 +417,7 @@ public class Map {
     }
 
     ///////////////////////////PICKUP_BY_CAT///////////////////////////////////////
-    public void pickUpByCatAndPutInWareHouse() {
+    private void pickUpByCatAndPutInWareHouse() {
         for (Cat cat : cats)
             this.pickUpProducts((int) cat.getX(), (int) cat.getY());
 
@@ -429,7 +462,7 @@ public class Map {
 
 
     //////////////////////////CHECKING_WORKSHOP_FOR_GETTING_OUTPUT/////////////////
-    public void checkWorkshopForGettingOutput(WorkShop workShop) {
+    private void checkWorkshopForGettingOutput(WorkShop workShop) {
         if (workShop.checkWorkShopForDistributingOutputs(farmTime)) {
             ArrayList<Product> goods = workShop.distributeOutputs(this.farmTime);
             this.addProductProducedByWorkshops(workShop, goods);
