@@ -1,5 +1,6 @@
 package Model.Transportation;
 
+
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
 
@@ -9,109 +10,145 @@ public class Truck extends Element {
     private ArrayList<Box> boxes = new ArrayList<>();
     private int wallet = 0;
     private int numOfBoxes = 2;
-    private double sellTime;
-    private double startTime;
-    private double endTime;
-    private boolean isAvailable = true;
-
-
-    @Override
-    public void move(double finalX, double finalY) {
-        // it's for movement of it in map
-    }
-
-    @Override
-    public void upgrade() {
-        // it needs some detail for increasing volume,numOfboxes and decreasing sellTime and so on
+    private double startTimeForSellingElements;
+    private double endTimeForSellingElements;
+    private boolean isInWareHouse = true;
+    private int countReturnToWareHouse = 0;
+    private static int timeDurationForWorking = 20;
+    {
+        for (int i = 0; i < numOfBoxes; i++)
+            boxes.add(new Box());
+        moneyForUpgrading = 200;
     }
 
     public ArrayList<Box> getBoxes() {
         return boxes;
     }
 
-    public void setBoxes(ArrayList<Box> boxes) {
-        this.boxes = boxes;
-    }
-
     public int getWallet() {
         return wallet;
-    }
-
-    public void setWallet(int wallet) {
-        this.wallet = wallet;
     }
 
     public int getNumOfBoxes() {
         return numOfBoxes;
     }
 
-    public void setNumOfBoxes(int numOfBoxes) {
-        this.numOfBoxes = numOfBoxes;
+    public double getStartTimeForSellingElements() {
+        return startTimeForSellingElements;
     }
 
-    public double getSellTime() {
-        return sellTime;
+    public double getEndTimeForSellingElements() {
+        return endTimeForSellingElements;
     }
 
-    public void setSellTime(double sellTime) {
-        this.sellTime = sellTime;
+    public static int getTimeDurationForWorking() {
+        return timeDurationForWorking;
     }
 
-    public double getStartTime() {
-        return startTime;
+    @Override
+    public void move(double finalX, double finalY) {
+        //
     }
 
-    public void setStartTime(double startTime) {
-        this.startTime = startTime;
+    @Override
+    public boolean upgrade() {
+        if (level < 3) {
+            numOfBoxes += 2;
+            boxes.add(new Box());
+            boxes.add(new Box());
+            timeDurationForWorking -= 2;
+            moneyForUpgrading += 100;
+            level++;
+            return true;
+        }
+        return false;
     }
 
-    public double getEndTime() {
-        return endTime;
+
+    private int putOneCountOfAnElementInTrunk(Element element) {
+        for (Box box: boxes) {
+            if (!(box.getContent().getClass().equals(element.getClass())) ||
+                    box.getCurrent() == box.getVolume())
+                continue;
+            box.addElement(element, 1);
+            return 0;
+        }
+        return 1;
     }
 
-    public void setEndTime(double endTime) {
-        this.endTime = endTime;
+    private int putManyOfAnElementInTrunk(Element element, int count) {
+        for (Box box: boxes) {
+            if (!box.getContent().getClass().equals(element.getClass()) ||
+                    box.getCurrent() == box.getVolume())
+                continue;
+            int countCapacity = (box.getVolume() - box.getCurrent()) / element.getVolume();
+            if (countCapacity < count) {
+                box.addElement(element, countCapacity);
+                count -= countCapacity;
+            } else {
+                box.addElement(element, count);
+                count = 0;
+                break;
+            }
+        }
+
+        return count;
+    }
+    public void putElementInTrunk(Element element, int count) {
+        if (isInWareHouse)
+            if (count == 1) {
+                countReturnToWareHouse = this.putOneCountOfAnElementInTrunk(element);
+            } else if (count > 1)
+                countReturnToWareHouse = this.putManyOfAnElementInTrunk(element, count);
+
     }
 
-    public void removeBox(Box box){
-        boxes.remove(box);
+    public int getCountReturnToWareHouse() {
+        return countReturnToWareHouse;
     }
 
-    public void removeBox(int index){
-        boxes.remove(index);
+
+    public boolean isTruckContainsAny() {
+        for(Box box: boxes)
+            if (box.isContainAny())
+                return true;
+        return false;
+
     }
 
-    public void addBox(Box box){
-        boxes.add(box);
-        wallet+=box.getCost();// must have a method that return the value
+
+    public int startWorking(double time) {
+        if(this.isInWareHouse && this.isTruckContainsAny()) {
+            startTimeForSellingElements = time;
+            endTimeForSellingElements = time + timeDurationForWorking;
+            isInWareHouse = false;
+            for (Box box : boxes) {
+                this.wallet += box.getContent().getPrice() * box.getElement().get(box.getContent());
+                box.removeElement();
+            }
+        }
+        return wallet;
     }
 
-    public void addToABox(Element element,int index , int count){
-        for (int i=0;i<count;i++) {
-            boxes.get(index).addElement(element);
+    public boolean isInWareHouse() {
+        return isInWareHouse;
+    }
+
+
+
+    public void checkWasTruckCameBackFromBazar(double time) {
+        if (time > endTimeForSellingElements && !isInWareHouse) {
+            wallet = 0;
+            isInWareHouse = true;
+            for (Box box : boxes)
+                box.removeElement();
         }
     }
 
-    public void sell(double time){//need to be synced with boxes
-        startTime = time;
-        endTime = time+sellTime;
-        isAvailable = false;
+    public void clear() {
+        if (isInWareHouse && isTruckContainsAny())
+            for (Box box: boxes)
+                box.removeElement();
     }
 
-    public boolean checkDone(double time){
-        if (time >= endTime){
-            isAvailable = true;
-            endTime=0;
-            startTime=0;
-        }
-        return isAvailable;
-    }
-
-    public int price(){
-        int price = 0;
-        for(Box box:boxes){
-            price += box.getCost();
-        }
-        return price;
-    }
 }

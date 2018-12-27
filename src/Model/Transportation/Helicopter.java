@@ -1,24 +1,55 @@
 package Model.Transportation;
+
+
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
 
 import java.util.ArrayList;
 
 public class Helicopter extends Element {
-    private double volumeOfBoxes;
-    private double current;
-    private ArrayList<Box> items = new ArrayList<>();
-    private ArrayList<Class> products = new ArrayList<>();//products that are available in the market of city
-    private int numOfBoxes;
-    private int cost = 0;
-    private boolean isAvailable = true;
-    private double buyTime;
-    private double startTime;
-    private double endTime;
-    private int updateCost;
+    private ArrayList<Box> boxes = new ArrayList<>();
+    private int mapBudget = 0;
+    private int allCost = 0;
+    private int numOfBoxes = 2;
+    private double startTimeForSellingElements;
+    private double endTimeForBuyingElements;
+    private ArrayList<Element> salesGoods = new ArrayList<>();
+    private boolean isInWareHouse = true;
+    private static int timeDurationForWorking = 20;
+    private boolean isStartedForAddingToBoxes = false;
 
-    public Helicopter(ArrayList<Class> products) {
-        this.products = products;
+    {
+        for (int i = 0; i < numOfBoxes; i++)
+            boxes.add(new Box());
+        moneyForUpgrading = 400;
+    }
+
+    public ArrayList<Box> getBoxes() {
+        return boxes;
+    }
+
+    public int getAllCost() {
+        return allCost;
+    }
+
+    public int getNumOfBoxes() {
+        return numOfBoxes;
+    }
+
+    public double getStartTimeForSellingElements() {
+        return startTimeForSellingElements;
+    }
+
+    public double getEndTimeForBuyingElements() {
+        return endTimeForBuyingElements;
+    }
+
+    public static int getTimeDurationForWorking() {
+        return timeDurationForWorking;
+    }
+
+    public boolean isStartedForAddingToBoxes() {
+        return isStartedForAddingToBoxes;
     }
 
     @Override
@@ -27,128 +58,90 @@ public class Helicopter extends Element {
     }
 
     @Override
-    public void upgrade() {
-        // decrease buyTime and increase volume for boxes
+    public boolean upgrade() {
+        if (level < 3) {
+            numOfBoxes += 2;
+            boxes.add(new Box());
+            boxes.add(new Box());
+            moneyForUpgrading += 100;
+            level++;
+            return true;
+        }
+        return false;
     }
 
-    public int getUpdateCost(){
-        return 150;
-        //FIXME
+    public int getMapBudget() {
+        return mapBudget;
     }
 
-
-    public double getVolumeOfBoxes() {
-        return volume;
-    }
-
-    public void setVolumeOfBoxes(double volume) {
-        this.volumeOfBoxes = volume;
-    }
-
-    public double getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(double current) {
-        this.current = current;
-    }
-
-    public ArrayList<Box> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<Box> items) {
-        this.items = items;
-    }
-
-    public ArrayList<Class> getProducts() {
-        return products;
-    }
-
-    public void setProducts(ArrayList<Class> products) {
-        this.products = products;
-    }
-
-    public int getNumOfBoxes() {
-        return numOfBoxes;
-    }
-
-    public void setNumOfBoxes(int numOfBoxes) {
-        this.numOfBoxes = numOfBoxes;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-
-    public double getBuyTime() {
-        return buyTime;
-    }
-
-    public void setBuyTime(double buyTime) {
-        this.buyTime = buyTime;
-    }
-
-    public double getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(double startTime) {
-        this.startTime = startTime;
-    }
-
-    public double getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(double endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setUpdateCost(int updateCost) {
-        this.updateCost = updateCost;
-    }
-
-    public void addBox(Box box){
-        items.add(box);
-        cost+=box.getCost();// must have a method that return the value
-    }
-
-    public void addToABox(Element element,int index , int count){
-        for (int i=0;i<count;i++) {
-            items.get(index).addElement(element);
+    public void startForAddingElementToHelicopter(int budget) {
+        if (!isStartedForAddingToBoxes) {
+            this.mapBudget = budget;
+            isStartedForAddingToBoxes = true;
         }
     }
 
-    public void buy(double time){//need to be synced with boxes
-        startTime = time;
-        endTime = time+buyTime;
-        isAvailable = false;
+    public void putOneCountOfAnElementInHelicopter(Element element, int budget) {
+        this.startForAddingElementToHelicopter(budget);
+        if (element.getPrice() <= allCost && isInWareHouse)
+            for (Box box: boxes) {
+                if (!(box.getContent().getClass().equals(element.getClass())) ||
+                        box.getCurrent() == box.getVolume())
+                    continue;
+                box.addElement(element, 1);
+                salesGoods.add(element);
+                allCost += element.getPrice();
+            }
+
     }
 
-    public boolean checkDone(double time){
-        if (time >= endTime){
-            isAvailable = true;
-            endTime=0;
-            startTime=0;
-        }
-        return isAvailable;
+    private boolean isHelicopterContainsAny() {
+        for(Box box: boxes)
+            if (box.isContainAny())
+                return true;
+        return false;
+
     }
 
-    public int price(){
-        int price = 0;
-        for(Box box:items){
-            price += box.getCost();
+
+    public int startWorking(double time) {
+        if(this.isInWareHouse && this.isHelicopterContainsAny()) {
+            startTimeForSellingElements = time;
+            isStartedForAddingToBoxes = false;
+            endTimeForBuyingElements = time + timeDurationForWorking;
+            isInWareHouse = false;
+            return mapBudget - allCost;
         }
-        return price;
+        return mapBudget;
     }
+
+    public boolean isInWareHouse() {
+        return isInWareHouse;
+    }
+
+
+
+    public boolean checkWasHelicopterCameBackFromBazar(double time) {
+        if (time > endTimeForBuyingElements && !isInWareHouse) {
+            mapBudget = 0;
+            allCost = 0;
+            salesGoods.clear();
+            isInWareHouse = true;
+            for (Box box : boxes)
+                box.removeElement();
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<Element> getSalesGoods() {
+        return salesGoods;
+    }
+
+    public void clear() {
+        if (this.isInWareHouse && isHelicopterContainsAny())
+            for (Box box: boxes)
+                box.removeElement();
+    }
+
 }
