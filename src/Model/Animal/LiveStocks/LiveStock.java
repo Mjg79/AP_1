@@ -100,5 +100,9 @@ public class LiveStock extends Animal {
     }
 
 
+    public static void main(String[] args) {
+        AnimalType type = AnimalType.cow;
+        System.out.println(type);
+    }
 
 }

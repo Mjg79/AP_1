@@ -1,8 +1,8 @@
 package Model.MapAndCell;
 
 import Model.ElementAndBoxAndDirection.Element;
-import Model.ProductsAndForage.Product;
-import Model.ProductsAndForage.Forage.Forage;
+import Model.Products.Product;
+import Model.Products.Forage.Forage;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,15 @@ public class Cell extends Element {
     private ArrayList<Forage> forages = new ArrayList<>();
     private ArrayList<Product> products = new ArrayList<>();
     private double farmTime = 0;
+
+    {
+        name = "cell";
+    }
+
+    public Cell(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public void addElement(Element element) {
         if (element instanceof LiveStock)
@@ -35,17 +44,19 @@ public class Cell extends Element {
 
     }
 
-    public void removeElement(Element element) {
+    void removeElement(Element element) {
         if (element instanceof WildAnimal)
-            wildAnimals.remove((WildAnimal) element);
+            wildAnimals.remove(element);
         if (element instanceof Cat)
-            cats.remove((Cat) element);
+            cats.remove(element);
         if (element instanceof Dog)
-            dogs.remove((Dog) element);
+            dogs.remove(element);
         if (element instanceof Product)
-            products.remove((Product) element);
+            products.remove(element);
         if (element instanceof Forage)
-            forages.remove((Forage) element);
+            forages.remove(element);
+        if (element instanceof LiveStock)
+            liveStocks.remove(element);
 
     }
 
@@ -101,10 +112,12 @@ public class Cell extends Element {
 
     @Override
     public void move(double finalX, double finalY) {
-        // TODO Auto-generated method stub
 
     }
 
+    public void removeOneForage() {
+        forages.remove(0);
+    }
 
     public void removeAllElements() {
         this.products.clear();
@@ -113,8 +126,10 @@ public class Cell extends Element {
     }
 
     @Override
-    public void upgrade() {
-        // TODO Auto-generated method stub
+    public boolean upgrade() {
+        return false;
 
     }
+
+
 }
