@@ -7,6 +7,11 @@ public class Forage extends Product {
     {
         super(firstTime, "forage");
     }
+
+    {
+        timeBeingInMap = 600; //10min
+        name = "forage";
+    }
 }
 
 
