@@ -1,54 +1,57 @@
 package Model.ElementAndBoxAndDirection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Box{
-    private int volume = 40;
-    private int current = 0;
-    private ArrayList<Element> elements = new ArrayList<>();
+    private int volume;
+    private int current;
+    private boolean isContainAny = false;
+    private HashMap<Element, Integer> element;
+    private Element content;
 
-    public void addElement(Element elementEntry) {
-        if(this.elements.size() == 0 || (elementEntry.getClass() == elements.get(0).getClass() &&
-                elementEntry.getVolume() <= (volume - current))) {
-            this.elements.add(elementEntry);
-            current += elementEntry.getVolume();// increase the occupied space (current) in Box
+    {
+        current = 0;
+        volume = 10;
+    }
+
+    public void addElement(Element elementEntry, int count) {
+        if(this.element.size() == 0 &&
+                elementEntry.getVolume() * count <= (volume - current)) {
+            isContainAny = true;
+            content = elementEntry;
+            this.element.put(elementEntry, count);
+            current += elementEntry.getVolume() * count;// increase the occupied space (current) in Box
         }
     }
 
     public void removeElement() {
         current = 0;
-        elements.clear();
+        element.clear();
+        content = null;
+        isContainAny = false;
     }
 
-    public int getCost() {
-        int cost = 0;
-        for(Element element : elements)
-            cost += element.getPrice();
-        return cost;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public HashMap<Element, Integer> getElement() {
+        return element;
     }
 
     public int getCurrent() {
         return current;
     }
 
-    public void setCurrent(int current) {
-        this.current = current;
+    public int getVolume() {
+        return volume;
     }
 
-    public ArrayList<Element> getElements() {
-        return elements;
+    public boolean isContainAny() {
+        return isContainAny;
     }
 
-    public void setElements(ArrayList<Element> elements) {
-        this.elements = elements;
+    public Element getContent() {
+        return content;
+    }
+
+    public void setCurrent(int count) {
+        this.current = count;
     }
 }
