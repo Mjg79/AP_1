@@ -1,136 +1,161 @@
 package Model.Places;
 
 import Model.ElementAndBoxAndDirection.Element;
-import Model.ProductsAndForage.Product;
+import Model.Products.Product;
 
 import java.util.ArrayList;
 
 public class WorkShop extends Element {
     private boolean isInWorking = false;
-    private ArrayList<Class> inputProducts;
-    private Product kindOfOutputProduct;
-    //private ArrayList<Product> outputProduct;
-    private int maxInputNumber;
-    private int maxOutputNumber;
-    private double workTime = 15;
-    private double workStartTime;
-    private double workEndTime;
-    private int inputNumbers;
-    private int updateCost;
+    protected ArrayList<String> nameOfInputProducts = new ArrayList<>();
+    private int possibleNumberOfOutputProducts;
+    protected int maxNumberOfProducts;
+    protected String nameOfOutputProduct;
+    protected double timeLastingForWorking = 12;
+    protected ArrayList<Product> outputProduct;
+    private double endOfTimeForWorking;
 
-    public int getUpdateCost() {
-        return updateCost;
+
+    public WorkShop(String name) {
+        this.checkCakeBakery(name);
+        this.checkCookieBakery(name);
+        this.checkEggPowderedPlant(name);
+        this.checkWeavingFactory(name);
+        this.checkSewingFactory(name);
+        this.checkSpinnery(name);
     }
 
-    public void setUpdateCost(int updateCost) {
-        this.updateCost = updateCost;
+    private void checkSpinnery(String name) {
     }
 
-    public WorkShop(ArrayList<Class> inputProducts, int updateCost)
-    {
-        this.inputProducts = inputProducts;
-        this.updateCost = updateCost;
-    }
-
-    public boolean checkWorkDone(double time) {
-       if (isInWorking &&( time > workEndTime)) {
-           isInWorking = false;
-           workEndTime = 0;
-           workStartTime = 0;
-           return true;
-       }
-       return false;
-    }
-
-    public void startWork(double time,int number){
-        if (!isInWorking){
-            isInWorking = true;
-            workStartTime = time;
-            workEndTime = time+workTime;
-            inputNumbers = number;
+    private void checkCakeBakery(String name) {
+        if (name.equals("cakeBakery")) {
+            nameOfInputProducts.add("cookie");
+            nameOfInputProducts.add("flour");
+            nameOfOutputProduct = "cake";
+            maxNumberOfProducts = 1;
+            this.name = "CakeBakery";
         }
+    }
+
+    private void checkCookieBakery(String name) {
+        if (name.equals("cookieBakery")) {
+            this.name = "cookieBakery";
+            nameOfInputProducts.add("powderedEgg");
+            maxNumberOfProducts = 1;
+            nameOfOutputProduct = "cookie";
+        }
+    }
+
+    private void checkEggPowderedPlant(String name) {
+        if (name.equals("eggPowderedPlant")) {
+            this.name = "EggPowderedPlant";
+            nameOfInputProducts.add("egg");
+            maxNumberOfProducts = 1;
+            nameOfOutputProduct = "powderedEgg";
+        }
+    }
+
+    private void checkSewingFactory(String name) {
+        if (name.equals("sewingFactory")) {
+            nameOfInputProducts.add("wool");
+            nameOfOutputProduct = "sewing";
+            maxNumberOfProducts = 1;
+            this.name = "sewingFactory";
+        }
+    }
+
+
+    private void checkWeavingFactory(String name) {
+        if (name.equals("weaving Factory")) {
+            this.name = "weavingFactory";
+            nameOfInputProducts.add("sewing");
+            nameOfOutputProduct = "cloth";
+            maxNumberOfProducts = 1;
+        }
+    }
+
+    public void setPossibleNumberOfOutputProducts(int num) {
+        this.possibleNumberOfOutputProducts = num;
+    }
+
+    public int getPossibleNumberOfOutputProducts() {
+        return possibleNumberOfOutputProducts;
+    }
+
+    public ArrayList<String> getNameOfInputProducts() {
+        return nameOfInputProducts;
+    }
+
+
+    public int getMaxNumberOfProducts() {
+        return maxNumberOfProducts;
+    }
+
+    public void startWorking(double time) {
+        isInWorking = true;
+        endOfTimeForWorking = time + timeLastingForWorking;
+        outputProduct.clear();
     }
 
     public boolean isInWorking() {
         return isInWorking;
     }
 
-    public void setInWorking(boolean inWorking) {
-        isInWorking = inWorking;
+    public boolean checkWorkShopForDistributingOutputs(double time) {// checking it at turn function in map.java
+        if (isInWorking && time > endOfTimeForWorking) {
+            isInWorking = false;
+            return true;
+        }
+        return false;
     }
 
-    public ArrayList<Class> getInputProducts() {
-        return inputProducts;
+    public ArrayList<Product> distributeOutputs(double time) {
+        outputProduct.clear();
+        if (name.equals("cakeBakery")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cake"));
+            return outputProduct;
+        }
+        if (name.equals("cookieBakery")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cookie"));
+            return outputProduct;
+        }
+        if (name.equals("eggPowderedPlant")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "powderedEgg"));
+            return outputProduct;
+        }
+        if (name.equals("sewingFactory")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "sewing"));
+            return outputProduct;
+        }
+        if (name.equals("weavingFactory")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cloth"));
+            return outputProduct;
+        }
+
+        return null;
     }
 
-    public void setInputProducts(ArrayList<Class> inputProducts) {
-        this.inputProducts = inputProducts;
-    }
 
-    public Product getKindOfOutputProduct() {
-        return kindOfOutputProduct;
-    }
+    @Override
+    public void move (double finalX, double finalY) {
 
-    public void setKindOfOutputProduct(Product kindOfOutputProduct) {
-        this.kindOfOutputProduct = kindOfOutputProduct;
-    }
-
-    public int getMaxInputNumber() {
-        return maxInputNumber;
-    }
-
-    public void setMaxInputNumber(int maxInputNumber) {
-        this.maxInputNumber = maxInputNumber;
-    }
-
-    public int getMaxOutputNumber() {
-        return maxOutputNumber;
-    }
-
-    public void setMaxOutputNumber(int maxOutputNumber) {
-        this.maxOutputNumber = maxOutputNumber;
-    }
-
-    public double getWorkTime() {
-        return workTime;
-    }
-
-    public void setWorkTime(double workTime) {
-        this.workTime = workTime;
-    }
-
-    public double getWorkStartTime() {
-        return workStartTime;
-    }
-
-    public void setWorkStartTime(double workStartTime) {
-        this.workStartTime = workStartTime;
-    }
-
-    public double getWorkEndTime() {
-        return workEndTime;
-    }
-
-    public void setWorkEndTime(double workEndTime) {
-        this.workEndTime = workEndTime;
-    }
-
-    public int getInputNumbers() {
-        return inputNumbers;
-    }
-
-    public void setInputNumbers(int inputNumbers) {
-        this.inputNumbers = inputNumbers;
     }
 
     @Override
-    public void move(double finalX, double finalY) {}
-
-    @Override
-    public void upgrade() {
-        maxInputNumber++;
-        maxOutputNumber++;
-        //change in its picture
+    public  boolean upgrade() {
+        if (level < 3) {
+            maxNumberOfProducts++;
+            moneyForUpgrading += 100;
+            level++;
+            return true;
+        }
+        return false;
     }
 
 }

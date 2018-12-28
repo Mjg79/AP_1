@@ -13,9 +13,13 @@ import com.google.gson.JsonParser;
 import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import static javafx.scene.input.KeyCode.G;
 
@@ -158,6 +162,11 @@ public class Controller {
             this.runMap(split[1]);
             isIdentified = true;
         }
+
+        if (getInstruction().matches("load custom\\s.+")) {
+            this.loadCustom(split[2]);
+            isIdentified = true;
+        }
         if (!isIdentified)
             System.out.println("command not found!");
     }
@@ -257,7 +266,12 @@ public class Controller {
     }
 
     private void loadCustom(String path) {
-        //TODO: load the address of specific file
+        Path pathe = Paths.get(path);
+        try (Stream<Path> subPaths = Files.walk(pathe)){
+            subPaths.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setMissionNeeds(String path) throws FileNotFoundException {
