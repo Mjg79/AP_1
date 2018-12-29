@@ -82,9 +82,9 @@ public class WareHouse extends Element {
         } else {// if it is a live stock
             if (liveStocks.containsKey(element.getName())) {
                 int previousCount = liveStocks.get(element.getName());
-                goods.put(element.getName(), previousCount + count);
+                liveStocks.put(element.getName(), previousCount + count);
             } else
-                goods.put(element.getName(), count);
+                liveStocks.put(element.getName(), count);
 
         }
 
