@@ -5,6 +5,9 @@ import Model.Animal.Animal;
 public class WildAnimal extends Animal {
     private boolean isCaged = false;
 
+    {
+        name = "lion";
+    }
     @Override
     public void move(double finalX, double finalY) {
         x = finalX;
@@ -13,7 +16,7 @@ public class WildAnimal extends Animal {
 
     @Override
     public boolean upgrade() {
-        return false;
+        return true;
     }
 
     public void setIsCaged(boolean check) {

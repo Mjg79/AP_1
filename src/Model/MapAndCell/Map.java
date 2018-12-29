@@ -193,7 +193,7 @@ public class Map {
             case "chicken":
                 this.addChicken();
                 break;
-            case "oistrich":
+            case "ostrich":
                 this.addOstrich();
                 break;
             case "cow":
@@ -380,19 +380,21 @@ public class Map {
 
     ///////////////////////////PICKUP_ELEMENTS_FROM_MAP/////////////////////////////
     private void pickUpProducts(int x, int y) {
-        for (Product product : cells[x][y].getProducts())
+        Iterator iterator = cells[x][y].getProducts().iterator();
+        while (iterator.hasNext()) {
+            Product product = (Product)iterator.next();
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
                 wareHouse.addGoodOrLiveStock(product, 1);
-                cells[x][y].removeElement(product);
+                iterator.remove();
                 this.gatherForMissionNeeds(product.getName());
                 product.setIsPickedUp(true);
             }
-
-        Iterator iterator = products.iterator();
-        while (iterator.hasNext()) {
-            Product product = (Product) iterator.next();
+        }
+        Iterator iterator1 = products.iterator();
+        while (iterator1.hasNext()) {
+            Product product = (Product) iterator1.next();
             if (product.isPickedUp())
-                iterator.remove();
+                iterator1.remove();
         }
     }
 
@@ -541,9 +543,30 @@ public class Map {
         this.checkLiveStocksForReleasingProduct();
         this.liveStockEatingForage();
         this.moveLiveStocks();
+        Iterator iterator = liveStocks.iterator();
+        while (iterator.hasNext()) {
+            LiveStock liveStock = (LiveStock)iterator.next();
+            if (liveStock.getHungerLevel() <= 0) {
+                wareHouse.eliminateLiveStock(liveStock);
+                cells[(int)liveStock.getX()][(int)liveStock.getY()].removeElement(liveStock);
+                iterator.remove();
+            }
+        }
+
     }
 
-    //////////////////////WILD_ANIMAL_TURN///////////////////////////////////
+    /////////////////////PRODUCT_TURN///////////////////////////////////////
+    private void productTurn() {
+        Iterator iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product product = (Product) iterator.next();
+            if (product.getSecondTime() <= farmTime) {
+                cells[(int)product.getX()][(int)product.getY()].removeElement(product);
+            }
+        }
+    }
+
+    //////////////////////WILD_ANIMAL_TURN//////////////////////////////////
     private void wildAnimalTurn() {
         this.moveWildAnimals();
         this.checkWildAnimalPositionWithOthers();
@@ -569,6 +592,7 @@ public class Map {
     /////////////////TURN////////////////////////////////////////////////////
     public void turnMap(double increase) {
         farmTime += increase;
+        this.productTurn();
         this.liveStockTurn();
         this.wildAnimalTurn();
         this.dogTurn();

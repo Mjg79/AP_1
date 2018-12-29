@@ -37,9 +37,17 @@ public class Controller {
         elements.add(new LiveStock(0, "cow"));
         elements.add(new Dog());
         elements.add(new Cat());
-        elements.add(new WildAnimal());
         elements.add(new Product(0, "cake"));
-
+        elements.add(new Product(0, "egg"));
+        elements.add(new Product(0, "feather"));
+        elements.add(new Product(0, "horn"));
+        elements.add(new Product(0, "cake"));
+        elements.add(new Product(0, "cookie"));
+        elements.add(new Product(0, "wool"));
+        elements.add(new Product(0, "cloth"));
+        elements.add(new Product(0, "sewing"));
+        elements.add(new Product(0, "flour"));
+        elements.add(new Product(0, "powderedEgg"));
         listOfElements.add("egg");
         listOfElements.add("feather");
         listOfElements.add("horn");
@@ -209,11 +217,12 @@ public class Controller {
     }
 
     private void addTruck(String name, int count) {
-        for (Element element : elements)
+        for (Element element : elements) {
             if (element.getName().equals(name)) {
                 map.addElementToTruck(element, count);
                 break;
             }
+        }
     }
 
     private void clearTruck() {
