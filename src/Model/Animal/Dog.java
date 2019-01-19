@@ -5,11 +5,11 @@ import Model.ElementAndBoxAndDirection.Direction;
 public class Dog extends Animal {
 
     {
-        speed = 2;
-        price = 0;
-        volume = 0;
-        level = 0;
-        name = "dog";
+           speed = 2;
+            price = 0;
+            volume = 0;
+            level = 0;
+            name = "dog";
     }
 
     public boolean getIsKilled() {
@@ -18,7 +18,7 @@ public class Dog extends Animal {
 
     @Override
     public void move(double finalX, double finalY) {
-        //nothing
+       //nothing
     }
 
 

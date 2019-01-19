@@ -6,8 +6,18 @@ public class Box{
     private int volume;
     private int current;
     private boolean isContainAny = false;
-    private HashMap<Element, Integer> element;
-    private Element content;
+    private HashMap<Element, Integer> element = new HashMap<>();
+    private Element content = new Element() {
+        @Override
+        public void move(double finalX, double finalY) {
+
+        }
+
+        @Override
+        public boolean upgrade() {
+            return false;
+        }
+    };
 
     {
         current = 0;

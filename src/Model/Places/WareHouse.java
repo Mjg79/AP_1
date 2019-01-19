@@ -92,7 +92,7 @@ public class WareHouse extends Element {
 
     public void eliminateLiveStock(LiveStock liveStock) {
         if (liveStocks.get(liveStock.getName()) > 0)
-            liveStocks.put(liveStock.getName(), liveStocks.get(liveStock.getName()) - 1);
+        liveStocks.put(liveStock.getName(), liveStocks.get(liveStock.getName()) - 1);
         else {
             liveStocks.remove(liveStock.getName());
         }

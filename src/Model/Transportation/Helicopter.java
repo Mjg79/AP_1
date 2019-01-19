@@ -59,15 +59,15 @@ public class Helicopter extends Element {
 
     @Override
     public boolean upgrade() {
-        if (level < 3) {
-            numOfBoxes += 2;
-            boxes.add(new Box());
-            boxes.add(new Box());
-            moneyForUpgrading += 100;
-            level++;
-            return true;
-        }
-        return false;
+      if (level < 3) {
+          numOfBoxes += 2;
+          boxes.add(new Box());
+          boxes.add(new Box());
+          moneyForUpgrading += 100;
+          level++;
+          return true;
+      }
+     return false;
     }
 
     public int getMapBudget() {
@@ -83,15 +83,15 @@ public class Helicopter extends Element {
 
     public void putOneCountOfAnElementInHelicopter(Element element, int budget) {
         this.startForAddingElementToHelicopter(budget);
-        if (element.getPrice() <= allCost && isInWareHouse)
-            for (Box box: boxes) {
-                if (!(box.getContent().getClass().equals(element.getClass())) ||
-                        box.getCurrent() == box.getVolume())
-                    continue;
-                box.addElement(element, 1);
-                salesGoods.add(element);
-                allCost += element.getPrice();
-            }
+       if (element.getPrice() <= allCost && isInWareHouse)
+        for (Box box: boxes) {
+            if (!(box.getContent().getClass().equals(element.getClass())) ||
+                    box.getCurrent() == box.getVolume())
+                continue;
+            box.addElement(element, 1);
+            salesGoods.add(element);
+            allCost += element.getPrice();
+        }
 
     }
 

@@ -47,4 +47,4 @@ public abstract class Element {
     public double getMoneyForUpgrading() {
         return moneyForUpgrading;
     }
-}
+}//it's complete

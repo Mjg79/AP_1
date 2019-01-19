@@ -16,7 +16,7 @@ public class WildAnimal extends Animal {
 
     @Override
     public boolean upgrade() {
-        return true;
+       return true;
     }
 
     public void setIsCaged(boolean check) {

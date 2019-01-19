@@ -3,14 +3,11 @@ import com.google.gson.Gson;
 import Model.Animal.Cat;
 import Model.Animal.Dog;
 import Model.Animal.LiveStocks.LiveStock;
-import Model.Animal.WildAnimals.WildAnimal;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
 import Model.Products.Product;
-import View.View;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -21,11 +18,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import static javafx.scene.input.KeyCode.G;
-
 public class Controller {
-    private Map map;
-    private View view = new View();
+    private Map map = new Map();
+//    private View view = new View();
     private String instruction;
     private ArrayList<Element> elements = new ArrayList<>();
     private boolean isIdentified = false;
@@ -65,7 +60,7 @@ public class Controller {
         listOfElements.add("cow");
     }
 
-    private void setInstruction(String string) {
+    public void setInstruction(String string) {
         this.instruction = string;
     }
 
@@ -81,7 +76,11 @@ public class Controller {
         return false;
     }
 
-    private void operateInstruction() {
+    public Map getMap() {
+        return map;
+    }
+
+    public void operateInstruction() {
         isIdentified = false;
         String[] split = instruction.split("\\s");
         if (getInstruction().matches("buy\\s(chicken|ostrich|cow)")) {
@@ -150,11 +149,11 @@ public class Controller {
             isIdentified = true;
         }
 
-        if (getInstruction().matches("print\\s(wareHouse|truck|helicopter|well|CakeBakery|CookieBakery|" +
-                "EggPowderPlant|SewingFactory|Spinnery|WeavingFactory|map|info)")) {
-            this.viewPrint(split[1]);
-            isIdentified = true;
-        }
+//        if (getInstruction().matches("print\\s(wareHouse|truck|helicopter|well|CakeBakery|CookieBakery|" +
+//                "EggPowderPlant|SewingFactory|Spinnery|WeavingFactory|map|info)")) {
+//            this.viewPrint(split[1]);
+//            isIdentified = true;
+//        }
 
         if (getInstruction().matches("loadGame\\s.+")) {
             this.loadGame(split[1]);
@@ -166,10 +165,10 @@ public class Controller {
             isIdentified = true;
         }
 
-        if (getInstruction().matches("runMap\\s.+")) {
-            this.runMap(split[1]);
-            isIdentified = true;
-        }
+//        if (getInstruction().matches("runMap\\s.+")) {
+//            this.runMap(split[1]);
+//            isIdentified = true;
+//        }
 
         if (getInstruction().matches("load custom\\s.+")) {
             this.loadCustom(split[2]);
@@ -208,11 +207,11 @@ public class Controller {
         map.upgrade(elementName);
     }
 
-    private void viewPrint(String place) {
-        view.print(map, place);
-    }
+//    private void viewPrint(String place) {
+//        view.print(map, place);
+//    }
 
-    private void turn(double increase) {
+    private void turn(int increase) {
         map.turnMap(increase);
     }
 
@@ -261,7 +260,7 @@ public class Controller {
         }
     }
 
-    private void loadGame(String path) {
+    public void loadGame(String path) {
         Gson deserializer = new Gson();
         try {
             this.map = deserializer.fromJson(new FileReader(path), Map.class);
@@ -270,9 +269,9 @@ public class Controller {
         }
     }
 
-    private void runMap(String name) {
-        this.map = new Map(name, getMissionNeeds());
-    }
+//    public void runMap(String name) {
+//        this.map = new Map(name, getMissionNeeds());
+//    }
 
     private void loadCustom(String path) {
         Path pathe = Paths.get(path);
@@ -283,43 +282,24 @@ public class Controller {
         }
     }
 
-    private void setMissionNeeds(String path) throws FileNotFoundException {
+    public void setMissionNeeds(String path) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new FileReader(path));
         JsonParser parser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) parser.parse(new FileReader(path));
-        for (String name: listOfElements)
-            if (jsonObject.has(name)) {
-                int num = jsonObject.get(name).getAsInt();
-                missionNeeds.put(name, num);
-            }
+        while (scanner.hasNextLine()) {
+            JsonObject jsonObject = (JsonObject) parser.parse(scanner.nextLine());
+            for (String name : listOfElements)
+                if (jsonObject.has(name)) {
+                    int num = jsonObject.get(name).getAsInt();
+                    missionNeeds.put(name, num);
+
+                }
+        }
     }
 
     private HashMap<String, Integer> getMissionNeeds() {
         return missionNeeds;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
 
-        Controller controller = new Controller();
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("set your mission: ");
-        controller.setMissionNeeds(scanner.nextLine());
-
-        System.out.println("Do you want to load a game ? : [yes]/[no]");
-
-        if (scanner.nextLine().toLowerCase().equals("yes")) {
-            System.out.println("enter your path: ");
-            controller.loadGame(scanner.nextLine());
-        } else {
-            System.out.print("enter your mapName: ");
-            controller.runMap(scanner.nextLine());
-        }
-
-
-        while (scanner.hasNextLine()) {
-            controller.setInstruction(scanner.nextLine());
-            controller.operateInstruction();
-        }
-    }
 }
 

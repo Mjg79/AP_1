@@ -68,7 +68,7 @@ public class Truck extends Element {
     private int putOneCountOfAnElementInTrunk(Element element) {
         for (Box box: boxes) {
             if (!(box.getContent().getClass().equals(element.getClass())) ||
-                    box.getCurrent() == box.getVolume())
+                   box.getCurrent() == box.getVolume())
                 continue;
             box.addElement(element, 1);
             return 0;
@@ -79,7 +79,7 @@ public class Truck extends Element {
     private int putManyOfAnElementInTrunk(Element element, int count) {
         for (Box box: boxes) {
             if (!box.getContent().getClass().equals(element.getClass()) ||
-                    box.getCurrent() == box.getVolume())
+                  box.getCurrent() == box.getVolume())
                 continue;
             int countCapacity = (box.getVolume() - box.getCurrent()) / element.getVolume();
             if (countCapacity < count) {
@@ -112,7 +112,7 @@ public class Truck extends Element {
         for(Box box: boxes)
             if (box.isContainAny())
                 return true;
-        return false;
+            return false;
 
     }
 

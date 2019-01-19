@@ -20,37 +20,45 @@ import java.util.Iterator;
 public class Map {
 
     private String name;
+    private boolean isMissionCompleted = false;
+    private double farmTime = 0;
+    private int budget = 1000;
+    private WareHouse wareHouse = new WareHouse();
+    private Well well = new Well();
+    private Truck truck = new Truck();
+    private Helicopter helicopter = new Helicopter();
+    private ArrayList<WorkShop> workshops = new ArrayList<>();
+    private ArrayList<String> workShopName = new ArrayList<>();
+    private HashMap<String, Integer> missionNeeds = new HashMap<>();
+    private HashMap<String, Integer> gatherElements = new HashMap<>();
     private ArrayList<LiveStock> liveStocks = new ArrayList<>();
     private ArrayList<WildAnimal> wildAnimals = new ArrayList<>();
     private ArrayList<Cat> cats = new ArrayList<>();
     private ArrayList<Dog> dogs = new ArrayList<>();
     private ArrayList<Forage> forages = new ArrayList<>();
     private ArrayList<Product> products = new ArrayList<>();
-    private Cell[][] cells = new Cell[41][41];
-    private WareHouse wareHouse = new WareHouse();
-    private Well well = new Well();
-    private Truck truck = new Truck();
-    private Helicopter helicopter = new Helicopter();
-    private double farmTime = 0;
-    private int budget = 1000;
-    private ArrayList<WorkShop> workshops = new ArrayList<>();
-    private ArrayList<String> workShopName = new ArrayList<>();
-    private HashMap<String, Integer> missionNeeds = new HashMap<>();
-    private HashMap<String, Integer> gatherElements = new HashMap<>();
+    private Cell[][] cells = new Cell[36][36];
 
     {
-        for (int i = 0; i < 41; i++)
-            for (int j = 0; j < 41; j++)
+        //TODO:clear 6 line below
+        HashMap<String,Integer> hashMap = new HashMap<>();
+        hashMap.put("chicken", 200);
+        missionNeeds = hashMap;
+        HashMap<String, Integer> kirekhar = new HashMap<>();
+        kirekhar.put("chicken", 0);
+        gatherElements = kirekhar;
+        for (int i = 0; i <= 35; i++)
+            for (int j = 0; j <= 35; j++)
                 cells[i][j] = new Cell(i, j);
 
     }
-
-    public Map(String name, HashMap<String, Integer> missionNeeds) {
-        this.name = name;
-        this.missionNeeds = missionNeeds;
-        for (String needs: missionNeeds.keySet())
-            gatherElements.put(needs, 0);
-    }
+//TODO: pick it
+//    public Map(String name, HashMap<String, Integer> missionNeeds) {
+//        this.name = name;
+//        this.missionNeeds = missionNeeds;
+//        for (String needs: missionNeeds.keySet())
+//            gatherElements.put(needs, 0);
+//    }
 
     /////////////////////////SETTER_AND_GETTER///////////////////////
 
@@ -93,6 +101,7 @@ public class Map {
     public Cell[][] getCells() {
         return cells;
     }
+
 
     public int getBudget() {
         return budget;
@@ -146,6 +155,7 @@ public class Map {
     //////////////////////////////BUY_ANIMAL_BY_STRING///////////////////
     private void addChicken() {
         if (budget >= 100) {
+            System.out.println(budget);
             LiveStock chicken = new LiveStock(this.farmTime, "chicken");
             liveStocks.add(chicken);
             wareHouse.addGoodOrLiveStock(chicken, 1);
@@ -175,7 +185,7 @@ public class Map {
         }
 
     }
-    //////////////////////////CHECK_MISSION_NEEDS/////////////////////////
+//////////////////////////CHECK_MISSION_NEEDS/////////////////////////
     private void gatherForMissionNeeds(String purpose) {
         for (String needs: missionNeeds.keySet())
             if (needs.equals(purpose)) {
@@ -183,10 +193,17 @@ public class Map {
                 break;
             }
         if (gatherElements.equals(missionNeeds)) {
+            isMissionCompleted = true;
             System.out.println("mission completed.");
             System.exit(0);
         }
     }
+
+
+    public boolean isMissionCompleted() {
+        return isMissionCompleted;
+    }
+
 
     public void buyAnimal(String stringName) {
         switch (stringName) {
@@ -216,10 +233,10 @@ public class Map {
 
     //////////////////////////////MOVE_ANIMAL///////////////////////////
     private void BFS(Animal animal, double i, double j) {
-        animal.moveWisely(i, j);
+      animal.moveWisely(i, j);
     }
 
-    //////////////////MOVE_LIVE_STOCKS//////////////////////////////////
+//////////////////MOVE_LIVE_STOCKS//////////////////////////////////
     private void moveLiveStocks() {
         for (LiveStock liveStock : this.liveStocks) {
             if (this.farmTime - liveStock.getStartTimeForEatingForage() < 2)//if it is eating don't move the liveStock
@@ -248,10 +265,10 @@ public class Map {
                             closestForageY = j;
                         }
                     } //for finding closest forage to liveStock
-                liveStock.changeHungerLevel(-0.5);
+                liveStock.changeHungerLevel(-0.1);
                 this.BFS(liveStock, closestForageX, closestForageY);
             } else { // liveStock should move randomly
-                liveStock.changeHungerLevel(-0.5);
+                liveStock.changeHungerLevel(-0.1);
                 liveStock.changeDirectionByKnowingCurrentPostition();
                 liveStock.moveRandomly(1);
             }
@@ -259,7 +276,7 @@ public class Map {
         }
 
     }
-    //////////////////////////MOVE_WILD_ANIMALS//////////////////
+//////////////////////////MOVE_WILD_ANIMALS//////////////////
     private void moveWildAnimals() {
         for (WildAnimal wildAnimal : wildAnimals) {
             if (wildAnimal.isCaged())
@@ -270,7 +287,7 @@ public class Map {
             cells[(int) wildAnimal.getX()][(int) wildAnimal.getY()].getWildAnimals().add(wildAnimal);
         }
     }
-    ////////////////////////MOVE_DOG//////////////////////////
+////////////////////////MOVE_DOG//////////////////////////
     private void moveDogs() {
 
         for (Dog dog : dogs) {
@@ -303,7 +320,7 @@ public class Map {
             cells[(int) dog.getX()][(int) dog.getY()].getDogs().add(dog);
         }
     }
-    /////////////////////MOVE_CAT//////////////////////////////
+/////////////////////MOVE_CAT//////////////////////////////
     private void moveCats() {
         catLoop:
         for (Cat cat : cats) {
@@ -329,7 +346,7 @@ public class Map {
         }
 
     }
-    ///////////////MOVE_ALL_ANIMALS/////////////////////////////////////////
+///////////////MOVE_ALL_ANIMALS/////////////////////////////////////////
     public void moveAnimals() {
         this.moveLiveStocks();
         this.moveWildAnimals();
@@ -380,7 +397,7 @@ public class Map {
 
     ///////////////////////////PICKUP_ELEMENTS_FROM_MAP/////////////////////////////
     private void pickUpProducts(int x, int y) {
-        Iterator iterator = cells[x][y].getProducts().iterator();
+            Iterator iterator = cells[x][y].getProducts().iterator();
         while (iterator.hasNext()) {
             Product product = (Product)iterator.next();
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
@@ -447,7 +464,7 @@ public class Map {
     ///////////////////////////CHARGE_WELL/////////////////////////////////////////
     public void chargeWell() {
         if (!well.isInCharging() && well.getCurrent() == 0 && isBudgetEnough(well.getPrice())) {
-            well.chargeWell(farmTime);
+            well.charge(farmTime);
         }
 
     }
@@ -643,27 +660,27 @@ public class Map {
         switch (name) {
             case "truck":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                    this.upgradeTruck();
+                this.upgradeTruck();
                 break;
             case "helicopter":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                    this.upgradeHelicopter();
+                this.upgradeHelicopter();
                 break;
             case "wareHouse":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                    this.upgradeWareHouse();
+                this.upgradeWareHouse();
                 break;
             case "well":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                    this.upgradeWell();
+                this.upgradeWell();
                 break;
             case "cat":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                    this.upgradeCat();
+                this.upgradeCat();
                 break;
             default:
                 if (budget >= this.getWorkshops().get(0).getMoneyForUpgrading())
-                    upgradeWorkshop(name);
+                upgradeWorkshop(name);
                 break;
 
         }

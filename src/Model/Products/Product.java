@@ -5,12 +5,13 @@ import Model.ElementAndBoxAndDirection.Element;
 public class Product extends Element {
     private double firstTime;
     private double secondTime;
+    protected double timeBeingInMap = 10;
     private boolean isPickedUp = false;
     private ProductTypes type;
 
     public Product(double firstTime, String type) {
         this.firstTime = firstTime;
-        this.secondTime = firstTime + 10;
+        this.secondTime = firstTime + timeBeingInMap;
 
         this.checkEgg(type);
         this.checkFeather(type);

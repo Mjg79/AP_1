@@ -10,9 +10,9 @@ public class Cat extends Animal {
     private ArrayList<Product> collectProducts;
 
     {
-        speed = speedNormally;
-        name = "cat";
-        moneyForUpgrading = 100;
+      speed = speedNormally;
+      name = "cat";
+      moneyForUpgrading = 100;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Cat extends Animal {
 
 
     public int getLevel() {
-        return level;
+    	return level;
     }
     @Override
     public boolean upgrade() {
@@ -34,7 +34,7 @@ public class Cat extends Animal {
         return false;
     }
 
-
+   
     public void setCollectProducts(ArrayList<Product> products) {
         this.collectProducts = products;
     }

@@ -11,125 +11,125 @@ import Model.Animal.LiveStocks.*;
 import Model.Animal.WildAnimals.WildAnimal;
 
 public class Cell extends Element {
-    private ArrayList<LiveStock> liveStocks = new ArrayList<>();
-    private ArrayList<WildAnimal> wildAnimals = new ArrayList<>();
-    private ArrayList<Cat> cats = new ArrayList<>();
-    private ArrayList<Dog> dogs = new ArrayList<>();
-    private ArrayList<Forage> forages = new ArrayList<>();
-    private ArrayList<Product> products = new ArrayList<>();
-    private double farmTime = 0;
+	private ArrayList<LiveStock> liveStocks = new ArrayList<>();
+	private ArrayList<WildAnimal> wildAnimals = new ArrayList<>();
+	private ArrayList<Cat> cats = new ArrayList<>();
+	private ArrayList<Dog> dogs = new ArrayList<>();
+	private ArrayList<Forage> forages = new ArrayList<>();
+	private ArrayList<Product> products = new ArrayList<>();
+	private double farmTime = 0;
 
-    {
-        name = "cell";
+	{
+		name = "cell";
+	}
+
+	public Cell(double x, double y) {
+	    this.x = x;
+	    this.y = y;
     }
 
-    public Cell(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
+	public void addElement(Element element) {
+		if (element instanceof LiveStock)
+			liveStocks.add((LiveStock) element);
+		if (element instanceof WildAnimal)
+			wildAnimals.add((WildAnimal) element);
+		if (element instanceof Cat)
+			cats.add((Cat) element);
+		if (element instanceof Dog)
+			dogs.add((Dog) element);
+		if (element instanceof Product)
+			products.add((Product) element);
+		if (element instanceof Forage)
+			forages.add((Forage) element);
 
-    public void addElement(Element element) {
-        if (element instanceof LiveStock)
-            liveStocks.add((LiveStock) element);
-        if (element instanceof WildAnimal)
-            wildAnimals.add((WildAnimal) element);
-        if (element instanceof Cat)
-            cats.add((Cat) element);
-        if (element instanceof Dog)
-            dogs.add((Dog) element);
-        if (element instanceof Product)
-            products.add((Product) element);
-        if (element instanceof Forage)
-            forages.add((Forage) element);
+	}
 
-    }
+	void removeElement(Element element) {
+		if (element instanceof WildAnimal)
+			wildAnimals.remove(element);
+		if (element instanceof Cat)
+			cats.remove(element);
+		if (element instanceof Dog)
+			dogs.remove(element);
+		if (element instanceof Product)
+			products.remove(element);
+		if (element instanceof Forage)
+			forages.remove(element);
+		if (element instanceof LiveStock)
+		    liveStocks.remove(element);
 
-    void removeElement(Element element) {
-        if (element instanceof WildAnimal)
-            wildAnimals.remove(element);
-        if (element instanceof Cat)
-            cats.remove(element);
-        if (element instanceof Dog)
-            dogs.remove(element);
-        if (element instanceof Product)
-            products.remove(element);
-        if (element instanceof Forage)
-            forages.remove(element);
-        if (element instanceof LiveStock)
-            liveStocks.remove(element);
+	}
 
-    }
+	public ArrayList<LiveStock> getLiveStocks() {
+		return this.liveStocks;
+	}
 
-    public ArrayList<LiveStock> getLiveStocks() {
-        return this.liveStocks;
-    }
+	public ArrayList<WildAnimal> getWildAnimals() {
+		return this.wildAnimals;
+	}
 
-    public ArrayList<WildAnimal> getWildAnimals() {
-        return this.wildAnimals;
-    }
+	public ArrayList<Dog> getDogs() {
+		return this.dogs;
+	}
 
-    public ArrayList<Dog> getDogs() {
-        return this.dogs;
-    }
+	public ArrayList<Cat> getCats() {
+		return this.cats;
+	}
 
-    public ArrayList<Cat> getCats() {
-        return this.cats;
-    }
+	public ArrayList<Product> getProducts() {
+		return this.products;
+	}
 
-    public ArrayList<Product> getProducts() {
-        return this.products;
-    }
+	public ArrayList<Forage> getForages() {
+		return this.forages;
+	}
 
-    public ArrayList<Forage> getForages() {
-        return this.forages;
-    }
+	public boolean isHaveForage() {
+		if (forages.isEmpty())
+			return false;
+		return true;
+	}
 
-    public boolean isHaveForage() {
-        if (forages.isEmpty())
-            return false;
-        return true;
-    }
+	public void removeAllLiveStocks() {
+		this.liveStocks.clear();
+	}
 
-    public void removeAllLiveStocks() {
-        this.liveStocks.clear();
-    }
+	public void removeAllCats() {
+		this.cats.clear();
+	}
 
-    public void removeAllCats() {
-        this.cats.clear();
-    }
+	public void removeAllDogs() {
+		this.dogs.clear();
+	}
 
-    public void removeAllDogs() {
-        this.dogs.clear();
-    }
+	public void removeAllProducts() {
+		this.products.clear();
+	}
 
-    public void removeAllProducts() {
-        this.products.clear();
-    }
+	public void removeAllWildAnimals() {
+		this.wildAnimals.clear();
+	}
 
-    public void removeAllWildAnimals() {
-        this.wildAnimals.clear();
-    }
+	@Override
+	public void move(double finalX, double finalY) {
 
-    @Override
-    public void move(double finalX, double finalY) {
+	}
 
-    }
+	public void removeOneForage() {
+		forages.remove(0);
+	}
 
-    public void removeOneForage() {
-        forages.remove(0);
-    }
+	public void removeAllElements() {
+		this.products.clear();
+		this.cats.clear();
+		this.liveStocks.clear();
+	}
 
-    public void removeAllElements() {
-        this.products.clear();
-        this.cats.clear();
-        this.liveStocks.clear();
-    }
+	@Override
+	public boolean upgrade() {
+		return false;
 
-    @Override
-    public boolean upgrade() {
-        return false;
-
-    }
+	}
 
 
 }
