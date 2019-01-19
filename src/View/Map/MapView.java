@@ -4,6 +4,7 @@ import Model.Animal.LiveStocks.LiveStock;
 import Model.MapAndCell.Map;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
+import View.Buttons.MenuButton;
 import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
@@ -212,6 +213,7 @@ public class MapView {
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
+        MenuButton.inGameMenuButton(mapGroup, mapScene);
     }
 
 
