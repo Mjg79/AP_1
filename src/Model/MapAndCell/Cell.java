@@ -4,11 +4,20 @@ import Model.ElementAndBoxAndDirection.Element;
 import Model.Products.Product;
 import Model.Products.Forage.Forage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import Model.Animal.*;
 import Model.Animal.LiveStocks.*;
 import Model.Animal.WildAnimals.WildAnimal;
+import View.Buttons.GeneralButton;
+import View.Buttons.ProductButton;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Cell extends Element {
 	private ArrayList<LiveStock> liveStocks = new ArrayList<>();
@@ -23,10 +32,10 @@ public class Cell extends Element {
 		name = "cell";
 	}
 
-	public Cell(double x, double y) {
-	    this.x = x;
-	    this.y = y;
-    }
+	public Cell(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
 	public void addElement(Element element) {
 		if (element instanceof LiveStock)
@@ -56,7 +65,7 @@ public class Cell extends Element {
 		if (element instanceof Forage)
 			forages.remove(element);
 		if (element instanceof LiveStock)
-		    liveStocks.remove(element);
+			liveStocks.remove(element);
 
 	}
 
@@ -111,7 +120,7 @@ public class Cell extends Element {
 	}
 
 	@Override
-	public void move(double finalX, double finalY) {
+	public void move(int finalX, int finalY) {
 
 	}
 
@@ -131,5 +140,52 @@ public class Cell extends Element {
 
 	}
 
+
+	//////////////////GERAPHIC_CELL///////////////////////////
+	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
+	private Button button = new Button();
+	private ArrayList<ImageView> imageViews = new ArrayList<>();
+
+	private void addForage() throws FileNotFoundException {
+		for(Forage forage: forages)
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "grass1.png"))));
+	}
+
+	private void addEgg(Product product) throws FileNotFoundException {
+		if (product.getName().equals("egg"))
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "Egg\\normal_2.png"))));
+	}
+
+	private void addPowderEgg(Product product) throws FileNotFoundException {
+		if (product.getName().equals("powderedEgg"))
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "EggPowder.png"))));
+	}
+
+	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
+		for (Product product: products) {
+			if (product.getName().equals("egg")) {
+				addEgg(product);
+			}
+		}
+		if (!group.getChildren().contains(button))
+			button = ProductButton.productButton(group, scene, x, y, map, map.getFarmTime());
+	}
+
+	public void refreshImageViews (Group group) {
+		for(ImageView imageView: imageViews)
+			group.getChildren().remove(imageView);
+		imageViews = new ArrayList<>();
+	}
+
+	public void showCell(Group group, Scene scene, Map map) throws FileNotFoundException {
+		setViewOfCell(group, scene,  map);
+		for (ImageView imageView: imageViews) {
+			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView),
+					250 + 7 * this.getY() + imageViews.indexOf(imageView));
+			if (group.getChildren().contains(imageView))
+				break;
+			group.getChildren().add(imageView);
+		}
+	}
 
 }
