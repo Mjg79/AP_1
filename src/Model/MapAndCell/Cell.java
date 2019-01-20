@@ -33,9 +33,9 @@ public class Cell extends Element {
 	}
 
 	public Cell(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+	    this.x = x;
+	    this.y = y;
+    }
 
 	public void addElement(Element element) {
 		if (element instanceof LiveStock)
@@ -65,7 +65,7 @@ public class Cell extends Element {
 		if (element instanceof Forage)
 			forages.remove(element);
 		if (element instanceof LiveStock)
-			liveStocks.remove(element);
+		    liveStocks.remove(element);
 
 	}
 
@@ -143,7 +143,7 @@ public class Cell extends Element {
 
 	//////////////////GERAPHIC_CELL///////////////////////////
 	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
-	private Button button = new Button();
+    private Button button = new Button();
 	private ArrayList<ImageView> imageViews = new ArrayList<>();
 
 	private void addForage() throws FileNotFoundException {
@@ -152,7 +152,7 @@ public class Cell extends Element {
 	}
 
 	private void addEgg(Product product) throws FileNotFoundException {
-		if (product.getName().equals("egg"))
+		    if (product.getName().equals("egg"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "Egg\\normal_2.png"))));
 	}
 
@@ -162,11 +162,11 @@ public class Cell extends Element {
 	}
 
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
-		for (Product product: products) {
-			if (product.getName().equals("egg")) {
-				addEgg(product);
+			for (Product product: products) {
+				if (product.getName().equals("egg")) {
+					addEgg(product);
+				}
 			}
-		}
 		if (!group.getChildren().contains(button))
 			button = ProductButton.productButton(group, scene, x, y, map, map.getFarmTime());
 	}
@@ -184,7 +184,7 @@ public class Cell extends Element {
 					250 + 7 * this.getY() + imageViews.indexOf(imageView));
 			if (group.getChildren().contains(imageView))
 				break;
-			group.getChildren().add(imageView);
+				group.getChildren().add(imageView);
 		}
 	}
 

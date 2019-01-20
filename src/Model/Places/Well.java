@@ -29,7 +29,7 @@ public class Well extends Element {
     }
 
     @Override
-    public void move(double finalX, double finalY) {
+    public void move(int finalX, int finalY) {
 
     }
 

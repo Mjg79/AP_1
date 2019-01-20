@@ -1,21 +1,21 @@
 package Model.ElementAndBoxAndDirection;
 
 public abstract class Element {
-    protected double x;
-    protected double y;
+    protected int x;
+    protected int y;
     protected Direction direction;
     protected int level = 0;
     protected int volume;
     protected int price;
     protected String name;
     protected double moneyForUpgrading;
-    public abstract void move(double finalX, double finalY);
+    public abstract void move(int finalX, int finalY);
 
-    public double getX () {
+    public int getX () {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 

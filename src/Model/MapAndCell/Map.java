@@ -47,6 +47,9 @@ public class Map {
         HashMap<String, Integer> kirekhar = new HashMap<>();
         kirekhar.put("chicken", 0);
         gatherElements = kirekhar;
+        workshops.add(new WorkShop("EggPowderedPlant"));
+        workshops.add(new WorkShop("CookieBakery"));
+        workshops.add(new WorkShop("CakeBakery"));
         for (int i = 0; i <= 35; i++)
             for (int j = 0; j <= 35; j++)
                 cells[i][j] = new Cell(i, j);
@@ -152,6 +155,13 @@ public class Map {
         return false;
     }
 
+    private boolean suitableTimeForRealeasingProduct(double time) {
+        for (int i = 1; i < 900; i++)
+            if (Math.abs(farmTime - time - 10 * i) < 0.01)
+                return true;
+        return false;
+    }
+
     //////////////////////////////BUY_ANIMAL_BY_STRING///////////////////
     private void addChicken() {
         if (budget >= 100) {
@@ -238,10 +248,11 @@ public class Map {
 
 //////////////////MOVE_LIVE_STOCKS//////////////////////////////////
     private void moveLiveStocks() {
-        for (LiveStock liveStock : this.liveStocks) {
-            if (this.farmTime - liveStock.getStartTimeForEatingForage() < 2)//if it is eating don't move the liveStock
+        for (LiveStock liveStock : this.getLiveStocks()) {
+            if (this.farmTime - liveStock.getStartTimeForEatingForage() < 2)
+                //if it is eating don't move the liveStock
                 continue;
-            cells[(int) liveStock.getX()][(int) liveStock.getY()].removeElement(liveStock);
+            cells[ liveStock.getX()][liveStock.getY()].removeElement(liveStock);
             liveStock.checkLiveStock();// checking for weather is hungry or not
             if (liveStock.isMustEatForage() && !forages.isEmpty()) {//liveStock should move wisely
                 int closestForageX = 0;
@@ -265,14 +276,16 @@ public class Map {
                             closestForageY = j;
                         }
                     } //for finding closest forage to liveStock
-                liveStock.changeHungerLevel(-0.1);
+                liveStock.changeHungerLevel(-0.05);
                 this.BFS(liveStock, closestForageX, closestForageY);
+                System.out.println("move wisely");
             } else { // liveStock should move randomly
-                liveStock.changeHungerLevel(-0.1);
+                liveStock.changeHungerLevel(-0.05);
                 liveStock.changeDirectionByKnowingCurrentPostition();
                 liveStock.moveRandomly(1);
+                System.out.println("Move randomly");
             }
-            cells[(int) liveStock.getX()][(int) liveStock.getY()].getLiveStocks().add(liveStock);
+            cells[liveStock.getX()][liveStock.getY()].getLiveStocks().add(liveStock);
         }
 
     }
@@ -363,9 +376,10 @@ public class Map {
                     !cells[(int) liveStock.getX()][(int) liveStock.getY()].isHaveForage() ||
                     farmTime - liveStock.getStartTimeForEatingForage() < 2)
                 continue;
-            cells[(int) liveStock.getX()][(int) liveStock.getY()].removeElement(liveStock);
+            cells[liveStock.getX()][liveStock.getY()].removeElement(liveStock);
             liveStock.setStartTimeForEatingForage(this.farmTime);
-            liveStock.changeHungerLevel(2);//by eating forage it increases two level of its hunger
+            liveStock.changeHungerLevel(1);//by eating forage it increases two level of its hunger
+            System.out.println("eating");
             cells[(int) liveStock.getX()][(int) liveStock.getY()].addElement(liveStock);
             cells[(int) liveStock.getX()][(int) liveStock.getY()].removeOneForage();
         }
@@ -375,8 +389,9 @@ public class Map {
 
     private void checkLiveStocksForReleasingProduct() {
         for (LiveStock liveStock : liveStocks)
-            if ((farmTime - liveStock.getStartTimeBeingInMap()) % 10 == 0) {
-                cells[(int) liveStock.getX()][(int) liveStock.getY()].addElement(liveStock.releaseProduct(farmTime));
+            if (suitableTimeForRealeasingProduct(liveStock.getStartTimeBeingInMap())) {
+                cells[liveStock.getX()][liveStock.getY()].addElement(liveStock.releaseProduct(farmTime));
+                System.out.println("add product in : " + farmTime);
                 products.add(liveStock.releaseProduct(farmTime));
                 this.gatherForMissionNeeds(liveStock.releaseProduct(farmTime).getName());
             }
@@ -407,6 +422,7 @@ public class Map {
                 product.setIsPickedUp(true);
             }
         }
+
         Iterator iterator1 = products.iterator();
         while (iterator1.hasNext()) {
             Product product = (Product) iterator1.next();

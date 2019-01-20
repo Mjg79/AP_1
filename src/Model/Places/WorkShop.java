@@ -29,7 +29,7 @@ public class WorkShop extends Element {
     }
 
     private void checkCakeBakery(String name) {
-        if (name.equals("cakeBakery")) {
+        if (name.equals("CakeBakery")) {
             nameOfInputProducts.add("cookie");
             nameOfInputProducts.add("flour");
             nameOfOutputProduct = "cake";
@@ -39,7 +39,7 @@ public class WorkShop extends Element {
     }
 
     private void checkCookieBakery(String name) {
-        if (name.equals("cookieBakery")) {
+        if (name.equals("CookieBakery")) {
             this.name = "cookieBakery";
             nameOfInputProducts.add("powderedEgg");
             maxNumberOfProducts = 1;
@@ -48,7 +48,7 @@ public class WorkShop extends Element {
     }
 
     private void checkEggPowderedPlant(String name) {
-        if (name.equals("eggPowderedPlant")) {
+        if (name.equals("EggPowderedPlant")) {
             this.name = "EggPowderedPlant";
             nameOfInputProducts.add("egg");
             maxNumberOfProducts = 1;
@@ -57,7 +57,7 @@ public class WorkShop extends Element {
     }
 
     private void checkSewingFactory(String name) {
-        if (name.equals("sewingFactory")) {
+        if (name.equals("SewingFactory")) {
             nameOfInputProducts.add("wool");
             nameOfOutputProduct = "sewing";
             maxNumberOfProducts = 1;
@@ -67,8 +67,8 @@ public class WorkShop extends Element {
 
 
     private void checkWeavingFactory(String name) {
-        if (name.equals("weaving Factory")) {
-            this.name = "weavingFactory";
+        if (name.equals("WeavingFactory")) {
+            this.name = "WeavingFactory";
             nameOfInputProducts.add("sewing");
             nameOfOutputProduct = "cloth";
             maxNumberOfProducts = 1;
@@ -143,7 +143,7 @@ public class WorkShop extends Element {
 
 
     @Override
-    public void move (double finalX, double finalY) {
+    public void move (int finalX, int finalY) {
 
     }
 

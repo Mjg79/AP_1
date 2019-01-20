@@ -17,7 +17,7 @@ public class Dog extends Animal {
     }
 
     @Override
-    public void move(double finalX, double finalY) {
+    public void move(int finalX, int finalY) {
        //nothing
     }
 

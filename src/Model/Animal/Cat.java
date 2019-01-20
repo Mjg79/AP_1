@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Cat extends Animal {
     private static final double speedForCollecting = 4;
-    private static final double speedNormally = 2;
+    private static final int speedNormally = 2;
     private ArrayList<Product> collectProducts;
 
     {
@@ -16,7 +16,7 @@ public class Cat extends Animal {
     }
 
     @Override
-    public void move(double finalX, double finalY)  {
+    public void move(int finalX, int finalY)  {
         //nothing
     }
 

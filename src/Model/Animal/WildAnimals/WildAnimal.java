@@ -9,7 +9,7 @@ public class WildAnimal extends Animal {
         name = "lion";
     }
     @Override
-    public void move(double finalX, double finalY) {
+    public void move(int finalX, int finalY) {
         x = finalX;
         y = finalY;
     }

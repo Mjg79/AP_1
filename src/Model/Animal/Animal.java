@@ -5,22 +5,25 @@ import Model.ElementAndBoxAndDirection.Element;
 
 import java.util.Random;
 
+import static Model.ElementAndBoxAndDirection.Direction.north;
+
 public abstract class Animal extends Element {
-	 protected double speed;
+	 protected int speed;
 	 boolean isKilled = false;
 	 private boolean isMoved = false;
+	 Random random = new Random();
 	{
 		speed = 1;
 		direction = Direction.getRandomDirection();
-		x = (int) (Math.random() * (30 - 5 + 1) + 5);
-		y = (int) (Math.random() * (30 - 5 + 1) + 5);
+		x = (random.nextInt(30) + 5);
+		y = (random.nextInt(30) + 5);
 	}
 	
-	public void setSpeed(double speed) {
+	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 	
-	private double getSpeed() {
+	private int getSpeed() {
 		return speed;
 	}
 
@@ -32,7 +35,7 @@ public abstract class Animal extends Element {
         return isKilled;
     }
 
-    public void moveRandomly(double power) {
+    public void moveRandomly(int power) {
 		switch(this.getDirection()) {
     	case north:
     		this.y -= this.getSpeed() * power;
@@ -67,7 +70,7 @@ public abstract class Animal extends Element {
 
     private void moveWiselyToNorth(double x, double y) {
 		if (!isMoved) {
-			this.direction = Direction.north;
+			this.direction = north;
 			moveRandomly(3);
 			isMoved = true;
 		}
@@ -150,73 +153,76 @@ public abstract class Animal extends Element {
 	}
 
 
-	public void pickUpSuitableDirectionInTheWestBorder() {
-    	if(x == 5 && y >= 5 && y < 35) {
+	private void pickUpSuitableDirectionInTheWestBorder() {
+    	if(x == 5 && y > 5.1 && y < 34.9) {
     		while(direction.equals(Direction.west) || direction.equals(Direction.northWest) 
     				|| direction.equals(Direction.southWest)) 
-    			direction = Direction.getRandomDirection();
+    			this.direction = Direction.getRandomDirection();
     	  }	
     }
     
-    public void pickUpSuitableDirectionInTheEastBorder() {
-    	   if(x == 35 && y > 5 && y < 35) {
+    private void pickUpSuitableDirectionInTheEastBorder() {
+    	   if(x == 35 && y > 5.1 && y < 34.999) {
        		while(direction.equals(Direction.east) || direction.equals(Direction.northEast) 
        				|| direction.equals(Direction.southEast)) 
-       			direction = Direction.getRandomDirection();
+       			this.direction = Direction.getRandomDirection();
        	  }	
        
     }
     
-    public void pickUpSuitableDirectionInTheNorthBorder() {
-    	if(y == 5 && x > 5 && x < 35) {
-    		while(direction.equals(Direction.north) || direction.equals(Direction.northWest) 
+    private void pickUpSuitableDirectionInTheNorthBorder() {
+    	if(y == 5 && x > 5.1 && x < 34.9) {
+    		while(direction.equals(north) || direction.equals(Direction.northWest)
     				|| direction.equals(Direction.northEast)) 
     			direction = Direction.getRandomDirection();
     	}
     }
     
-    public void pickUpSuitableDirectionInTheSouthBorder() {
-    	if(y == 35 && x > 5 && x < 35) {
+    private void pickUpSuitableDirectionInTheSouthBorder() {
+    	if(y == 35 && x > 5.1 && x < 34.9) {
     		while(direction.equals(Direction.south) || direction.equals(Direction.southEast)
     				|| direction.equals(Direction.southWest))
     			direction = Direction.getRandomDirection();
     	}
     }
     
-    public void pickUpSuitableDirectionInTheNorthWestBorder() {
+    private void pickUpSuitableDirectionInTheNorthWestBorder() {
     	if(x == 5 && y == 5) {
     		while(!(direction.equals(Direction.east) || direction.equals(Direction.south)
     				|| direction.equals(Direction.southEast)))
     			direction = Direction.getRandomDirection();
-    	}
+			}
     		
     }
     
-    public void pickUpSuitableDirectionInTheNorthEastBorder() {
+    private void pickUpSuitableDirectionInTheNorthEastBorder() {
+
      	if(x == 5 && y == 35) {
-    		while(!(direction.equals(Direction.west) || direction.equals(Direction.south)
-    				|| direction.equals(Direction.southWest)))
+    		while(direction.equals(Direction.west) || direction.equals(Direction.southWest) ||
+			       direction.equals(Direction.south) || direction.equals(Direction.southEast) ||
+			        direction.equals(Direction.northWest))
     			direction = Direction.getRandomDirection();
-    	}
+			}
    
     }
     
-    public void pickUpSuitableDirectionIntheSouthWestBorder() {
+    private void pickUpSuitableDirectionIntheSouthWestBorder() {
     	if(x == 35 && y == 5) {
-    		while(!(direction.equals(Direction.east) || direction.equals(Direction.north)
-    				|| direction.equals(Direction.northEast)))
-    			direction = Direction.getRandomDirection();
-    		
+    		while(direction.equals(Direction.north) || direction.equals(Direction.northWest) ||
+			direction.equals(Direction.northEast) || direction.equals(Direction.east) ||
+			   direction.equals(Direction.southEast)) {
+				this.direction = Direction.getRandomDirection();
+				}
+
     	}
     }
 
-    public void pickUpSuitableDirectionInTheSouthEastBorder() {
+    private void pickUpSuitableDirectionInTheSouthEastBorder() {
     	if(x == 35 && y == 35) {
-    		while(!(direction.equals(Direction.west) || direction.equals(Direction.north)
-    				|| direction.equals(Direction.northWest)))
-    			direction = Direction.getRandomDirection();
-    		
-    	}
+			while (!(direction.equals(Direction.west) || direction.equals(north)
+					|| direction.equals(Direction.northWest)))
+				direction = Direction.getRandomDirection();
+		}
     }
     
     public void changeDirectionByKnowingCurrentPostition() {

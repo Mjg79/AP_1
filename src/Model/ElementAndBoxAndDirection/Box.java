@@ -9,7 +9,7 @@ public class Box{
     private HashMap<Element, Integer> element = new HashMap<>();
     private Element content = new Element() {
         @Override
-        public void move(double finalX, double finalY) {
+        public void move(int finalX, int finalY) {
 
         }
 
