@@ -23,7 +23,7 @@ public class View extends Application {
         View view = new View();
         MenuView menuView = new MenuView();
         Controller controller = new Controller();
-        MapView mapView = new MapView(controller,primaryStage);
+        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse());
         Group mainMenu = new Group();
         Scene menu = new Scene(mainMenu, 800, 620);
 

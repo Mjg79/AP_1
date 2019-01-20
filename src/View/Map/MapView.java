@@ -2,9 +2,9 @@ package View.Map;
 import Controller.Controller;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.MapAndCell.Map;
+import Model.Places.WareHouse;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
-import View.Buttons.MenuButton;
 import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
@@ -31,11 +31,15 @@ import java.util.HashMap;
 public class MapView {
     private Controller controller;
     private Stage primaryStage;
-    public MapView(Controller controller,Stage primaryStage)
+    private WareHouse WH;
+    public MapView(Controller controller,Stage primaryStage,WareHouse wareHouse)
     {
         this.primaryStage = primaryStage;
         this.controller = controller;
+        WH = wareHouse;
     }
+
+    private WarehouseScene warehouseScene = new WarehouseScene(WH);
 
     private static final String backGround =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
@@ -54,7 +58,7 @@ public class MapView {
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
 
-    private final Scene wareHouseScence = new Scene(new Group(),1000,750);
+
     private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
@@ -76,7 +80,7 @@ public class MapView {
             }
         };
         animationTimer.start();
-        Button chickenButton = ChickenButton.chickenButton(mapGroup, controller.getMap(), chickenView, mapScene);
+        Button chickenButton = View.Buttons.LiveStocks.ChickenButton.chickenButton(mapGroup, controller.getMap(), chickenView, mapScene);
 
     }
 
@@ -161,7 +165,7 @@ public class MapView {
         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                primaryStage.setScene(wareHouseScence);
+                warehouseScene.changeToWarehouse(primaryStage);
             }
         });
         truckView.relocate(220, 589);
@@ -213,7 +217,6 @@ public class MapView {
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
-        MenuButton.inGameMenuButton(mapGroup, mapScene);
     }
 
 
