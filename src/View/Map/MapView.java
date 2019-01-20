@@ -266,6 +266,7 @@ public class MapView {
                     if((int)time - time == 0)
                     map.turnMap(0.1);
                     try {
+                        showCell(mapGroup, scene, controller.getMap());
                         showLiveStocks(mapGroup, scene);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -285,5 +286,9 @@ public class MapView {
         }
     }
 
-
+    private void showCell(Group group, Scene scene, Map map) throws FileNotFoundException {
+        for (Cell[] cells: controller.getMap().getCells())
+            for (Cell cells1: cells)
+                cells1.showCell(group, scene, map);
+    }
 }
