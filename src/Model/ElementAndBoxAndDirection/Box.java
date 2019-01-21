@@ -1,5 +1,7 @@
 package Model.ElementAndBoxAndDirection;
 
+import Model.Products.Product;
+
 import java.util.HashMap;
 
 public class Box{
@@ -7,6 +9,8 @@ public class Box{
     private int current;
     private boolean isContainAny = false;
     private HashMap<Element, Integer> element = new HashMap<>();
+
+
     private Element content = new Element() {
         @Override
         public void move(int finalX, int finalY) {
@@ -20,19 +24,27 @@ public class Box{
     };
 
     {
+        content.name = "";
         current = 0;
         volume = 10;
     }
 
     public void addElement(Element elementEntry, int count) {
-        if(this.element.size() == 0 &&
-                elementEntry.getVolume() * count <= (volume - current)) {
+        if(elementEntry.getVolume() * count <= (volume - current)) {
+            System.out.println(element.size());
             isContainAny = true;
-            content = elementEntry;
-            this.element.put(elementEntry, count);
-            current += elementEntry.getVolume() * count;// increase the occupied space (current) in Box
+            if (content.getName().equals(""))
+                content = elementEntry;
+            if (!content.getName().equals("") && content.getName().equals(elementEntry.getName())) {
+                if (element.size() != 0)
+                    this.element.put(content, element.get(content) + count);
+                else
+                    this.element.put(content, count);
+                current += elementEntry.getVolume() * count;// increase the occupied space (current) in Box
+            }
         }
     }
+
 
     public void removeElement() {
         current = 0;
