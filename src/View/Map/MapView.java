@@ -1,10 +1,11 @@
 package View.Map;
 import Controller.Controller;
 import Model.Animal.LiveStocks.LiveStock;
+import Model.Animal.WildAnimals.WildAnimal;
+import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
-import Model.Places.WareHouse;
 import View.Buttons.GrassButton;
-import View.Buttons.LiveStocks.*;
+import View.Buttons.Animals.*;
 import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
@@ -13,33 +14,23 @@ import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class MapView {
-    private Controller controller;
-    private Stage primaryStage;
-    private WareHouse WH;
-    public MapView(Controller controller,Stage primaryStage,WareHouse wareHouse)
-    {
-        this.primaryStage = primaryStage;
-        this.controller = controller;
-        WH = wareHouse;
-    }
+    private Controller controller = new Controller();
 
-    private WarehouseScene warehouseScene = new WarehouseScene(WH);
+    public MapView(Controller controller) {
+        this.controller = controller;
+    }
 
     private static final String backGround =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
@@ -57,6 +48,7 @@ public class MapView {
     private ImageView buffaloView = new ImageView();
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
+
 
 
     private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
@@ -80,7 +72,7 @@ public class MapView {
             }
         };
         animationTimer.start();
-        Button chickenButton = View.Buttons.LiveStocks.ChickenButton.chickenButton(mapGroup, controller.getMap(), chickenView, mapScene);
+        Button chickenButton = ChickenButton.chickenButton(mapGroup, controller.getMap(), chickenView, mapScene);
 
     }
 
@@ -136,8 +128,7 @@ public class MapView {
 
 
 
-    void initializeGameMap(Group map, Scene gameMap, Map maps) throws FileNotFoundException {
-
+    public void initializeGameMap(Group map, Scene gameMap, Map maps) throws FileNotFoundException {
         Image backGround1 = new Image(new FileInputStream(
                 "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
         ImageView mapViewBackGround = new ImageView(backGround1);
@@ -157,20 +148,8 @@ public class MapView {
         map.getChildren().add(wareHouseView);
         Image Truck = new Image(new FileInputStream(serviceFiles + "Truck\\01.png"));
         ImageView truckView = new ImageView(Truck);
-        Button truckButton = new Button();
-        truckButton.relocate(278,650);
-        truckButton.setScaleX(4.5);
-        truckButton.setScaleY(4.5);
-        truckButton.setOpacity(0);
-        truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                warehouseScene.changeToWarehouse(primaryStage);
-            }
-        });
         truckView.relocate(220, 589);
         map.getChildren().add(truckView);
-        map.getChildren().add(truckButton);
 
         Image Helicopter = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
         ImageView helicopterView = new ImageView(Helicopter);
@@ -196,7 +175,7 @@ public class MapView {
         Button well = WellButton.wellButton(mapGroup, mapScene, controller.getMap());
         Button eggPowderPlant = EggPowderPlantButton.workShopButton(mapGroup, mapScene, 146, 236,
                 controller.getMap());
-        Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup, mapScene, 146, 520,
+        Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup , mapScene, 146, 520,
                 controller.getMap());
         Button cookieBakery = CookieBakeryButton.workShopButton(mapGroup, mapScene, 711, 221,
                 controller.getMap());
@@ -205,8 +184,8 @@ public class MapView {
     }
 
     public void refreshGrassButtons(Group mapGroup, Scene mapScene) {
-        for (int i = 0; i < 40; i++)
-            for (int j = 0; j < 40; j++) {
+        for (int i = 0; i < 36; i++)
+            for (int j = 0; j < 36; j++) {
                 Button grassButtons = GrassButton.grassButton(mapGroup, mapScene, controller.getMap(),
                         250 + i * 12, 250 + j * 7, this);
             }
@@ -221,10 +200,10 @@ public class MapView {
 
 
     public void gameMap(Group map, Scene mapScene , Map maps) throws FileNotFoundException {
-       this.initializeGameMap(map, mapScene, maps);
-       buttons(map, mapScene);
-       timeShow(controller.getMap(), map, mapScene);
-       mapBudget(map);
+        this.initializeGameMap(map, mapScene, maps);
+        buttons(map, mapScene);
+        timeShow(controller.getMap(), map, mapScene);
+        mapBudget(map);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -260,16 +239,21 @@ public class MapView {
                 if (now > lastTime + (second/10)) {
                     lastTime = now;
                     time += 1;
-                    System.out.println(time/10);
+                    System.out.println(time);
+//                    if (time == 2)
+//                        map.addWildAnimal();
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
                             : "") + Integer.toString(((int)time/10)% 60));
-                    if((int)time - time == 0)
-                    map.turnMap(0.1);
                     try {
                         showCell(mapGroup, scene, controller.getMap());
-                        showLiveStocks(mapGroup, scene);
+                        showLiveStocks(mapGroup, scene, controller.getMap().getFarmTime());
+                        showWildAnimals(controller.getMap(), mapGroup, scene, controller.getMap().getFarmTime());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
+                    }
+                    if((int)time - time == 0) {
+                        map.turnMap(0.1);
+                        System.out.println("term nam");
                     }
                 }
             }
@@ -277,12 +261,16 @@ public class MapView {
         timer.start();
     }
 
-    private void showLiveStocks(Group mapGroup, Scene scene) throws FileNotFoundException {
+    private void showLiveStocks(Group mapGroup, Scene scene, double farmTime) throws FileNotFoundException {
         for (LiveStock liveStock: controller.getMap().getLiveStocks()) {
-            liveStock.chickenMoving(scene, mapGroup, false);
-            System.out.println("x: " + liveStock.getX() + " ,y: " + liveStock.getY());
-            System.out.println("hungerLevel: " + liveStock.getHungerLevel());
-            System.out.println("ismustEat: "  + liveStock.isMustEatForage());
+            if (liveStock.getHungerLevel() <= 0.101)
+                liveStock.graphicDeath = true;
+            if (liveStock.durationDeath == 10)
+                liveStock.setIsKilled(true);
+            liveStock.chickenMoving(scene, mapGroup, false, farmTime);
+            System.out.println("\nx: " + liveStock.getX() + " ,y: " + liveStock.getY());
+            System.out.print("hungerLevel: " + liveStock.getHungerLevel());
+            System.out.print("ismustEat: "  + liveStock.isMustEatForage() + " , isKilled: " + liveStock.isKilled());
         }
     }
 
@@ -291,4 +279,13 @@ public class MapView {
             for (Cell cells1: cells)
                 cells1.showCell(group, scene, map);
     }
+
+    private void showWildAnimals(Map map, Group mapGroup, Scene scene, double farmTime) throws FileNotFoundException {
+        for (WildAnimal wildAnimal: controller.getMap().getWildAnimals()) {
+            wildAnimal.wildAnimalMoving(map, scene, mapGroup, false, farmTime);
+//            System.out.print("x: " + wildAnimal.getX() + " ,y: " + wildAnimal.getY());
+//            System.out.print(" ,is caged: " + wildAnimal.isCaged() );
+        }
+    }
+
 }

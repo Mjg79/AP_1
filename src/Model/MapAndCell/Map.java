@@ -47,9 +47,9 @@ public class Map {
         HashMap<String, Integer> kirekhar = new HashMap<>();
         kirekhar.put("chicken", 0);
         gatherElements = kirekhar;
-        workshops.add(new WorkShop("EggPowderedPlant"));
-        workshops.add(new WorkShop("CookieBakery"));
-        workshops.add(new WorkShop("CakeBakery"));
+        workshops.add(new WorkShop("EggPowderedPlant", 2, 2));
+        workshops.add(new WorkShop("CookieBakery", 34, 6));
+        workshops.add(new WorkShop("CakeBakery", 6, 34));
         for (int i = 0; i <= 35; i++)
             for (int j = 0; j <= 35; j++)
                 cells[i][j] = new Cell(i, j);
@@ -195,7 +195,13 @@ public class Map {
         }
 
     }
-//////////////////////////CHECK_MISSION_NEEDS/////////////////////////
+
+
+    public void addWildAnimal() {
+        wildAnimals.add(new WildAnimal());
+    }
+
+    //////////////////////////CHECK_MISSION_NEEDS/////////////////////////
     private void gatherForMissionNeeds(String purpose) {
         for (String needs: missionNeeds.keySet())
             if (needs.equals(purpose)) {
@@ -243,10 +249,10 @@ public class Map {
 
     //////////////////////////////MOVE_ANIMAL///////////////////////////
     private void BFS(Animal animal, double i, double j) {
-      animal.moveWisely(i, j);
+        animal.moveWisely(i, j);
     }
 
-//////////////////MOVE_LIVE_STOCKS//////////////////////////////////
+    //////////////////MOVE_LIVE_STOCKS//////////////////////////////////
     private void moveLiveStocks() {
         for (LiveStock liveStock : this.getLiveStocks()) {
             if (this.farmTime - liveStock.getStartTimeForEatingForage() < 2)
@@ -289,7 +295,7 @@ public class Map {
         }
 
     }
-//////////////////////////MOVE_WILD_ANIMALS//////////////////
+    //////////////////////////MOVE_WILD_ANIMALS//////////////////
     private void moveWildAnimals() {
         for (WildAnimal wildAnimal : wildAnimals) {
             if (wildAnimal.isCaged())
@@ -300,7 +306,7 @@ public class Map {
             cells[(int) wildAnimal.getX()][(int) wildAnimal.getY()].getWildAnimals().add(wildAnimal);
         }
     }
-////////////////////////MOVE_DOG//////////////////////////
+    ////////////////////////MOVE_DOG//////////////////////////
     private void moveDogs() {
 
         for (Dog dog : dogs) {
@@ -333,7 +339,7 @@ public class Map {
             cells[(int) dog.getX()][(int) dog.getY()].getDogs().add(dog);
         }
     }
-/////////////////////MOVE_CAT//////////////////////////////
+    /////////////////////MOVE_CAT//////////////////////////////
     private void moveCats() {
         catLoop:
         for (Cat cat : cats) {
@@ -359,7 +365,7 @@ public class Map {
         }
 
     }
-///////////////MOVE_ALL_ANIMALS/////////////////////////////////////////
+    ///////////////MOVE_ALL_ANIMALS/////////////////////////////////////////
     public void moveAnimals() {
         this.moveLiveStocks();
         this.moveWildAnimals();
@@ -412,7 +418,7 @@ public class Map {
 
     ///////////////////////////PICKUP_ELEMENTS_FROM_MAP/////////////////////////////
     private void pickUpProducts(int x, int y) {
-            Iterator iterator = cells[x][y].getProducts().iterator();
+        Iterator iterator = cells[x][y].getProducts().iterator();
         while (iterator.hasNext()) {
             Product product = (Product)iterator.next();
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
@@ -433,10 +439,8 @@ public class Map {
 
     private void pickUpWildAnimal(int x, int y) {
         for (WildAnimal wildAnimal : cells[x][y].getWildAnimals())
-            if (wareHouse.getCurrent() + wildAnimal.getVolume() <= wareHouse.getVolume() &&
-                    wildAnimal.isCaged()) {
+            if (wildAnimal.isCaged()) {
                 wareHouse.addGoodOrLiveStock(wildAnimal, 1);
-                cells[x][y].removeElement(wildAnimal);
             }
         Iterator iterator = wildAnimals.iterator();
         while (iterator.hasNext()) {
@@ -490,27 +494,26 @@ public class Map {
         for (WorkShop workShop : workshops) {
             if (!workShop.getName().equals(workShopName))
                 continue;
-            if (!workShop.isInWorking() && wareHouse.isItPossibleForStartingWorkshop(workShop))
+            System.out.println(workShop.getName());
+            if (!workShop.isInWorking() && wareHouse.isItPossibleForStartingWorkshop(workShop)) {
+                System.out.println("start");
                 workShop.startWorking(this.farmTime);
+            }
         }
     }
+
 
 
     //////////////////////////CHECKING_WORKSHOP_FOR_GETTING_OUTPUT/////////////////
     private void checkWorkshopForGettingOutput(WorkShop workShop) {
         if (workShop.checkWorkShopForDistributingOutputs(farmTime)) {
-            ArrayList<Product> goods = workShop.distributeOutputs(this.farmTime);
-            this.addProductProducedByWorkshops(workShop, goods);
+            this.addProductProducedByWorkshops(workShop, workShop.distributeOutputs(this.farmTime));
         }
     }
 
     private void addProductProducedByWorkshops(WorkShop workShop, ArrayList<Product> goods) {
-        if (workShop.getY() < 5)
-            for (Product product : goods)
-                cells[(int) workShop.getX()][(int) workShop.getY() + 3].addElement(product);
-        else if (workShop.getY() > 35)
-            for (Product product : goods)
-                cells[(int) workShop.getX()][(int) workShop.getY() - 3].addElement(product);
+        for (Product product : goods)
+            cells[workShop.getX()][workShop.getY()].addElement(product);
     }
 
     /////////////////////////ADD_ELEMENT_TO_TRUCK//////////////////////////////////
@@ -579,7 +582,7 @@ public class Map {
         Iterator iterator = liveStocks.iterator();
         while (iterator.hasNext()) {
             LiveStock liveStock = (LiveStock)iterator.next();
-            if (liveStock.getHungerLevel() <= 0) {
+            if (liveStock.isKilled()) {
                 wareHouse.eliminateLiveStock(liveStock);
                 cells[(int)liveStock.getX()][(int)liveStock.getY()].removeElement(liveStock);
                 iterator.remove();
@@ -676,27 +679,27 @@ public class Map {
         switch (name) {
             case "truck":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                this.upgradeTruck();
+                    this.upgradeTruck();
                 break;
             case "helicopter":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                this.upgradeHelicopter();
+                    this.upgradeHelicopter();
                 break;
             case "wareHouse":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                this.upgradeWareHouse();
+                    this.upgradeWareHouse();
                 break;
             case "well":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                this.upgradeWell();
+                    this.upgradeWell();
                 break;
             case "cat":
                 if (budget >= this.getTruck().getMoneyForUpgrading())
-                this.upgradeCat();
+                    this.upgradeCat();
                 break;
             default:
                 if (budget >= this.getWorkshops().get(0).getMoneyForUpgrading())
-                upgradeWorkshop(name);
+                    upgradeWorkshop(name);
                 break;
 
         }

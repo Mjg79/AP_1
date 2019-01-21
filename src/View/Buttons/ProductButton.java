@@ -1,5 +1,6 @@
 package View.Buttons;
 
+import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
 import Model.Products.Forage.Forage;
 import javafx.event.EventHandler;
@@ -16,12 +17,11 @@ import java.io.FileNotFoundException;
 public class ProductButton {
     private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
 
-    public static Button productButton(Group group, Scene scene, int x, int y, Map map, double farmTime) throws FileNotFoundException {
-        Button productButton = new Button("");
+    public static Button productButton(Button productButton, Group group, Scene scene, int x, int y,
+                                       Map map, double farmTime) throws FileNotFoundException {
         productButton.setOpacity(0);
-        productButton.relocate(250 + x * 12 + 11,250 + y * 7 + 10);
-        if (!map.getCells()[x][y].getProducts().isEmpty())
-            group.getChildren().add(productButton);
+        productButton.relocate(265 + x * 12,262 + y * 7 );
+        group.getChildren().add(productButton);
         GeneralButton.buttonAppearanceWithCursor(productButton, scene);
         productButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -37,4 +37,6 @@ public class ProductButton {
 
         return productButton;
     }
+
+
 }

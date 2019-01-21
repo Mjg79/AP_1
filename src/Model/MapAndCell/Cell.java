@@ -33,9 +33,9 @@ public class Cell extends Element {
 	}
 
 	public Cell(int x, int y) {
-	    this.x = x;
-	    this.y = y;
-    }
+		this.x = x;
+		this.y = y;
+	}
 
 	public void addElement(Element element) {
 		if (element instanceof LiveStock)
@@ -65,7 +65,7 @@ public class Cell extends Element {
 		if (element instanceof Forage)
 			forages.remove(element);
 		if (element instanceof LiveStock)
-		    liveStocks.remove(element);
+			liveStocks.remove(element);
 
 	}
 
@@ -143,7 +143,7 @@ public class Cell extends Element {
 
 	//////////////////GERAPHIC_CELL///////////////////////////
 	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
-    private Button button = new Button();
+	private Button button = new Button();
 	private ArrayList<ImageView> imageViews = new ArrayList<>();
 
 	private void addForage() throws FileNotFoundException {
@@ -151,24 +151,23 @@ public class Cell extends Element {
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "grass1.png"))));
 	}
 
-	private void addEgg(Product product) throws FileNotFoundException {
-		    if (product.getName().equals("egg"))
+	private void addEgg(Group group, Scene scene, Map map, Product product) throws FileNotFoundException {
+		if (product.getName().equals("egg"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "Egg\\normal_2.png"))));
+
 	}
 
-	private void addPowderEgg(Product product) throws FileNotFoundException {
+	private void addPowderEgg(Group group, Scene scene , Map map, Product product) throws FileNotFoundException {
 		if (product.getName().equals("powderedEgg"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "EggPowder.png"))));
 	}
 
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
-			for (Product product: products) {
-				if (product.getName().equals("egg")) {
-					addEgg(product);
-				}
-			}
-		if (!group.getChildren().contains(button))
-			button = ProductButton.productButton(group, scene, x, y, map, map.getFarmTime());
+		for (Product product: products) {
+			addEgg(group, scene, map, product);
+			addPowderEgg(group, scene, map, product);
+		}
+
 	}
 
 	public void refreshImageViews (Group group) {
@@ -182,9 +181,12 @@ public class Cell extends Element {
 		for (ImageView imageView: imageViews) {
 			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView),
 					250 + 7 * this.getY() + imageViews.indexOf(imageView));
-			if (group.getChildren().contains(imageView))
+			if (group.getChildren().contains(imageView)) {
+				if (!group.getChildren().contains(button))
+					button = ProductButton.productButton(button, group, scene, x, y, map, map.getFarmTime());
 				break;
-				group.getChildren().add(imageView);
+			}
+			group.getChildren().add(imageView);
 		}
 	}
 
