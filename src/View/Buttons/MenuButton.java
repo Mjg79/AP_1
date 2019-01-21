@@ -17,15 +17,15 @@ import java.io.FileNotFoundException;
 
 public class MenuButton {
     public static Button inGameMenuButton(Group mapGroup, Scene mapScene){
-        final Image menuBarImage = new Image("View/Images/InGameImages/menuBar.png");
-        final Image menuButtonGrayImage = new Image("View/Images/InGameImages/menuButtonGray.png");
-        final Image menuButtonBlueImage = new Image("View/Images/InGameImages/menuButtonBlue.png");
-        final Image continueButtonImage = new Image("View/Images/InGameImages/continueButton.png");
-        final Image mainMenuButtonImage = new Image("View/Images/InGameImages/mainMenuButton.png");
-        final Image restartButtonImage = new Image("View/Images/InGameImages/restartButton.png");
-        final Image mapButtonImage = new Image("View/Images/InGameImages/mapButton.png");
-        final Image optiansButtonImage = new Image("View/Images/InGameImages/optiansButton.png");
-        final Image helpButtonImage = new Image("View/Images/InGameImages/helpButton.png");
+        final Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
+        final Image menuButtonGrayImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonGray.png");
+        final Image menuButtonBlueImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonBlue.png");
+        final Image continueButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/continueButton.png");
+        final Image mainMenuButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/mainMenuButton.png");
+        final Image restartButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/restartButton.png");
+        final Image mapButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/mapButton.png");
+        final Image optiansButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/optiansButton.png");
+        final Image helpButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/helpButton.png");
         ImageView menuBarView = new ImageView(menuBarImage);
         menuBarView.setY(92);
         menuBarView.setX(329);

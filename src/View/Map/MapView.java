@@ -4,8 +4,13 @@ import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
+import Model.Places.WareHouse;
 import View.Buttons.GrassButton;
-import View.Buttons.Animals.*;
+import View.Buttons.HelicopterButton;
+import View.Buttons.LiveStocks.BuffaloButton;
+import View.Buttons.LiveStocks.ChickenButton;
+import View.Buttons.LiveStocks.OstrichButton;
+import View.Buttons.MenuButton;
 import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
@@ -20,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,9 +33,11 @@ import java.util.HashMap;
 
 public class MapView {
     private Controller controller = new Controller();
+    private Stage primaryStage;
 
-    public MapView(Controller controller) {
+    public MapView(Controller controller, Stage primaryStage, WareHouse wareHouse) {
         this.controller = controller;
+        this.primaryStage = primaryStage;
     }
 
     private static final String backGround =
@@ -196,6 +204,8 @@ public class MapView {
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
+        MenuButton.inGameMenuButton(mapGroup, mapScene);
+        HelicopterButton.helicopterButton(mapGroup, mapScene, controller, primaryStage);
     }
 
 
@@ -267,7 +277,7 @@ public class MapView {
                 liveStock.graphicDeath = true;
             if (liveStock.durationDeath == 10)
                 liveStock.setIsKilled(true);
-            liveStock.chickenMoving(scene, mapGroup, false, farmTime);
+            liveStock.chickenMoving(scene, mapGroup, false);
             System.out.println("\nx: " + liveStock.getX() + " ,y: " + liveStock.getY());
             System.out.print("hungerLevel: " + liveStock.getHungerLevel());
             System.out.print("ismustEat: "  + liveStock.isMustEatForage() + " , isKilled: " + liveStock.isKilled());
