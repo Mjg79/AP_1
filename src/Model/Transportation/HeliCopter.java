@@ -3,6 +3,7 @@ package Model.Transportation;
 
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
+import Model.Products.Product;
 
 import java.util.ArrayList;
 
@@ -19,8 +20,10 @@ public class Helicopter extends Element {
     private boolean isStartedForAddingToBoxes = false;
 
     {
-        for (int i = 0; i < numOfBoxes; i++)
-            boxes.add(new Box());
+        for (int i = 0; i < numOfBoxes; i++) {
+            Box box = new Box();
+            boxes.add(box);
+        }
         moneyForUpgrading = 400;
     }
 
@@ -59,15 +62,15 @@ public class Helicopter extends Element {
 
     @Override
     public boolean upgrade() {
-      if (level < 3) {
-          numOfBoxes += 2;
-          boxes.add(new Box());
-          boxes.add(new Box());
-          moneyForUpgrading += 100;
-          level++;
-          return true;
-      }
-     return false;
+        if (level < 3) {
+            numOfBoxes += 2;
+            boxes.add(new Box());
+            boxes.add(new Box());
+            moneyForUpgrading += 100;
+            level++;
+            return true;
+        }
+        return false;
     }
 
     public int getMapBudget() {
@@ -83,16 +86,16 @@ public class Helicopter extends Element {
 
     public void putOneCountOfAnElementInHelicopter(Element element, int budget) {
         this.startForAddingElementToHelicopter(budget);
-       if (element.getPrice() <= allCost && isInWareHouse)
-        for (Box box: boxes) {
-            if (!(box.getContent().getClass().equals(element.getClass())) ||
-                    box.getCurrent() == box.getVolume())
-                continue;
-            box.addElement(element, 1);
-            salesGoods.add(element);
-            allCost += element.getPrice();
-        }
-
+        if (element.getPrice() <= mapBudget && isInWareHouse)
+            for (Box box: boxes) {
+                if ((!box.getContent().getName().equals("") && !box.getContent().getName().equals(element.getName())) ||
+                        box.getCurrent() == box.getVolume())
+                    continue;
+                box.addElement(element, 1);
+                salesGoods.add(element);
+                allCost += element.getPrice();
+                break;
+            }
     }
 
     private boolean isHelicopterContainsAny() {
