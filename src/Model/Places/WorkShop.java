@@ -11,19 +11,23 @@ public class WorkShop extends Element {
     private int possibleNumberOfOutputProducts;
     protected int maxNumberOfProducts;
     protected String nameOfOutputProduct;
-    protected double timeLastingForWorking = 12;
-    protected ArrayList<Product> outputProduct;
+    protected double timeLastingForWorking = 0;
+    protected ArrayList<Product> outputProduct = new ArrayList<>();
     private double endOfTimeForWorking;
 
 
-    public WorkShop(String name) {
+    public WorkShop(String name, int x, int y) {
         this.checkCakeBakery(name);
         this.checkCookieBakery(name);
         this.checkEggPowderedPlant(name);
         this.checkWeavingFactory(name);
         this.checkSewingFactory(name);
         this.checkSpinnery(name);
+        this.x = x;
+        this.y = y;
     }
+
+
 
     private void checkSpinnery(String name) {
     }
@@ -53,6 +57,8 @@ public class WorkShop extends Element {
             nameOfInputProducts.add("egg");
             maxNumberOfProducts = 1;
             nameOfOutputProduct = "powderedEgg";
+            x = 250;
+            y = 250;
         }
     }
 
@@ -103,42 +109,42 @@ public class WorkShop extends Element {
     }
 
     public boolean checkWorkShopForDistributingOutputs(double time) {// checking it at turn function in map.java
-       if (isInWorking && time > endOfTimeForWorking) {
-           isInWorking = false;
-           return true;
-       }
-       return false;
+        if (isInWorking && time > endOfTimeForWorking) {
+            isInWorking = false;
+            return true;
+        }
+        return false;
     }
 
     public ArrayList<Product> distributeOutputs(double time) {
-       outputProduct.clear();
-        if (name.equals("cakeBakery")) {
-           for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-               this.outputProduct.add(new Product(time, "cake"));
-           return outputProduct;
-       }
-       if (name.equals("cookieBakery")) {
-           for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-               this.outputProduct.add(new Product(time, "cookie"));
-           return outputProduct;
-       }
-       if (name.equals("eggPowderedPlant")) {
-           for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-               this.outputProduct.add(new Product(time, "powderedEgg"));
-           return outputProduct;
-       }
-       if (name.equals("sewingFactory")) {
-           for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-               this.outputProduct.add(new Product(time, "sewing"));
-           return outputProduct;
-       }
-       if (name.equals("weavingFactory")) {
-           for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-               this.outputProduct.add(new Product(time, "cloth"));
-           return outputProduct;
-       }
+        outputProduct.clear();
+        if (name.equals("CakeBakery")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cake"));
+            return outputProduct;
+        }
+        if (name.equals("CookieBakery")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cookie"));
+            return outputProduct;
+        }
+        if (name.equals("EggPowderedPlant")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "powderedEgg"));
+            return outputProduct;
+        }
+        if (name.equals("SewingFactory")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "sewing"));
+            return outputProduct;
+        }
+        if (name.equals("WeavingFactory")) {
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
+                this.outputProduct.add(new Product(time, "cloth"));
+            return outputProduct;
+        }
 
-       return null;
+        return null;
     }
 
 
@@ -149,13 +155,13 @@ public class WorkShop extends Element {
 
     @Override
     public  boolean upgrade() {
-      if (level < 3) {
-          maxNumberOfProducts++;
-          moneyForUpgrading += 100;
-          level++;
-          return true;
-      }
-      return false;
+        if (level < 3) {
+            maxNumberOfProducts++;
+            moneyForUpgrading += 100;
+            level++;
+            return true;
+        }
+        return false;
     }
 
 }
