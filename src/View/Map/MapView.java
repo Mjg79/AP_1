@@ -19,11 +19,13 @@ import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -32,12 +34,14 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class MapView {
-    private Controller controller = new Controller();
+    private Controller controller;
     private Stage primaryStage;
 
-    public MapView(Controller controller, Stage primaryStage, WareHouse wareHouse) {
+    private WarehouseScene warehouseScene;
+    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse) {
         this.controller = controller;
         this.primaryStage = primaryStage;
+        warehouseScene = new WarehouseScene(wareHouse);
     }
 
     private static final String backGround =
@@ -157,7 +161,19 @@ public class MapView {
         Image Truck = new Image(new FileInputStream(serviceFiles + "Truck\\01.png"));
         ImageView truckView = new ImageView(Truck);
         truckView.relocate(220, 589);
+        Button truckButton = new Button();
+        truckButton.relocate(278,650);
+        truckButton.setScaleX(4.5);
+        truckButton.setScaleY(4.5);
+        truckButton.setOpacity(0);
+        truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                warehouseScene.changeToWarehouse(primaryStage);
+            }
+        });
         map.getChildren().add(truckView);
+        map.getChildren().add(truckButton);
 
         Image Helicopter = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
         ImageView helicopterView = new ImageView(Helicopter);
@@ -277,7 +293,7 @@ public class MapView {
                 liveStock.graphicDeath = true;
             if (liveStock.durationDeath == 10)
                 liveStock.setIsKilled(true);
-            liveStock.chickenMoving(scene, mapGroup, false);
+            liveStock.chickenMoving(scene, mapGroup, false,controller.getMap().getFarmTime());
             System.out.println("\nx: " + liveStock.getX() + " ,y: " + liveStock.getY());
             System.out.print("hungerLevel: " + liveStock.getHungerLevel());
             System.out.print("ismustEat: "  + liveStock.isMustEatForage() + " , isKilled: " + liveStock.isKilled());

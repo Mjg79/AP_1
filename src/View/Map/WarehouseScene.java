@@ -16,8 +16,6 @@ public class WarehouseScene {
     private final Scene wareHouseScence = new Scene(warehouseRoot,1000,750);
     public WarehouseScene(WareHouse wareHouse) {
         this.wareHouse = wareHouse;
-    }
-    public void changeToWarehouse(Stage primaryStage) {
         Image backGround = null;
         try {
             backGround = new Image(new FileInputStream(
@@ -29,6 +27,9 @@ public class WarehouseScene {
         mapViewBackGround.setFitWidth(1000);
         mapViewBackGround.setFitHeight(750);
         warehouseRoot.getChildren().add(mapViewBackGround);
+    }
+    public void changeToWarehouse(Stage primaryStage) {
+
         primaryStage.setScene(wareHouseScence);
     }
 
