@@ -47,9 +47,9 @@ public class Map {
         HashMap<String, Integer> kirekhar = new HashMap<>();
         kirekhar.put("chicken", 0);
         gatherElements = kirekhar;
-        workshops.add(new WorkShop("EggPowderedPlant"));
-        workshops.add(new WorkShop("CookieBakery"));
-        workshops.add(new WorkShop("CakeBakery"));
+        workshops.add(new WorkShop("EggPowderedPlant", 2, 2));
+        workshops.add(new WorkShop("CookieBakery", 34, 6));
+        workshops.add(new WorkShop("CakeBakery", 6, 34));
         for (int i = 0; i <= 35; i++)
             for (int j = 0; j <= 35; j++)
                 cells[i][j] = new Cell(i, j);
