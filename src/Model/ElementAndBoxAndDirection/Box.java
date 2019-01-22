@@ -48,8 +48,8 @@ public class Box{
 
     public void removeElement() {
         current = 0;
-        element.clear();
-        content = null;
+        element.remove(content);
+        content.name = "";
         isContainAny = false;
     }
 

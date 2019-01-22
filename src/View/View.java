@@ -23,7 +23,6 @@ public class View extends Application {
         View view = new View();
         MenuView menuView = new MenuView();
         Controller controller = new Controller();
-        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse());
         Group mainMenu = new Group();
         Scene menu = new Scene(mainMenu, 800, 620);
 
@@ -37,10 +36,18 @@ public class View extends Application {
         Group map = new Group();
         Scene mapGame = new Scene(map, 1000, 750);
 
+        Group hGroup = new Group();
+        Scene hScene = new Scene(hGroup, 1000, 750);
+
+        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse(), hScene);
         mapView.gameMap(map, mapGame, controller.getMap());
 
         menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
         menuView.nameMenu(primaryStage, menu, nameMenu, names, mainMenu, choseMap);
+
+        HeliCopterView heliCopterView = new HeliCopterView(primaryStage, controller, mapScene,
+                hScene, hGroup, mapView, map);
+        heliCopterView.helicopterShow();
         primaryStage.setScene(mapGame);
         primaryStage.show();
     }

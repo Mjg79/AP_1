@@ -162,10 +162,18 @@ public class Cell extends Element {
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "EggPowder.png"))));
 	}
 
+	private void addFlour(Group group, Scene scene , Map map, Product product) throws FileNotFoundException {
+		if (product.getName().equals("flour"))
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "flour.png"))));
+	}
+
+
+
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		for (Product product: products) {
 			addEgg(group, scene, map, product);
 			addPowderEgg(group, scene, map, product);
+			addFlour(group, scene, map, product);
 		}
 
 	}

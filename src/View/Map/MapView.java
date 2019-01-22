@@ -36,12 +36,14 @@ import java.util.HashMap;
 public class MapView {
     private Controller controller;
     private Stage primaryStage;
-
+    private Scene helicopterScene;
     private WarehouseScene warehouseScene;
-    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse) {
+
+    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse, Scene helicopterScene) {
         this.controller = controller;
         this.primaryStage = primaryStage;
         warehouseScene = new WarehouseScene(wareHouse,primaryStage.getScene());
+        this.helicopterScene = helicopterScene;
     }
 
     private static final String backGround =
@@ -58,7 +60,9 @@ public class MapView {
     private ImageView chickenView = new ImageView();
     private ImageView ostrichView = new ImageView();
     private ImageView buffaloView = new ImageView();
+    private ImageView helicopterView = new ImageView();
     private ImageView dogView = new ImageView();
+    private Button hButton = new Button();//helicopterButton
     private ImageView catView = new ImageView();
 
 
@@ -166,6 +170,9 @@ public class MapView {
         truckButton.setScaleX(4.5);
         truckButton.setScaleY(4.5);
         truckButton.setOpacity(0);
+
+
+
         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -176,10 +183,14 @@ public class MapView {
         map.getChildren().add(truckButton);
 
         Image Helicopter = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
-        ImageView helicopterView = new ImageView(Helicopter);
+        helicopterView.setImage(Helicopter);
         helicopterView.relocate(621,559);
         map.getChildren().add(helicopterView);
-
+        hButton.relocate(671, 639);
+        hButton.setText("helicopter\nhelicopter");
+        GeneralButton.buttonAppearanceWithCursor(hButton, gameMap);
+        hButton.setOpacity(0);
+        map.getChildren().add(hButton);
 
         Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
         ImageView underBarView = new ImageView(underBar);
@@ -274,6 +285,9 @@ public class MapView {
                         showCell(mapGroup, scene, controller.getMap());
                         showLiveStocks(mapGroup, scene, controller.getMap().getFarmTime());
                         showWildAnimals(controller.getMap(), mapGroup, scene, controller.getMap().getFarmTime());
+                        showHelicopter(controller.getMap(), mapGroup);
+                        setHButton();
+                        showWildAnimals(controller.getMap(), mapGroup, scene, controller.getMap().getFarmTime());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -312,6 +326,27 @@ public class MapView {
 //            System.out.print("x: " + wildAnimal.getX() + " ,y: " + wildAnimal.getY());
 //            System.out.print(" ,is caged: " + wildAnimal.isCaged() );
         }
+    }
+
+    private void showHelicopter(Map map, Group group) {
+        if (!map.getHelicopter().isInWareHouse()) {
+            hButton.setVisible(false);
+            helicopterView.setVisible(false);
+        } else {
+            hButton.setVisible(true);
+            helicopterView.setVisible(true);
+        }
+
+
+    }
+
+    private void setHButton() {
+        hButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setScene(helicopterScene);
+            }
+        });
     }
 
 }
