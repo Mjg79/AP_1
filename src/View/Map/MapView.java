@@ -15,6 +15,7 @@ import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
 import View.Buttons.WorkShop.EggPowderPlantButton;
+import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
@@ -185,14 +186,6 @@ public class MapView {
         GeneralButton.buttonAppearanceWithCursor(truckButton,mapScene);
         mapGroup.getChildren().add(truckButton);
 
-//        helicopterView.relocate(606,559);
-//        mapGroup.getChildren().add(helicopterView);
-//        hButton.relocate(656, 639);
-//        hButton.setText("helicopter\nhelicopter");
-//        GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
-//        hButton.setOpacity(0);
-//        mapGroup.getChildren().add(hButton);
-
         hButton.relocate(606, 559);
         hButton.setGraphic(helicopterView);
         hButton.setBorder(Border.EMPTY);
@@ -239,6 +232,7 @@ public class MapView {
     }
 
     public void buttons(Group mapGroup, Scene mapScene) throws FileNotFoundException {
+        MissionNeeds.showMissionAndGathers(mapGroup, controller.getMap());
         this.workShopButtons(mapGroup, mapScene);
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);

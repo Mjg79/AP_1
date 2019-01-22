@@ -11,7 +11,7 @@ public class WorkShop extends Element {
     private int possibleNumberOfOutputProducts;
     protected int maxNumberOfProducts;
     protected String nameOfOutputProduct;
-    protected double timeLastingForWorking = 0;
+    protected double timeLastingForWorking = 1;
     protected ArrayList<Product> outputProduct = new ArrayList<>();
     private double endOfTimeForWorking;
 
