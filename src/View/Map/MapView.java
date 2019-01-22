@@ -20,12 +20,15 @@ import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -182,13 +185,23 @@ public class MapView {
         GeneralButton.buttonAppearanceWithCursor(truckButton,mapScene);
         mapGroup.getChildren().add(truckButton);
 
-        helicopterView.relocate(606,559);
-        mapGroup.getChildren().add(helicopterView);
-        hButton.relocate(656, 639);
-        hButton.setText("helicopter\nhelicopter");
+//        helicopterView.relocate(606,559);
+//        mapGroup.getChildren().add(helicopterView);
+//        hButton.relocate(656, 639);
+//        hButton.setText("helicopter\nhelicopter");
+//        GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
+//        hButton.setOpacity(0);
+//        mapGroup.getChildren().add(hButton);
+
+        hButton.relocate(606, 559);
+        hButton.setGraphic(helicopterView);
+        hButton.setBorder(Border.EMPTY);
+        hButton.setBackground(Background.EMPTY);
+        hButton.setPadding(Insets.EMPTY);
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
-        hButton.setOpacity(0);
         mapGroup.getChildren().add(hButton);
+
+
 
         Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
         ImageView underBarView = new ImageView(underBar);

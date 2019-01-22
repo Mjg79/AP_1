@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.java2d.loops.FillRect;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
