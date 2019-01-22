@@ -41,7 +41,7 @@ public class MapView {
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse) {
         this.controller = controller;
         this.primaryStage = primaryStage;
-        warehouseScene = new WarehouseScene(wareHouse);
+        warehouseScene = new WarehouseScene(wareHouse,primaryStage.getScene());
     }
 
     private static final String backGround =
