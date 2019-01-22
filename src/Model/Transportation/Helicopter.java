@@ -39,7 +39,7 @@ public class Helicopter extends Element {
             boxes.add(box);
         }
         moneyForUpgrading = 400;
-        level = 1;
+        level = 3;
     }
 
     public ArrayList<Box> getBoxes() {
@@ -175,13 +175,11 @@ public class Helicopter extends Element {
 
     ///////////////////////graphic_helicopter////////////////////////////
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
-
+    private ImageView helicopterGo = new ImageView();
     public void goHelicopter(Map map, Group mapGroup) throws FileNotFoundException {
-        ImageView helicopterGo = new ImageView(new Image(new FileInputStream(HELICOPTERFILE + "0" +
-                map.getHelicopter().getLevel() + "_mini.png")));
 
+        setImageHelicopterGo(mapGroup, map);
         helicopterGo.setScaleX(-1);
-        System.out.println("aklsj;fd;skljf");
         mapGroup.getChildren().add(helicopterGo);
         SpriteAnimation helicopterAnimation = new SpriteAnimation(helicopterGo, Duration.millis(50), 6,
                 3, 0, 0, 48, 48);
@@ -216,5 +214,11 @@ public class Helicopter extends Element {
         timer.start();
     }
 
+
+    private void setImageHelicopterGo(Group mapGroup, Map map) throws FileNotFoundException {
+        helicopterGo.setImage(new Image(new FileInputStream(HELICOPTERFILE + "0" +
+                map.getHelicopter().getLevel() + "_mini.png")));
+
+    }
 
 }
