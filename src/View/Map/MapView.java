@@ -42,7 +42,11 @@ public class MapView {
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
         this.controller = controller;
         this.primaryStage = primaryStage;
-        warehouseScene = new WarehouseScene(wareHouse,mapScene);
+        try {
+            warehouseScene = new WarehouseScene(wareHouse,mapScene);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         this.helicopterScene = helicopterScene;
     }
 
@@ -61,6 +65,8 @@ public class MapView {
     private ImageView ostrichView = new ImageView();
     private ImageView buffaloView = new ImageView();
     private ImageView helicopterView = new ImageView();
+    private ImageView truckView = new ImageView();
+    private Button truckButton = new Button();
     private ImageView dogView = new ImageView();
     private Button hButton = new Button();//helicopterButton
     private ImageView catView = new ImageView();
@@ -144,60 +150,50 @@ public class MapView {
 
 
 
-    public void initializeGameMap(Group map, Scene gameMap, Map maps) throws FileNotFoundException {
+    public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
         Image backGround1 = new Image(new FileInputStream(
                 "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
         ImageView mapViewBackGround = new ImageView(backGround1);
-        mapViewBackGround.setFitWidth(gameMap.getWidth());
-        mapViewBackGround.setFitHeight(gameMap.getHeight());
-        map.getChildren().add(mapViewBackGround);
+        mapViewBackGround.setFitWidth(mapScene.getWidth());
+        mapViewBackGround.setFitHeight(mapScene.getHeight());
+        mapGroup.getChildren().add(mapViewBackGround);
 
-        maps.getWell().wellAnimation(false, 1, map).play();
-        EggPowderPlant.eggPowderPlantAnimation(false, map, 1).play();
-        CakeBakery.cakeBakeryAnimation(false, map, 1).play();
-        CookieBakery.cookieBakeryAnimation(false, map, 1).play();
+        maps.getWell().wellAnimation(false, 1, mapGroup).play();
+        EggPowderPlant.eggPowderPlantAnimation(false, mapGroup, 1).play();
+        CakeBakery.cakeBakeryAnimation(false, mapGroup, 1).play();
+        CookieBakery.cookieBakeryAnimation(false, mapGroup, 1).play();
 
 
         Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
         ImageView wareHouseView = new ImageView(wareHouse);
         wareHouseView.relocate(390, 579);
-        map.getChildren().add(wareHouseView);
-        Image Truck = new Image(new FileInputStream(serviceFiles + "Truck\\01.png"));
-        ImageView truckView = new ImageView(Truck);
-        truckView.relocate(220, 589);
-        Button truckButton = new Button();
+        mapGroup.getChildren().add(wareHouseView);
+        mapGroup.getChildren().add(truckView);
+        truckButton = new Button();
         truckButton.relocate(278,650);
         truckButton.setScaleX(4.5);
         truckButton.setScaleY(4.5);
         truckButton.setOpacity(0);
-        truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                warehouseScene.changeToWarehouse(primaryStage);
-            }
-        });
-        map.getChildren().add(truckView);
-        GeneralButton.buttonAppearanceWithCursor(truckButton,gameMap);
-        map.getChildren().add(truckButton);
-
+        GeneralButton.buttonAppearanceWithCursor(truckButton,mapScene);
+        mapGroup.getChildren().add(truckButton);
 
         helicopterView.relocate(606,559);
-        map.getChildren().add(helicopterView);
+        mapGroup.getChildren().add(helicopterView);
         hButton.relocate(656, 639);
         hButton.setText("helicopter\nhelicopter");
-        GeneralButton.buttonAppearanceWithCursor(hButton, gameMap);
+        GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
         hButton.setOpacity(0);
-        map.getChildren().add(hButton);
+        mapGroup.getChildren().add(hButton);
 
         Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
         ImageView underBarView = new ImageView(underBar);
         underBarView.relocate(0, 580);
-        map.getChildren().add(underBarView);
+        mapGroup.getChildren().add(underBarView);
 
         Image moneyAndTransportation = new Image(new FileInputStream(farmFrenzyScenesDesign + "upperbar.png"));
         ImageView moneyAndTransportationView = new ImageView(moneyAndTransportation);
         moneyAndTransportationView.relocate(620, 0);
-        map.getChildren().add(moneyAndTransportationView);
+        mapGroup.getChildren().add(moneyAndTransportationView);
     }
 
 
@@ -255,7 +251,7 @@ public class MapView {
         animationTimer.start();
     }
 
-    public void timeShow(Map map, Group mapGroup, Scene scene) {
+    public void timeShow(Map map, Group mapGroup, Scene mapScene) {
         Text timerLabel = new Text();
         mapGroup.getChildren().add(timerLabel);
         timerLabel.relocate(840, 710);
@@ -278,12 +274,19 @@ public class MapView {
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
                             : "") + Integer.toString(((int)time/10)% 60));
                     try {
-                        showCell(mapGroup, scene, controller.getMap());
-                        showLiveStocks(mapGroup, scene, controller.getMap().getFarmTime());
-                        showWildAnimals(controller.getMap(), mapGroup, scene, controller.getMap().getFarmTime());
+                        showCell(mapGroup, mapScene, controller.getMap());
+                        showLiveStocks(mapGroup, mapScene, controller.getMap().getFarmTime());
+                        showWildAnimals(controller.getMap(), mapGroup, mapScene, controller.getMap().getFarmTime());
                         showHelicopter(controller.getMap(), mapGroup);
                         setHButton();
-                        showWildAnimals(controller.getMap(), mapGroup, scene, controller.getMap().getFarmTime());
+                        showTruck(map,mapScene,mapGroup);
+                        truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                warehouseScene.changeToWarehouse(primaryStage);
+                            }
+                        });
+                        showWildAnimals(controller.getMap(), mapGroup, mapScene, controller.getMap().getFarmTime());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -322,6 +325,12 @@ public class MapView {
 //            System.out.print("x: " + wildAnimal.getX() + " ,y: " + wildAnimal.getY());
 //            System.out.print(" ,is caged: " + wildAnimal.isCaged() );
         }
+    }
+
+    private void showTruck(Map map,Scene mapScene,Group group) throws FileNotFoundException {
+        truckView.setImage(new Image(new FileInputStream(serviceFiles + "Truck\\0"+
+                controller.getMap().getTruck().getLevel()+ ".png")));
+        truckView.relocate(220, 589);
     }
 
     private void showHelicopter(Map map, Group group) throws FileNotFoundException {

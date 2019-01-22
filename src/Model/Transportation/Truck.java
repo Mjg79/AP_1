@@ -19,6 +19,7 @@ public class Truck extends Element {
         for (int i = 0; i < numOfBoxes; i++)
             boxes.add(new Box());
         moneyForUpgrading = 200;
+        this.level = 1;
     }
 
     public ArrayList<Box> getBoxes() {
