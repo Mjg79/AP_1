@@ -39,10 +39,10 @@ public class MapView {
     private Scene helicopterScene;
     private WarehouseScene warehouseScene;
 
-    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse, Scene helicopterScene) {
+    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
         this.controller = controller;
         this.primaryStage = primaryStage;
-        warehouseScene = new WarehouseScene(wareHouse,primaryStage.getScene());
+        warehouseScene = new WarehouseScene(wareHouse,mapScene);
         this.helicopterScene = helicopterScene;
     }
 
