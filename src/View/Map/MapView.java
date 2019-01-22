@@ -167,9 +167,6 @@ public class MapView {
         truckButton.setScaleX(4.5);
         truckButton.setScaleY(4.5);
         truckButton.setOpacity(0);
-
-
-
         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -177,6 +174,7 @@ public class MapView {
             }
         });
         map.getChildren().add(truckView);
+        GeneralButton.buttonAppearanceWithCursor(truckButton,gameMap);
         map.getChildren().add(truckButton);
 
         Image Helicopter = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
