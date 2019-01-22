@@ -5,13 +5,10 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
-import View.Buttons.GrassButton;
-import View.Buttons.HelicopterButton;
+import View.Buttons.*;
 import View.Buttons.LiveStocks.BuffaloButton;
 import View.Buttons.LiveStocks.ChickenButton;
 import View.Buttons.LiveStocks.OstrichButton;
-import View.Buttons.MenuButton;
-import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
 import View.Buttons.WorkShop.EggPowderPlantButton;
@@ -232,7 +229,6 @@ public class MapView {
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
         MenuButton.inGameMenuButton(mapGroup, mapScene);
-        HelicopterButton.helicopterButton(mapGroup, mapScene, controller, primaryStage);
     }
 
 
@@ -344,7 +340,7 @@ public class MapView {
         hButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                stage.setScene(helicopterScene);
+                primaryStage.setScene(helicopterScene);
             }
         });
     }

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
 import View.Menu.MenuView;
 import javafx.application.Application;
@@ -34,13 +35,13 @@ public class View extends Application {
         menuView.mapChooseMenu(primaryStage, chooseMap, choseMap, menu);
 
         Group map = new Group();
-        Scene mapGame = new Scene(map, 1000, 750);
+        Scene mapScene = new Scene(map, 1000, 750);
 
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
 
         MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse(), hScene);
-        mapView.gameMap(map, mapGame, controller.getMap());
+        mapView.gameMap(map, mapScene, controller.getMap());
 
         menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
         menuView.nameMenu(primaryStage, menu, nameMenu, names, mainMenu, choseMap);
@@ -48,7 +49,7 @@ public class View extends Application {
         HeliCopterView heliCopterView = new HeliCopterView(primaryStage, controller, mapScene,
                 hScene, hGroup, mapView, map);
         heliCopterView.helicopterShow();
-        primaryStage.setScene(mapGame);
+        primaryStage.setScene(mapScene);
         primaryStage.show();
     }
 
