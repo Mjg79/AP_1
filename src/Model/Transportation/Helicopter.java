@@ -3,22 +3,8 @@ package Model.Transportation;
 
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
-import Model.MapAndCell.Map;
 import Model.Products.Product;
-import View.Animations.SpriteAnimation;
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
-import javafx.animation.PathTransition;
-import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.util.Duration;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Helicopter extends Element {
@@ -30,7 +16,7 @@ public class Helicopter extends Element {
     private double endTimeForBuyingElements;
     private ArrayList<Element> salesGoods = new ArrayList<>();
     private boolean isInWareHouse = true;
-    private  int timeDurationForWorking = 10;
+    private static int timeDurationForWorking = 20;
     private boolean isStartedForAddingToBoxes = false;
 
     {
@@ -39,7 +25,6 @@ public class Helicopter extends Element {
             boxes.add(box);
         }
         moneyForUpgrading = 400;
-        level = 1;
     }
 
     public ArrayList<Box> getBoxes() {
@@ -62,7 +47,7 @@ public class Helicopter extends Element {
         return endTimeForBuyingElements;
     }
 
-    public  int getTimeDurationForWorking() {
+    public static int getTimeDurationForWorking() {
         return timeDurationForWorking;
     }
 
@@ -111,10 +96,9 @@ public class Helicopter extends Element {
                 allCost += element.getPrice();
                 break;
             }
-
     }
 
-    public boolean isHelicopterContainsAny() {
+    private boolean isHelicopterContainsAny() {
         for(Box box: boxes)
             if (box.isContainAny())
                 return true;
@@ -123,21 +107,12 @@ public class Helicopter extends Element {
     }
 
 
-
-    public void clearSalesGood() {
-        salesGoods.clear();
-    }
-
     public int startWorking(double time) {
         if(this.isInWareHouse && this.isHelicopterContainsAny()) {
             startTimeForSellingElements = time;
             isStartedForAddingToBoxes = false;
             endTimeForBuyingElements = time + timeDurationForWorking;
             isInWareHouse = false;
-            for (Box box: boxes)
-                System.out.println("box" + boxes.indexOf(box) + ": " + " ,productName: " +
-                        box.getContent().getName() + " ,numbers: " + box.getElement().get(box.getContent()) +
-                        " , isContainsAny: " + isHelicopterContainsAny());
             return mapBudget - allCost;
         }
         return mapBudget;
@@ -153,6 +128,7 @@ public class Helicopter extends Element {
         if (time > endTimeForBuyingElements && !isInWareHouse) {
             mapBudget = 0;
             allCost = 0;
+            salesGoods.clear();
             isInWareHouse = true;
             for (Box box : boxes)
                 box.removeElement();
@@ -170,51 +146,5 @@ public class Helicopter extends Element {
             for (Box box: boxes)
                 box.removeElement();
     }
-
-
-
-    ///////////////////////graphic_helicopter////////////////////////////
-    private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
-
-    public void goHelicopter(Map map, Group mapGroup) throws FileNotFoundException {
-        ImageView helicopterGo = new ImageView(new Image(new FileInputStream(HELICOPTERFILE + "0" +
-                map.getHelicopter().getLevel() + "_mini.png")));
-
-        helicopterGo.setScaleX(-1);
-        System.out.println("aklsj;fd;skljf");
-        mapGroup.getChildren().add(helicopterGo);
-        SpriteAnimation helicopterAnimation = new SpriteAnimation(helicopterGo, Duration.millis(50), 6,
-                3, 0, 0, 48, 48);
-        helicopterAnimation.setAutoReverse(true);
-        helicopterAnimation.setCycleCount(Animation.INDEFINITE);
-        helicopterAnimation.play();
-
-        Path path = new Path(new MoveTo(785, 20), new LineTo(980, 20));
-        path.setVisible(false);
-        mapGroup.getChildren().add(path);
-        PathTransition pathTransition = new PathTransition(
-                Duration.millis(map.getHelicopter().getTimeDurationForWorking() * 600), path, helicopterGo);
-        pathTransition.setAutoReverse(true);
-        pathTransition.setCycleCount(2);
-        pathTransition.play();
-
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                System.out.println(pathTransition.getCurrentTime());
-                if ((int)pathTransition.getCurrentTime().toSeconds() ==
-                        map.getHelicopter().getTimeDurationForWorking() / 2 && helicopterGo.getScaleX() != 1) {
-                    helicopterGo.setScaleX(1);
-                }
-                if (pathTransition.getCurrentTime().toSeconds() == 0 && helicopterGo.getScaleX() == 1) {
-                    helicopterAnimation.stop();
-                    mapGroup.getChildren().remove(helicopterGo);
-                    this.stop();
-                }
-            }
-        };
-        timer.start();
-    }
-
 
 }
