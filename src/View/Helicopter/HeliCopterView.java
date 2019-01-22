@@ -10,11 +10,13 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.java2d.loops.FillRect;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +31,7 @@ public class HeliCopterView {
     private Controller controller;
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
-
+    private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
     public HeliCopterView(Stage stage, Controller controller, Scene mapScene, Scene hScene, Group hGroup,
                           MapView mapView, Group mapGroup) {
         this.mapScene = mapScene;
@@ -55,9 +57,13 @@ public class HeliCopterView {
     }
 
     private void flourAddingToHelicopter() {
-        Button flour1 = new Button("     1    ");
+        Button flour1 = new Button(" 1    ");
+        ImageView addView = new ImageView();
+        flour1.setOpacity(0);
+        hGroup.getChildren().add(addView);
         GeneralButton.buttonAppearanceWithCursor(flour1, hScene);
-        flour1.relocate(290, 150);
+        flour1.relocate(295, 148);
+        addView.relocate(290, 143);
         hGroup.getChildren().add(flour1);
 
         flour1.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -71,34 +77,61 @@ public class HeliCopterView {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() < 20)
+                if ((controller.getMap().getHelicopter().getMapBudget() ==
+                        controller.getMap().getHelicopter().getAllCost() &&
+                        controller.getMap().getHelicopter().getAllCost() != 0) ||
+                        controller.getMap().getBudget() == 0) {
+                    try {
+                        addView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     flour1.setVisible(false);
-                else
+                } else {
+                    try {
+                        addView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddBlue.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     flour1.setVisible(true);
+                }
             }
         };
         timer.start();
     }
 
     private void setCancelButton() throws FileNotFoundException {
-        ImageView cancelView = new ImageView(new Image(new FileInputStream(HELICOPTERFILE + "cancelButton.png")));
+        ImageView cancelView = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES
+                + "cancelButton.png")));
         hGroup.getChildren().add(cancelView);
-        cancelView.relocate(200, 650);
+        cancelView.relocate(225, 650);
         Button cancelButton = new Button();
         hGroup.getChildren().add(cancelButton);
-        cancelButton.relocate(200, 650);
+        cancelButton.relocate(234, 665);
+        cancelButton.setOpacity(0);
+        GeneralButton.buttonAppearanceWithCursor(cancelButton, hScene);
+        cancelButton.setText("cancelButton                  \n");
         cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-//                controller.getMap().getHelicopter().
-//                stage.setScene(mapScene);
+                controller.getMap().getHelicopter().clear();
+                controller.getMap().getHelicopter().clearSalesGood();
+                stage.setScene(mapScene);
             }
         });
     }
 
+
+
     private void setOkButton() {
-        Button okButton = new Button("  ok  ");
-        okButton.relocate(100, 650);
+        Button okButton = new Button("ok\n\n");
+        okButton.setScaleX(5);
+        okButton.relocate(110, 660);
+        okButton.setOpacity(0);
+        GeneralButton.buttonAppearanceWithCursor(okButton, hScene);
+        ImageView okView = new ImageView();
+        okView.relocate(50, 650);
+        hGroup.getChildren().add(okView);
         hGroup.getChildren().add(okButton);
         okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -115,10 +148,21 @@ public class HeliCopterView {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getHelicopter().isHelicopterContainsAny())
+                if (controller.getMap().getHelicopter().isHelicopterContainsAny()) {
+                    try {
+                        okView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGreen.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     okButton.setVisible(true);
-                else
+                } else {
+                    try {
+                        okView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGray.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     okButton.setVisible(false);
+                }
             }
         };
         timer.start();
@@ -147,5 +191,22 @@ public class HeliCopterView {
         flourAddingToHelicopter();
         showSuitableHelicopter();
         setOkButton();
+        setCancelButton();
+        showAllCost();
+    }
+
+
+    private void showAllCost() {
+        Label text = new Label("0");
+        hGroup.getChildren().add(text);
+        text.relocate(230, 580);
+        text.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'Bauhaus 93'");
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+               text.setText(Integer.toString(controller.getMap().getHelicopter().getAllCost()));
+            }
+        };
+        timer.start();
     }
 }

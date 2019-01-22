@@ -40,7 +40,7 @@ public class View extends Application {
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
 
-        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse(), hScene);
+        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse(),mapScene,  hScene);
         mapView.gameMap(map, mapScene, controller.getMap());
 
         menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
