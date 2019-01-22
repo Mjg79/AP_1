@@ -17,12 +17,13 @@ import java.io.FileNotFoundException;
 
 
 public class GrassButton extends GeneralButton {
-    public static Button grassButton(Group mapGroup, Scene mapScene, Map map, int x, int y, MapView mapView) {
+    public static Button grassButton(Pane grassButtonPane,Pane backGroundPane,
+                                     Scene mapScene, Map map, int x, int y, MapView mapView) {
         Button grass = new Button();
         grass.setText("");
         grass.relocate(x, y);
         grass.setOpacity(0);
-        mapGroup.getChildren().add(grass);
+        grassButtonPane.getChildren().add(grass);
         grass.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -30,8 +31,8 @@ public class GrassButton extends GeneralButton {
                 try {
                     for (int i = -1; i <= 1; i++)
                         for (int j = -1; j <= 1; j++)
-                            new Forage(map.getFarmTime()).grassAnimation(mapGroup, x + i * 12, y + j * 12).play();
-                    mapView.refreshGrassButtons(mapGroup, mapScene);
+                            new Forage(map.getFarmTime()).grassAnimation(
+                                    backGroundPane, x + i * 12, y + j * 12).play();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }

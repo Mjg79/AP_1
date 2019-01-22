@@ -26,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -38,6 +39,8 @@ public class MapView {
     private Stage primaryStage;
     private Scene helicopterScene;
     private WarehouseScene warehouseScene;
+    private Pane backGroundPane = new Pane();
+    private Pane grassButtonPane = new Pane();
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
         this.controller = controller;
@@ -151,12 +154,14 @@ public class MapView {
 
 
     public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
+        mapGroup.getChildren().add(backGroundPane);
+        mapGroup.getChildren().add(grassButtonPane);
         Image backGround1 = new Image(new FileInputStream(
                 "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
         ImageView mapViewBackGround = new ImageView(backGround1);
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
-        mapGroup.getChildren().add(mapViewBackGround);
+        backGroundPane.getChildren().add(mapViewBackGround);
 
         maps.getWell().wellAnimation(false, 1, mapGroup).play();
         EggPowderPlant.eggPowderPlantAnimation(false, mapGroup, 1).play();
@@ -208,13 +213,14 @@ public class MapView {
         Button cookieBakery = CookieBakeryButton.workShopButton(mapGroup, mapScene, 711, 221,
                 controller.getMap());
         //TODO: our criteria for putting button for gathering product and grass: (250-250) to (730-530)
-        refreshGrassButtons(mapGroup, mapScene);
+        refreshGrassButtons(mapScene);
     }
 
-    public void refreshGrassButtons(Group mapGroup, Scene mapScene) {
+    public void refreshGrassButtons(Scene mapScene) {
         for (int i = 0; i < 36; i++)
             for (int j = 0; j < 36; j++) {
-                Button grassButtons = GrassButton.grassButton(mapGroup, mapScene, controller.getMap(),
+                Button grassButtons = GrassButton.grassButton(grassButtonPane, backGroundPane
+                        , mapScene, controller.getMap(),
                         250 + i * 12, 250 + j * 7, this);
             }
     }

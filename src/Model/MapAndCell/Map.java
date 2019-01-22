@@ -22,7 +22,7 @@ public class Map {
     private String name;
     private boolean isMissionCompleted = false;
     private double farmTime = 0;
-    private int budget = 90;
+    private int budget = 900;
     private WareHouse wareHouse = new WareHouse();
     private Well well = new Well();
     private Truck truck = new Truck();
