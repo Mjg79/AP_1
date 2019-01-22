@@ -207,6 +207,7 @@ public class Map {
     private void gatherForMissionNeeds(String purpose) {
         for (String needs: missionNeeds.keySet())
             if (needs.equals(purpose)) {
+                if (gatherElements.get(purpose) < missionNeeds.get(purpose))
                 gatherElements.put(purpose, gatherElements.get(purpose) + 1);
                 break;
             }
