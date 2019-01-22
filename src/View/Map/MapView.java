@@ -5,8 +5,8 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
+import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
-import View.Buttons.HelicopterButton;
 import View.Buttons.LiveStocks.BuffaloButton;
 import View.Buttons.LiveStocks.ChickenButton;
 import View.Buttons.LiveStocks.OstrichButton;
@@ -182,11 +182,9 @@ public class MapView {
         map.getChildren().add(truckView);
         map.getChildren().add(truckButton);
 
-        Image Helicopter = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
-        helicopterView.setImage(Helicopter);
-        helicopterView.relocate(621,559);
+        helicopterView.relocate(606,559);
         map.getChildren().add(helicopterView);
-        hButton.relocate(671, 639);
+        hButton.relocate(656, 639);
         hButton.setText("helicopter\nhelicopter");
         GeneralButton.buttonAppearanceWithCursor(hButton, gameMap);
         hButton.setOpacity(0);
@@ -232,7 +230,6 @@ public class MapView {
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
         MenuButton.inGameMenuButton(mapGroup, mapScene);
-        HelicopterButton.helicopterButton(mapGroup, mapScene, controller, primaryStage);
     }
 
 
@@ -328,7 +325,9 @@ public class MapView {
         }
     }
 
-    private void showHelicopter(Map map, Group group) {
+    private void showHelicopter(Map map, Group group) throws FileNotFoundException {
+        helicopterView.setImage(new Image(new FileInputStream(serviceFiles + "Helicopter\\0" +
+                controller.getMap().getHelicopter().getLevel()+  ".png")));
         if (!map.getHelicopter().isInWareHouse()) {
             hButton.setVisible(false);
             helicopterView.setVisible(false);
@@ -344,7 +343,7 @@ public class MapView {
         hButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                stage.setScene(helicopterScene);
+                primaryStage.setScene(helicopterScene);
             }
         });
     }
