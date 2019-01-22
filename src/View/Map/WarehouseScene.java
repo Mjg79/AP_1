@@ -33,7 +33,12 @@ public class WarehouseScene {
         mapViewBackGround.setFitWidth(1000);
         mapViewBackGround.setFitHeight(750);
         warehouseRoot.getChildren().add(mapViewBackGround);
-        Button exit = new Button();
+
+    }
+    public void changeToWarehouse(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        primaryStage.setScene(wareHouseScence);
+        Button exit = new Button("exit");
         exit.relocate(20,20);
         exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -42,10 +47,6 @@ public class WarehouseScene {
             }
         });
         warehouseRoot.getChildren().add(exit);
-    }
-    public void changeToWarehouse(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        primaryStage.setScene(wareHouseScence);
     }
 
 
