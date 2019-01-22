@@ -80,6 +80,22 @@ public class HeliCopterView {
         timer.start();
     }
 
+    private void setCancelButton() throws FileNotFoundException {
+        ImageView cancelView = new ImageView(new Image(new FileInputStream(HELICOPTERFILE + "cancelButton.png")));
+        hGroup.getChildren().add(cancelView);
+        cancelView.relocate(200, 650);
+        Button cancelButton = new Button();
+        hGroup.getChildren().add(cancelButton);
+        cancelButton.relocate(200, 650);
+        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                controller.getMap().getHelicopter().
+//                stage.setScene(mapScene);
+            }
+        });
+    }
+
     private void setOkButton() {
         Button okButton = new Button("  ok  ");
         okButton.relocate(100, 650);

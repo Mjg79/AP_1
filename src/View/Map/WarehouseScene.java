@@ -44,6 +44,7 @@ public class WarehouseScene {
             @Override
             public void handle(MouseEvent event) {
                 primaryStage.setScene(backScene);
+
             }
         });
         warehouseRoot.getChildren().add(exit);
