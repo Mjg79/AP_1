@@ -31,7 +31,7 @@ public class Controller {
         elements.add(new LiveStock(0, "chicken"));
         elements.add(new LiveStock(0, "cow"));
         elements.add(new Dog());
-        elements.add(new Cat());
+        elements.add(new Cat("1"));
         elements.add(new Product(0, "cake"));
         elements.add(new Product(0, "egg"));
         elements.add(new Product(0, "feather"));

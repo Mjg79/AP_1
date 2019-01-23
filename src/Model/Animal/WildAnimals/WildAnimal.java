@@ -127,7 +127,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
 
@@ -139,7 +139,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
     }
@@ -150,7 +150,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
 
@@ -162,7 +162,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
 
@@ -174,7 +174,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 94, 116);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
     }
@@ -185,7 +185,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     5, 0, 0, 96, 92);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
     }
@@ -196,7 +196,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     3, 0, 0, 138, 92);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
     }
@@ -207,7 +207,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24, 3,
                     0, 0, 138, 92);
-            wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
+            wildAnimalAnimation.setCycleCount(5);
             wildAnimalAnimation.play();
         }
     }

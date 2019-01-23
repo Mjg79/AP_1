@@ -1,6 +1,7 @@
 package View.Map;
 import Controller.Controller;
 import Model.Animal.Cat;
+import Model.Animal.Dog;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
@@ -8,10 +9,7 @@ import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
-import View.Buttons.LiveStocks.BuffaloButton;
-import View.Buttons.LiveStocks.CatButton;
-import View.Buttons.LiveStocks.ChickenButton;
-import View.Buttons.LiveStocks.OstrichButton;
+import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
 import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
@@ -187,6 +185,32 @@ public class MapView {
 
     }
 
+    private void setBuyDogView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (controller.getMap().getBudget() >= 2600 && isPlaying) {
+                    try {
+                        dogView.setImage(new Image(new FileInputStream(animalBuy + "dogAfter.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        dogView.setImage(new Image(new FileInputStream(animalBuy + "dogBefore.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        animationTimer.start();
+        Button dogButton = DogButton.dogButton(mapGroup, controller.getMap(), dogView, mapScene);
+
+    }
+
+
     public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
         mapGroup.getChildren().add(backGroundPane);
         mapGroup.getChildren().add(grassButtonPane);
@@ -266,6 +290,7 @@ public class MapView {
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
         this.setBuyCatView(mapGroup, mapScene);
+        this.setBuyDogView(mapGroup, mapScene);
         MenuButton.inGameMenuButton(mapGroup, mapScene);
     }
 
@@ -312,7 +337,7 @@ public class MapView {
                     lastTime = now;
                     time += 1;
                     System.out.println(time);
-//                    if (time == 2)
+//                    if (time == 10)
 //                        map.addWildAnimal();
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
                             : "") + Integer.toString(((int)time/10)% 60));
@@ -324,6 +349,7 @@ public class MapView {
                         setHButton();
                         showTruck(map,mapScene,mapGroup);
                         showCats(mapGroup, mapScene);
+                        showDogs(mapGroup, mapScene);
                         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
@@ -379,7 +405,14 @@ public class MapView {
     private void showCats(Group mapGroup, Scene scene) throws FileNotFoundException {
         for (Cat cat: controller.getMap().getCats()) {
             cat.catMoving(scene, mapGroup, false);
-            System.out.println("catX: " + cat.getX() + " ,catY: " + cat.getY());
+        }
+    }
+
+    private void showDogs(Group mapGroup, Scene scene) throws FileNotFoundException {
+        for (Dog dog: controller.getMap().getDogs()) {
+            dog.dogMoving(scene, mapGroup ,false);
+            System.out.println("catX: " + dog.getX() + " ,catY: " + dog.getY());
+
         }
     }
 

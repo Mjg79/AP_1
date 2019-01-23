@@ -15,14 +15,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Cat extends Animal {
-    private static final double speedForCollecting = 4;
     private static final int speedNormally = 1;
-    private ArrayList<Product> collectProducts;
 
     {
       speed = speedNormally;
-      name = "cat";
       moneyForUpgrading = 100;
+    }
+
+    public Cat(String name) {
+        this.name = name;
     }
 
     @Override
@@ -43,16 +44,6 @@ public class Cat extends Animal {
         }
         return false;
     }
-
-   
-    public void setCollectProducts(ArrayList<Product> products) {
-        this.collectProducts = products;
-    }
-
-    public ArrayList<Product> giveProductToWareHouse() {
-        return collectProducts;
-    }
-
 
     //////////////////////GRAPHIC_CAT////////////////////////////////////
     private ImageView catView = new ImageView();

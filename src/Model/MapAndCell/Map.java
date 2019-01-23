@@ -42,14 +42,14 @@ public class Map {
     {
         //TODO:clear 6 line below
         HashMap<String,Integer> hashMap = new HashMap<>();
-        hashMap.put("chicken", 7);
-        hashMap.put("egg", 5);
+        hashMap.put("chicken", 12);
+        hashMap.put("egg", 12);
         missionNeeds = hashMap;
         HashMap<String, Integer> salam = new HashMap<>();
         salam.put("chicken", 0);
         salam.put("egg", 0);
         gatherElements = salam;
-        workshops.add(new WorkShop("EggPowderedPlant", 2, 2));
+        workshops.add(new WorkShop("EggPowderedPlant", 5, 5));
         workshops.add(new WorkShop("CookieBakery", 34, 6));
         workshops.add(new WorkShop("CakeBakery", 6, 34));
         for (int i = 0; i <= 35; i++)
@@ -200,12 +200,21 @@ public class Map {
 
     private void addCat() {
         if (budget >= 2500) {
-            Cat cat = new Cat();
+            Cat cat = new Cat("cat" + Integer.toString(cats.size()));
             cats.add(cat);
             cells[(int) cat.getX()][(int) cat.getY()].getCats().add(cat);
             budgetDecreament(2500);
         }
 
+    }
+
+    private void addDog() {
+        if (budget >= 2600) {
+            Dog dog = new Dog();
+            dogs.add(dog);
+            cells[(int) dog.getX()][(int) dog.getY()].getDogs().add(dog);
+            budgetDecreament(2500);
+        }
     }
 
     public void addWildAnimal() {
@@ -246,6 +255,9 @@ public class Map {
                 break;
             case "cat":
                 this.addCat();
+                break;
+            case "dog":
+                this.addDog();
                 break;
         }
         this.gatherForMissionNeeds(stringName);
@@ -363,12 +375,10 @@ public class Map {
                 cat.changeDirectionByKnowingCurrentPostition();
                 cat.moveRandomly(1);
             } else {
-                int closestProductX = 0;
-                int closestProductY = 0;
-                boolean checkFirst = false;
                 for (Product product : products) {
-                    if (product.getVolume() + wareHouse.getCurrent() <= wareHouse.getVolume()) {
-                        System.out.println("");
+                    if (product.getVolume() + wareHouse.getCurrent() <= wareHouse.getVolume()
+                            && (product.getFollowedByNameCat().equals("") || product.getFollowedByNameCat().equals(cat.getName())) ) {
+                        product.setFollowedByNameCat(cat.getName());
                         this.BFS(cat, product.getX(), product.getY());
                         continue catLoop;
                     } else if (products.indexOf(product) == products.size() - 1) {
@@ -531,8 +541,10 @@ public class Map {
     }
 
     private void addProductProducedByWorkshops(WorkShop workShop, ArrayList<Product> goods) {
-        for (Product product : goods)
+        for (Product product : goods) {
             cells[workShop.getX()][workShop.getY()].addElement(product);
+            products.add(product);
+        }
     }
 
     /////////////////////////ADD_ELEMENT_TO_TRUCK//////////////////////////////////

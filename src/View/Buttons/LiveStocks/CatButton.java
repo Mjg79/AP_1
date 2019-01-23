@@ -68,4 +68,5 @@ public class CatButton extends GeneralButton {
         isPlaying = true;
         buyAnimalAppereance(button, buttonView);
         buttonAppearanceWithCursor(button, mapScene);
-    }}
+    }
+}

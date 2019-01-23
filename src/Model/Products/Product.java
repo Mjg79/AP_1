@@ -7,7 +7,16 @@ public class Product extends Element {
     private double secondTime;
     protected double timeBeingInMap = 10;
     private boolean isPickedUp = false;
+    private String followedByNameCat = "";
     private ProductTypes type;
+
+    public String getFollowedByNameCat() {
+        return followedByNameCat;
+    }
+
+    public void setFollowedByNameCat(String followedByNameCat) {
+        this.followedByNameCat = followedByNameCat;
+    }
 
     public Product(double firstTime, String type) {
         this.firstTime = firstTime;
