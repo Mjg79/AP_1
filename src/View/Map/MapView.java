@@ -337,8 +337,8 @@ public class MapView {
                     lastTime = now;
                     time += 1;
                     System.out.println(time);
-//                    if (time == 10)
-//                        map.addWildAnimal();
+                    if (time == 10)
+                        map.addWildAnimal();
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
                             : "") + Integer.toString(((int)time/10)% 60));
                     try {
@@ -364,7 +364,7 @@ public class MapView {
                         e.printStackTrace();
                     }
                     if((int)time - time == 0) {
-                        map.turnMap(0.1);
+                        map.turnMap(0.1, mapGroup);
                         System.out.println("term nam");
                     }
                 }

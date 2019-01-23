@@ -61,8 +61,6 @@ public class Cell extends Element {
 			wildAnimals.remove(element);
 		if (element instanceof Cat)
 			cats.remove(element);
-		if (element instanceof Dog)
-			dogs.remove(element);
 		if (element instanceof Product)
 			products.remove(element);
 		if (element instanceof Forage)
@@ -70,6 +68,11 @@ public class Cell extends Element {
 		if (element instanceof LiveStock)
 			liveStocks.remove(element);
 
+	}
+
+	public void removeDog(Dog dog, Group mapGroup) {
+		mapGroup.getChildren().remove(dog.getDogView());
+		dogs.remove(dog);
 	}
 
 	public ArrayList<LiveStock> getLiveStocks() {

@@ -120,10 +120,10 @@ public class Controller {
             isIdentified = true;
         }
 
-        if (getInstruction().matches("turn \\d+")) {
-            this.turn(Integer.parseInt(split[1]));
-            isIdentified = true;
-        }
+//        if (getInstruction().matches("turn \\d+")) {
+//            this.turn(Integer.parseInt(split[1]));
+//            isIdentified = true;
+//        }
 
         if (getInstruction().matches("(truck|helicopter)\\sadd\\s[a-z]+\\s\\d+")) {
             if (split[0].equals("truck"))
@@ -211,9 +211,9 @@ public class Controller {
 //        view.print(map, place);
 //    }
 
-    private void turn(int increase) {
-        map.turnMap(increase);
-    }
+//    private void turn(int increase) {
+//        map.turnMap(increase);
+//    }
 
     private void addTruck(String name, int count) {
         for (Element element : elements) {

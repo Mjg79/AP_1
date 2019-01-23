@@ -121,6 +121,14 @@ public class WildAnimal extends Animal {
 
     }
 
+    public ImageView getWildAnimalView() {
+        return wildAnimalView;
+    }
+
+    public Button getWildButton() {
+        return wildButton;
+    }
+
     private void wildAnimalNorthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northEast) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "northWest.png")));

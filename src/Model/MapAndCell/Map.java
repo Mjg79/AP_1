@@ -13,6 +13,7 @@ import Model.Products.Product;
 import Model.Products.Forage.Forage;
 import Model.Transportation.Helicopter;
 import Model.Transportation.Truck;
+import javafx.scene.Group;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -492,11 +493,15 @@ public class Map {
     }
 
     ///////////////////////////KILLED_WILD_ANIMALS_BY_DOGS/////////////////////////
-    private void killedWildAnimalsByDogs() {
+    private void killedWildAnimalsByDogs(Group mapGroup) {
         for (Dog dog : dogs)
             if (!cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().isEmpty()) {
-                cells[(int) dog.getX()][(int) dog.getY()].removeElement(dog);
+                cells[(int) dog.getX()][(int) dog.getY()].removeDog(dog, mapGroup);
                 dog.setIsKilled(true);
+                System.out.println();
+                mapGroup.getChildren().removeAll(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0)
+                        .getWildAnimalView(),
+                        cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0).getWildButton());
                 wildAnimals.remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0));
                 cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().remove(0);
 
@@ -640,9 +645,9 @@ public class Map {
     }
 
     /////////////////////DOG_TURN////////////////////////////////////////////
-    private void dogTurn() {
+    private void dogTurn(Group mapGroup) {
         this.moveDogs();
-        this.killedWildAnimalsByDogs();
+        this.killedWildAnimalsByDogs(mapGroup);
     }
 
     ////////////////////CAT_TURN//////////////////////////////////////////////
@@ -657,12 +662,12 @@ public class Map {
     }
 
     /////////////////TURN////////////////////////////////////////////////////
-    public void turnMap(double increase) {
+    public void turnMap(double increase, Group mapGroup) {
         farmTime += increase;
         this.productTurn();
         this.liveStockTurn();
         this.wildAnimalTurn();
-        this.dogTurn();
+        this.dogTurn(mapGroup);
         this.catTurn();
         this.wellTurn();
         for (WorkShop workShop : workshops)

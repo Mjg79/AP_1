@@ -179,4 +179,12 @@ public class Dog extends Animal {
         }
     }
 
+    public ImageView getDogView() {
+        return dogView;
+    }
+
+    public SpriteAnimation getDogAnimation() {
+        return dogAnimation;
+    }
+
 }
