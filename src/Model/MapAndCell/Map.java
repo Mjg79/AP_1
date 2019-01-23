@@ -42,11 +42,13 @@ public class Map {
     {
         //TODO:clear 6 line below
         HashMap<String,Integer> hashMap = new HashMap<>();
-        hashMap.put("chicken", 200);
+        hashMap.put("chicken", 7);
+        hashMap.put("egg", 5);
         missionNeeds = hashMap;
-        HashMap<String, Integer> kirekhar = new HashMap<>();
-        kirekhar.put("chicken", 0);
-        gatherElements = kirekhar;
+        HashMap<String, Integer> salam = new HashMap<>();
+        salam.put("chicken", 0);
+        salam.put("egg", 0);
+        gatherElements = salam;
         workshops.add(new WorkShop("EggPowderedPlant", 2, 2));
         workshops.add(new WorkShop("CookieBakery", 34, 6));
         workshops.add(new WorkShop("CakeBakery", 6, 34));
@@ -205,6 +207,7 @@ public class Map {
     private void gatherForMissionNeeds(String purpose) {
         for (String needs: missionNeeds.keySet())
             if (needs.equals(purpose)) {
+                if (gatherElements.get(purpose) < missionNeeds.get(purpose))
                 gatherElements.put(purpose, gatherElements.get(purpose) + 1);
                 break;
             }
@@ -399,7 +402,6 @@ public class Map {
                 cells[liveStock.getX()][liveStock.getY()].addElement(liveStock.releaseProduct(farmTime));
                 System.out.println("add product in : " + farmTime);
                 products.add(liveStock.releaseProduct(farmTime));
-                this.gatherForMissionNeeds(liveStock.releaseProduct(farmTime).getName());
             }
     }
 

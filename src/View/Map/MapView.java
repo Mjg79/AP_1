@@ -15,6 +15,7 @@ import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
 import View.Buttons.WorkShop.EggPowderPlantButton;
+import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
@@ -232,6 +233,7 @@ public class MapView {
     }
 
     public void buttons(Group mapGroup, Scene mapScene) throws FileNotFoundException {
+        MissionNeeds.showMissionAndGathers(mapGroup, controller.getMap());
         this.workShopButtons(mapGroup, mapScene);
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);

@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 
@@ -28,6 +29,7 @@ public class EggPowderPlantButton extends GeneralButton {
         workshop.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+
                 try {
                     if(isPlaying) {
                         Animation animation = EggPowderPlant.eggPowderPlantAnimation(true,
@@ -50,8 +52,11 @@ public class EggPowderPlantButton extends GeneralButton {
                                     criteria++;
                                 workshop.setVisible(false);
                                 System.out.println(criteria);
-                                if (criteria == 370) {
+                                if (criteria == 270) {
                                     workshop.setVisible(true);
+                                    map.startWorkshop("EggPowderedPlant");
+                                    for (String string : map.getWareHouse().getGoods().keySet())
+                                        System.out.println(string + ": " + map.getWareHouse().getGoods().get(string));
                                     this.stop();
                                 }
                             }
