@@ -52,6 +52,10 @@ public class Cat extends Animal {
     private Direction previousDir = Direction.northEast;
 
 
+    public ImageView getCatView() {
+        return catView;
+    }
+
     private boolean removeTheCatAnimation(Group mapGroup) throws FileNotFoundException {
         if (mapGroup.getChildren().contains(catView)) {
             if (previousDir != getDirection()) {

@@ -430,12 +430,28 @@ public class Map {
     }
 
     /////////////////////////////CHECK_WILDANIMALS_POSITION_WITH_OTHERS////////////
-    public void checkWildAnimalPositionWithOthers() {
+    public void checkWildAnimalPositionWithOthers(Group mapGroup) {
         for (WildAnimal wildAnimal : wildAnimals)
             cells[(int) wildAnimal.getX()][(int) wildAnimal.getY()].
                     removeAllElements();
+        Iterator iterator = liveStocks.iterator();
+        Iterator iterator1 = cats.iterator();
+        for (WildAnimal wildAnimal: wildAnimals) {
+            while (iterator.hasNext()) {
+                LiveStock liveStock = (LiveStock) iterator.next();
+                if (liveStock.getX() == wildAnimal.getX() && liveStock.getY() == wildAnimal.getY()) {
+                    mapGroup.getChildren().remove(liveStock.getLiveStockView());
+                    iterator.remove();
+                }
+            }
+            while (iterator1.hasNext()) {
+                Cat cat = (Cat) iterator1.next();
+                if (cat.getX() == wildAnimal.getX() && cat.getY() == wildAnimal.getY()) {
+                    iterator1.remove();
+                }
+            }
+        }
     }
-
     ////////////////////////////CAGE_WILD_ANIMAL///////////////////////////////////
     public void cageWildAnimal(int x, int y) {
         for (WildAnimal wildAnimal : cells[x][y].getWildAnimals())
@@ -639,9 +655,9 @@ public class Map {
     }
 
     //////////////////////WILD_ANIMAL_TURN//////////////////////////////////
-    private void wildAnimalTurn() {
+    private void wildAnimalTurn(Group mapGroup) {
         this.moveWildAnimals();
-        this.checkWildAnimalPositionWithOthers();
+        this.checkWildAnimalPositionWithOthers(mapGroup);
     }
 
     /////////////////////DOG_TURN////////////////////////////////////////////
@@ -666,7 +682,7 @@ public class Map {
         farmTime += increase;
         this.productTurn();
         this.liveStockTurn();
-        this.wildAnimalTurn();
+        this.wildAnimalTurn(mapGroup);
         this.dogTurn(mapGroup);
         this.catTurn();
         this.wellTurn();

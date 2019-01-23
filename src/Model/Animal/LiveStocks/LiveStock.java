@@ -143,6 +143,10 @@ public class LiveStock extends Animal {
     private SpriteAnimation liveStockAnimation;
 
 
+    public ImageView getLiveStockView() {
+        return liveStockView;
+    }
+
     private boolean removeTheLiveStockAnimation(Group mapGroup) throws FileNotFoundException {
         if (graphicDeath) {
             if (durationDeath == 0)

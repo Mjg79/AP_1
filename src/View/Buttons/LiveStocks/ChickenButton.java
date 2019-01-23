@@ -42,7 +42,7 @@ public class ChickenButton extends GeneralButton {
                         if (map.getBudget() >= 100) {
                             map.buyAnimal("chicken");
                             map.getLiveStocks().get(map.getLiveStocks().size() - 1).chickenMoving(mapScene,
-                                    mapGroup, false, map.getFarmTime());
+                                    mapGroup, true, map.getFarmTime());
                         }
                     }
                 } catch (FileNotFoundException e) {
