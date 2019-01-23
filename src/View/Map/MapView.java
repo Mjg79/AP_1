@@ -11,7 +11,7 @@ import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
-import View.Buttons.WellButton;
+//import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
 import View.Buttons.WorkShop.EggPowderPlantButton;
@@ -222,8 +222,6 @@ public class MapView {
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
-
-        maps.getWell().wellAnimation(false, 1, mapGroup).play();
         EggPowderPlant.eggPowderPlantAnimation(false, mapGroup, 1).play();
         CakeBakery.cakeBakeryAnimation(false, mapGroup, 1).play();
         CookieBakery.cookieBakeryAnimation(false, mapGroup, 1).play();
@@ -265,7 +263,6 @@ public class MapView {
     private void workShopButtons(Group mapGroup, Scene mapScene) {
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("chicken", 200);
-        Button well = WellButton.wellButton(mapGroup, mapScene, controller.getMap());
         Button eggPowderPlant = EggPowderPlantButton.workShopButton(mapGroup, mapScene, 146, 236,
                 controller.getMap());
         Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup , mapScene, 146, 520,
@@ -303,6 +300,9 @@ public class MapView {
         timeShow(controller.getMap(), map, mapScene);
         mapBudget(map);
         upgradeWell(map, maps);
+        maps.getWell().setWellView(map);
+        maps.getWell().showWellInWorking(maps);
+        maps.getWell().wellInfo(map);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -457,7 +457,7 @@ public class MapView {
     public static void pause(){
         isPaused = true;
         isPlaying = false;
-        WellButton.pause();
+//        WellButton.pause();
         EggPowderPlantButton.pause();
         CakeBakeryButton.pause();
         CookieBakeryButton.pause();
@@ -471,7 +471,7 @@ public class MapView {
     public static void resume(){
         isResumed = true;
         isPlaying = true;
-        WellButton.resume();
+//        WellButton.resume();
         EggPowderPlantButton.resume();
         CakeBakeryButton.resume();
         CookieBakeryButton.resume();
@@ -485,20 +485,29 @@ public class MapView {
     private void upgradeWell(Group mapGroup, Map map) {
         ImageView upgradeView = new ImageView();
         Label text = new Label("0");
-        upgradeView.relocate(400, 400);
-        text.relocate(436, 404);
-        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20");
+        upgradeView.relocate(340, 130);
+        text.relocate(376, 134);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
         mapGroup.getChildren().add(upgradeView);
         mapGroup.getChildren().add(text);
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                try {
+                    map.getWell().setWellView(mapGroup);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 text.setText(Integer.toString((int)map.getWell().getMoneyForUpgrading()));
                 try {
-                    if (map.getWell().getLevel() < 4 && map.getWell().getMoneyForUpgrading() < map.getBudget()) {
+                    if (map.getWell().getLevel() == 3) {
+                        upgradeView.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() < map.getBudget()) {
                         upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
                         upgradeView.setOpacity(1);
-                    }else {
+                    }else if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() >= map.getBudget()){
                         upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
                         upgradeView.setOpacity(0.9);
                     }
@@ -512,8 +521,9 @@ public class MapView {
         upgradeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (upgradeView.getOpacity() == 1)
+                if (upgradeView.getOpacity() == 1) {
                     map.upgrade("well");
+                }
             }
         });
 

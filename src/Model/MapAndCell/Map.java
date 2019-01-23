@@ -774,7 +774,7 @@ public class Map {
                     this.upgradeWareHouse();
                 break;
             case "well":
-                if (budget >= this.getTruck().getMoneyForUpgrading())
+                if (budget >= this.getWell().getMoneyForUpgrading())
                     this.upgradeWell();
                 break;
             case "cat":
