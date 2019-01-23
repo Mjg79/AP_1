@@ -27,6 +27,9 @@ public class Cell extends Element {
 	private ArrayList<Forage> forages = new ArrayList<>();
 	private ArrayList<Product> products = new ArrayList<>();
 	private double farmTime = 0;
+	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
+	private ArrayList<ImageView> imageViews = new ArrayList<>();
+	private  Button button = new Button();
 
 	{
 		name = "cell";
@@ -142,9 +145,8 @@ public class Cell extends Element {
 
 
 	//////////////////GERAPHIC_CELL///////////////////////////
-	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
-	private Button button = new Button();
-	private ArrayList<ImageView> imageViews = new ArrayList<>();
+    private int previousNumberOfCell = 0;
+
 
 	private void addForage() throws FileNotFoundException {
 		for(Forage forage: forages)
@@ -170,32 +172,32 @@ public class Cell extends Element {
 
 
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
-		for (Product product: products) {
-			addEgg(group, scene, map, product);
-			addPowderEgg(group, scene, map, product);
-			addFlour(group, scene, map, product);
+		if (previousNumberOfCell != products.size()) {
+			for (ImageView imageView : imageViews)
+				group.getChildren().remove(imageView);
+			imageViews = new ArrayList<>();
+			group.getChildren().remove(button);
+			previousNumberOfCell = products.size();
+			for (Product product: products) {
+				addEgg(group, scene, map, product);
+				addPowderEgg(group, scene, map, product);
+				addFlour(group, scene, map, product);
+			}
 		}
-
 	}
 
-	public void refreshImageViews (Group group) {
-		for(ImageView imageView: imageViews)
-			group.getChildren().remove(imageView);
-		imageViews = new ArrayList<>();
-	}
+
 
 	public void showCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		setViewOfCell(group, scene,  map);
 		for (ImageView imageView: imageViews) {
 			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView),
 					250 + 7 * this.getY() + imageViews.indexOf(imageView));
-			if (group.getChildren().contains(imageView)) {
-				if (!group.getChildren().contains(button))
-					button = ProductButton.productButton(button, group, scene, x, y, map, map.getFarmTime());
-				break;
-			}
+			if (!group.getChildren().contains(imageView))
 			group.getChildren().add(imageView);
 		}
+		if (imageViews.size() != 0 && !group.getChildren().contains(button))
+				button = ProductButton.productButton(button, group, scene, x, y, map, map.getFarmTime());
 	}
 
 }

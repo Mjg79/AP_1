@@ -1,4 +1,4 @@
-package View.Buttons.Animals.Wild;
+package View.Buttons.LiveStocks.Wild;
 
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 public class WildAnimalButton {
     public static Button wildButton(Button wildButton, Scene scene, WildAnimal wildAnimal, Map map) {
         GeneralButton.buttonAppearanceWithCursor(wildButton, scene);
-        wildButton.setOpacity(0);
+        wildButton.setOpacity(1);
         wildButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

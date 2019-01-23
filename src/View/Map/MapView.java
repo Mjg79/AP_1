@@ -1,5 +1,6 @@
 package View.Map;
 import Controller.Controller;
+import Model.Animal.Cat;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
@@ -8,6 +9,7 @@ import Model.Places.WareHouse;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.BuffaloButton;
+import View.Buttons.LiveStocks.CatButton;
 import View.Buttons.LiveStocks.ChickenButton;
 import View.Buttons.LiveStocks.OstrichButton;
 import View.Buttons.MenuButton;
@@ -160,7 +162,30 @@ public class MapView {
 
     }
 
+    private void setBuyCatView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (controller.getMap().getBudget() >= 2500 && isPlaying) {
+                    try {
+                        catView.setImage(new Image(new FileInputStream(animalBuy + "catAfter.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        catView.setImage(new Image(new FileInputStream(animalBuy + "catBefore.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        animationTimer.start();
+        Button catButton = CatButton.catButton(mapGroup, controller.getMap(), catView, mapScene);
 
+    }
 
     public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
         mapGroup.getChildren().add(backGroundPane);
@@ -240,6 +265,7 @@ public class MapView {
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
+        this.setBuyCatView(mapGroup, mapScene);
         MenuButton.inGameMenuButton(mapGroup, mapScene);
     }
 
@@ -297,6 +323,7 @@ public class MapView {
                         showHelicopter(controller.getMap(), mapGroup);
                         setHButton();
                         showTruck(map,mapScene,mapGroup);
+                        showCats(mapGroup, mapScene);
                         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
@@ -334,9 +361,6 @@ public class MapView {
             if (liveStock.durationDeath == 10)
                 liveStock.setIsKilled(true);
             liveStock.chickenMoving(scene, mapGroup, false,controller.getMap().getFarmTime());
-            System.out.println("\nx: " + liveStock.getX() + " ,y: " + liveStock.getY());
-            System.out.print("hungerLevel: " + liveStock.getHungerLevel());
-            System.out.print("ismustEat: "  + liveStock.isMustEatForage() + " , isKilled: " + liveStock.isKilled());
         }
     }
 
@@ -349,8 +373,13 @@ public class MapView {
     private void showWildAnimals(Map map, Group mapGroup, Scene scene, double farmTime) throws FileNotFoundException {
         for (WildAnimal wildAnimal: controller.getMap().getWildAnimals()) {
             wildAnimal.wildAnimalMoving(map, scene, mapGroup, false, farmTime);
-//            System.out.print("x: " + wildAnimal.getX() + " ,y: " + wildAnimal.getY());
-//            System.out.print(" ,is caged: " + wildAnimal.isCaged() );
+        }
+    }
+
+    private void showCats(Group mapGroup, Scene scene) throws FileNotFoundException {
+        for (Cat cat: controller.getMap().getCats()) {
+            cat.catMoving(scene, mapGroup, false);
+            System.out.println("catX: " + cat.getX() + " ,catY: " + cat.getY());
         }
     }
 
@@ -370,9 +399,8 @@ public class MapView {
             hButton.setVisible(true);
             helicopterView.setVisible(true);
         }
-
-
     }
+
 
     private void setHButton() {
         hButton.setOnMouseClicked(new EventHandler<MouseEvent>() {

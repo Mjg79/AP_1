@@ -22,7 +22,7 @@ public class Map {
     private String name;
     private boolean isMissionCompleted = false;
     private double farmTime = 0;
-    private int budget = 900;
+    private int budget = 9000;
     private WareHouse wareHouse = new WareHouse();
     private Well well = new Well();
     private Truck truck = new Truck();
@@ -198,6 +198,15 @@ public class Map {
 
     }
 
+    private void addCat() {
+        if (budget >= 2500) {
+            Cat cat = new Cat();
+            cats.add(cat);
+            cells[(int) cat.getX()][(int) cat.getY()].getCats().add(cat);
+            budgetDecreament(2500);
+        }
+
+    }
 
     public void addWildAnimal() {
         wildAnimals.add(new WildAnimal());
@@ -234,6 +243,9 @@ public class Map {
                 break;
             case "cow":
                 this.addCow();
+                break;
+            case "cat":
+                this.addCat();
                 break;
         }
         this.gatherForMissionNeeds(stringName);
@@ -356,6 +368,7 @@ public class Map {
                 boolean checkFirst = false;
                 for (Product product : products) {
                     if (product.getVolume() + wareHouse.getCurrent() <= wareHouse.getVolume()) {
+                        System.out.println("");
                         this.BFS(cat, product.getX(), product.getY());
                         continue catLoop;
                     } else if (products.indexOf(product) == products.size() - 1) {
@@ -425,17 +438,21 @@ public class Map {
             Product product = (Product)iterator.next();
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
                 wareHouse.addGoodOrLiveStock(product, 1);
+                removeOneProduct(product);
                 iterator.remove();
                 this.gatherForMissionNeeds(product.getName());
                 product.setIsPickedUp(true);
             }
         }
+    }
 
-        Iterator iterator1 = products.iterator();
-        while (iterator1.hasNext()) {
-            Product product = (Product) iterator1.next();
-            if (product.isPickedUp())
-                iterator1.remove();
+    private void removeOneProduct(Product product) {
+        Iterator iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product product1 = (Product) iterator.next();
+            if (product.getName().equals(product1.getName()) && product.getX() == product1.getX() &&
+            product.getY() == product1.getY())
+                iterator.remove();
         }
     }
 

@@ -28,7 +28,6 @@ public class ProductButton {
             public void handle(MouseEvent event) {
                 if (!map.getCells()[x][y].getProducts().isEmpty()) {
                     map.pickUpAndPutInWareHouse(x, y);
-                    map.getCells()[x][y].refreshImageViews(group);
                 }
                 group.getChildren().remove(productButton);
 

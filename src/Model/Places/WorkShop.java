@@ -119,29 +119,49 @@ public class WorkShop extends Element {
     public ArrayList<Product> distributeOutputs(double time) {
         outputProduct.clear();
         if (name.equals("CakeBakery")) {
-            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-                this.outputProduct.add(new Product(time, "cake"));
-            return outputProduct;
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
+                Product product = new Product(time, "cake");
+                product.setX(this.x);
+                product.setY(this.y);
+                this.outputProduct.add(product);
+                return outputProduct;
+            }
         }
         if (name.equals("CookieBakery")) {
-            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-                this.outputProduct.add(new Product(time, "cookie"));
-            return outputProduct;
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
+                Product product = new Product(time, "cookie");
+                product.setX(this.x);
+                product.setY(this.y);
+                this.outputProduct.add(product);
+                return outputProduct;
+            }
         }
         if (name.equals("EggPowderedPlant")) {
-            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-                this.outputProduct.add(new Product(time, "powderedEgg"));
-            return outputProduct;
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
+                Product product = new Product(time, "powderedEgg");
+                product.setX(this.x);
+                product.setY(this.y);
+                this.outputProduct.add(product);
+                return outputProduct;
+            }
         }
         if (name.equals("SewingFactory")) {
-            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-                this.outputProduct.add(new Product(time, "sewing"));
-            return outputProduct;
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
+                Product product = new Product(time, "sewing");
+                product.setX(this.x);
+                product.setY(this.y);
+                this.outputProduct.add(product);
+                return outputProduct;
+            }
         }
         if (name.equals("WeavingFactory")) {
-            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++)
-                this.outputProduct.add(new Product(time, "cloth"));
-            return outputProduct;
+            for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
+                Product product = new Product(time, "cloth");
+                product.setX(this.x);
+                product.setY(this.y);
+                this.outputProduct.add(product);
+                return outputProduct;
+            }
         }
 
         return null;

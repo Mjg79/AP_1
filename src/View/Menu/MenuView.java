@@ -1,6 +1,9 @@
 package View.Menu;
 
+import Model.MapAndCell.Map;
+import View.Buttons.GeneralButton;
 import View.View;
+import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,13 +22,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -41,7 +42,8 @@ public class MenuView {
     private static final String farmFrenzyScenesDesign =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\";
 
-    private  String currentAccount = "";
+
+    private String currentAccount = "";
 
     private boolean isHaveThisAccount(String string) {
         File file = new File(accounts);
@@ -49,10 +51,10 @@ public class MenuView {
         String name;
         try {
             name = names[0];
-        }catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
-        for (String s: names)
+        for (String s : names)
             if (string.equals(s))
                 return true;
         return false;
@@ -76,7 +78,7 @@ public class MenuView {
     private void deleteAccount(String name) {
         File file = new File(accounts + "\\" + name);
         File[] dir = file.listFiles();
-        for (File file1: dir)
+        for (File file1 : dir)
             file1.delete();
         file.delete();
     }
@@ -114,7 +116,7 @@ public class MenuView {
             setCurrentAccount(putNameInSetItems());
         String[] split = getCurrentAccount().split("\\\\");
         System.out.println(getCurrentAccount());
-        name.setText(split.length == 7 ?  "   " + split[6] + "!" : " Your name!");
+        name.setText(split.length == 7 ? "   " + split[6] + "!" : " Your name!");
         name.relocate(352, 296);
         name.setStyle("-fx-font-family:  'Bodoni MT Black'; -fx-font-size: 15; -fx-fill: #ffd224");
         mainMenu.getChildren().add(name);
@@ -183,8 +185,7 @@ public class MenuView {
                         e.printStackTrace();
                     }
                     primaryStage.setScene(names);
-                }
-                else
+                } else
                     primaryStage.setScene(map);
             }
         });
@@ -224,7 +225,6 @@ public class MenuView {
         nameMenu.getChildren().add(enterYourName);
 
 
-
     }
 
     private void okButtonStyle(Button ok) {
@@ -242,7 +242,7 @@ public class MenuView {
     }
 
     private String getCurrentAccount() {
-        return  currentAccount;
+        return currentAccount;
     }
 
     private boolean isHaveCurrentAccount() {
@@ -311,7 +311,7 @@ public class MenuView {
         return true;
     }
 
-    private void refreshNameMenu(Stage stage,Scene menu,Group nameMenu,Scene names,Group mainMenu,Scene choseMap)
+    private void refreshNameMenu(Stage stage, Scene menu, Group nameMenu, Scene names, Group mainMenu, Scene choseMap)
             throws FileNotFoundException {
         nameMenu.getChildren().clear();
         nameMenu(stage, menu, nameMenu, names, mainMenu, choseMap);
@@ -432,7 +432,6 @@ public class MenuView {
     }
 
 
-
     private void loadPictureOfBackGround(Group group, Scene scene, String path) throws FileNotFoundException {
         Image image = new Image(new FileInputStream(path));
         ImageView imageView = new ImageView(image);
@@ -467,19 +466,20 @@ public class MenuView {
 
     public void mapChooseMenu(Stage stage, Group chooseMap, Scene choseMap, Scene menu) throws FileNotFoundException {
         this.intializeMapChooseMenu(chooseMap, choseMap);
-
+        ArrayList<Button> mapButtons = new ArrayList<>();
         for (int i = 1; i <= 4; i++)
-            makeMapButton(chooseMap, "map" + Integer.toString(i), 128 + 140 * (i - 1), 123,
-                    "yellow", "red", "darkred");
+            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i),
+                    128 + 140 * (i - 1), 123, choseMap));
         for (int i = 1; i <= 3; i++)
-            makeMapButton(chooseMap, "map" + Integer.toString(i + 4), 193 + 140 * (i - 1), 199,
-                    "lightgreen", "blue", "darkblue");
+            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i + 4),
+                    193 + 140 * (i - 1), 199, choseMap));
         for (int i = 1; i <= 2; i++)
-            makeMapButton(chooseMap, "map" + Integer.toString(i + 8), 276 + 140 * (i - 1), 270,
-                    "lightpink", "purple", "purple");
-        makeMapButton(chooseMap, "map" + Integer.toString(11), 334, 336,
-                "chocolate", "brown", "brown");
+            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i + 7),
+                    276 + 140 * (i - 1), 270, choseMap));
+        mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(10),
+                334, 336, choseMap));
 
+//        showButtons(mapButtons);
         Button backToMenu = new Button("  backToMenu  ");
         backToMenu.relocate(520, 425);
         chooseMap.getChildren().add(backToMenu);
@@ -496,15 +496,53 @@ public class MenuView {
         });
     }
 
-    private void makeMapButton(Group chooseMap, String mapName, int x, int y, String fColor, String lColor, String border) {
-        Button map = new Button("   " + mapName + "   ");
+    private Button mapButtonChoosable(Button map, Group chooseMap, String mapName,
+                                      int x, int y, Scene choseMap) {
+        map.setText(mapName);
         map.relocate(x, y);
         chooseMap.getChildren().add(map);
-        map.setStyle("-fx-font-family: 'Bodoni MT Black'; -fx-font-size: 16; -fx-font-style: italic;" +
-                " -fx-text-fill: white; -fx-background-color: " +
-                "linear-gradient(from 0% 0% to 100% 250%, repeat, " + fColor + " 0%, " +  lColor + " 60%); " +
-                "-fx-border-color:" + border + "; -fx-border-width: 3px; -fx-border-radius: 10px;" +
-                " -fx-background-radius: 15px");
+        return map;
     }
 
+    private void setButtonChoosable(Button button) {
+        button.setStyle("-fx-font-family: 'Bodoni MT Black'; -fx-font-size: 16; -fx-font-style: italic;" +
+                " -fx-text-fill: white; -fx-background-color: blue; " +
+                "-fx-border-color: #5d0b1b; -fx-border-width: 3px; -fx-border-radius: 10px;" +
+                " -fx-background-radius: 15px; visibility: true");
+    }
+
+    private void setButtonUnChoosable(Button button) {
+        button.setStyle("-fx-font-family: 'Bodoni MT Black'; -fx-font-size: 16; -fx-font-style: italic;" +
+                " -fx-text-fill: white; -fx-background-color: #000000; " +
+                "-fx-border-color: #5d0b1b; -fx-border-width: 3px; -fx-border-radius: 10px;" +
+                " -fx-background-radius: 15px; visibility: false");
+    }
+
+//    private void showButtons(ArrayList<Button> buttons) {
+//        Gson desserializer = new Gson();
+//        AnimationTimer timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                for (int i = 1; i < buttons.size(); i++) {
+//                    System.out.println(getCurrentAccount() + "\\" + "map1.json");
+//                    try {
+//                      Map map = null;
+//                        if (!getCurrentAccount().equals("")) {
+//                            map = desserializer.fromJson(new FileReader(getCurrentAccount() + "\\" +
+//                                    "map1" + ".json"), Map.class);
+//                            if (map.isMissionCompleted())
+//                                setButtonChoosable(buttons.get(0));
+//                        } else
+//                            setButtonUnChoosable(buttons.get(0));
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                        this.stop();
+//                    }
+//
+//                }
+//            }
+//
+//        };
+//        timer.start();
+//    }
 }

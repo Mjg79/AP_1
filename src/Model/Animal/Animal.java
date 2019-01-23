@@ -71,7 +71,7 @@ public abstract class Animal extends Element {
     private void moveWiselyToNorth(double x, double y) {
 		if (!isMoved) {
 			this.direction = north;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -79,7 +79,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToSouth(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.south;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -87,7 +87,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToEast(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.east;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -95,7 +95,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToWest(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.west;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -103,7 +103,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToNorthEast(double x, double y) {
 		if (!isMoved) {
 	      this.direction = Direction.northEast;
-	      moveRandomly(3);
+	      moveRandomly(1);
 	      isMoved = true;
 		}
 	}
@@ -111,7 +111,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToSouthEast(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.southEast;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -119,7 +119,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToSouthWest(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.southWest;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}
@@ -127,7 +127,7 @@ public abstract class Animal extends Element {
 	private void moveWiselyToNorthWest(double x, double y) {
 		if (!isMoved) {
 			this.direction = Direction.northWest;
-			moveRandomly(3);
+			moveRandomly(1);
 			isMoved = true;
 		}
 	}

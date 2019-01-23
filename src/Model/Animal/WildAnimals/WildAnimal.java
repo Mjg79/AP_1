@@ -4,7 +4,7 @@ import Model.Animal.Animal;
 import Model.ElementAndBoxAndDirection.Direction;
 import Model.MapAndCell.Map;
 import View.Animations.SpriteAnimation;
-import View.Buttons.Animals.Wild.WildAnimalButton;
+import View.Buttons.LiveStocks.Wild.WildAnimalButton;
 import View.Buttons.ProductButton;
 import javafx.animation.Animation;
 import javafx.scene.Group;
@@ -105,18 +105,18 @@ public class WildAnimal extends Animal {
     private void wildAnimalCagedSituation(Group mapGroup, Scene scene, Map map, double farmTime)
             throws FileNotFoundException {
         wildAnimalView.setImage(new Image(new FileInputStream(LION + "caged.png")));
-        wildAnimalAnimation = new SpriteAnimation(wildAnimalView, Duration.millis(1000), 24,
+        wildAnimalAnimation = new SpriteAnimation(wildAnimalView, Duration.millis(1), 24,
                 6, 0, 0, 132, 142);
-        wildAnimalAnimation.setCycleCount(1);
         wildAnimalAnimation.play();
         cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
-        cageAnimation = new SpriteAnimation(cageView, Duration.millis(30), 9, 3, 0,
+        cageView.relocate(250 + getX(), 250 + getY());
+        cageAnimation = new SpriteAnimation(cageView, Duration.millis(1), 9, 3, 0,
                 0, 260, 260);
-        cageAnimation.setCycleCount(1);
         cageAnimation.play();
         if (!wildButton.getText().equals("product") && this.isCaged) {
             wildButton = WildAnimalButton.wildProductButton(wildButton, wildAnimalView, cageView, mapGroup,
                     scene, this, map, farmTime);
+
         }
 
     }
@@ -127,7 +127,6 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
-            cageView.relocate(243 + (int)getX() * 6, 178 + (int)getY() * 3);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
         }
@@ -141,7 +140,6 @@ public class WildAnimal extends Animal {
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
-            cageView.relocate(245 + (int)getX() * 6, 200 + (int)getY() * 3);
             wildAnimalAnimation.play();
         }
     }
@@ -153,7 +151,6 @@ public class WildAnimal extends Animal {
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
-            cageView.relocate(160 + (int)getX() * 6, 170 + (int)getY() * 3);
             wildAnimalAnimation.play();
         }
 
@@ -165,7 +162,6 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
-            cageView.relocate(133 + (int)getX() * 6, 232 + (int)getY() * 3);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
         }
@@ -180,7 +176,6 @@ public class WildAnimal extends Animal {
                     6, 0, 0, 94, 116);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
-            cageView.relocate(195 + (int)getX() * 6, 160 + (int)getY() * 3);
         }
     }
 
@@ -190,7 +185,6 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     5, 0, 0, 96, 92);
-            cageView.relocate(196 + (int)getX() * 6, 231 + (int)getY() * 3);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
         }
@@ -202,7 +196,6 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     3, 0, 0, 138, 92);
-            cageView.relocate(308 + (int)getX() * 6, 200 + (int)getY() * 3);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
         }
@@ -214,7 +207,6 @@ public class WildAnimal extends Animal {
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24, 3,
                     0, 0, 138, 92);
-            cageView.relocate(148 + (int)getX() * 6, 200 + (int)getY() * 3);
             wildAnimalAnimation.setCycleCount(Animation.INDEFINITE);
             wildAnimalAnimation.play();
         }
@@ -230,7 +222,7 @@ public class WildAnimal extends Animal {
             wildAnimalView.relocate(250 + (int) getX() * 9, 250 + (int) getY() * 6);
         }
 
-        wildButton.relocate(286 + getX() * 6, 284 + getY() * 3);
+        wildButton.relocate(286 + getX() * 9, 284 + getY() * 6);
 
         if (!mapGroup.getChildren().contains(wildButton))
             mapGroup.getChildren().add(wildButton);

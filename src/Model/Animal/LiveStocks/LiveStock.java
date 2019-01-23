@@ -73,11 +73,22 @@ public class LiveStock extends Animal {
     }
 
     public Product releaseProduct(double time) {
-        if (type.equals(AnimalType.chicken))
-            return new Product(time, "egg");
-        if (type.equals(AnimalType.ostrich))
-            return new Product(time, "feather");
-        return new Product(time, "horn");
+        if (type.equals(AnimalType.chicken)) {
+            Product product = new Product(time, "egg");
+            product.setX(this.x);
+            product.setY(this.y);
+            return product;
+        }
+        if (type.equals(AnimalType.ostrich)) {
+            Product product = new Product(time, "feather");
+            product.setX(this.x);
+            product.setY(this.y);
+            return product;
+        }
+        Product product = new Product(time, "horn");
+        product.setX(this.x);
+        product.setY(this.y);
+        return product;
     }
 
 
