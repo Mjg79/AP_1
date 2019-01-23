@@ -25,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -74,6 +75,7 @@ public class MapView {
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\";
     private static final String animalBuy =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\buttons\\buyAnimal\\";
+    private static final String upgrade = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\upgrade\\";
 
     private ImageView chickenView = new ImageView();
     private ImageView ostrichView = new ImageView();
@@ -300,6 +302,7 @@ public class MapView {
         buttons(map, mapScene);
         timeShow(controller.getMap(), map, mapScene);
         mapBudget(map);
+        upgradeWell(map, maps);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -477,6 +480,43 @@ public class MapView {
         GeneralButton.buttonAppearanceWithCursor(truckButton, mapScene);
         //OstrichButton.resume();
         //BuffaloButton.resume();
+    }
+
+    private void upgradeWell(Group mapGroup, Map map) {
+        ImageView upgradeView = new ImageView();
+        Label text = new Label("0");
+        upgradeView.relocate(400, 400);
+        text.relocate(436, 404);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20");
+        mapGroup.getChildren().add(upgradeView);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                text.setText(Integer.toString((int)map.getWell().getMoneyForUpgrading()));
+                try {
+                    if (map.getWell().getLevel() < 4 && map.getWell().getMoneyForUpgrading() < map.getBudget()) {
+                        upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        upgradeView.setOpacity(1);
+                    }else {
+                        upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        upgradeView.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        upgradeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (upgradeView.getOpacity() == 1)
+                    map.upgrade("well");
+            }
+        });
+
     }
 
 }

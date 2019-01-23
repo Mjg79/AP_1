@@ -23,11 +23,21 @@ import java.io.FileNotFoundException;
         buttonAppearanceWithCursor(well, mapScene);
         well.relocate(462, 152);
         mapGroup.getChildren().add(well);
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                System.out.println(map.getWell().getCurrent());
+                if (map.getWell().getCurrent() == 0)
+                    well.setVisible(true);
+                else
+                    well.setVisible(false);
+            }
+        };
+        timer.start();
+
         well.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (map.getWell().getCurrent() == 0) {
-                    well.setVisible(true);
                     map.chargeWell();
                     try {
                         if(isPlaying) {
@@ -63,8 +73,6 @@ import java.io.FileNotFoundException;
                         e.printStackTrace();
                     }
                     ;
-                } else
-                    well.setVisible(false);
             }
         });
 
