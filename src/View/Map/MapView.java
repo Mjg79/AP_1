@@ -364,7 +364,11 @@ public class MapView {
                         e.printStackTrace();
                     }
                     if((int)time - time == 0) {
-                        map.turnMap(0.1, mapGroup);
+                        try {
+                            map.turnMap(0.1, mapGroup);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println("term nam");
                     }
                 }

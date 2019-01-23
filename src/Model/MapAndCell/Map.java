@@ -1,5 +1,7 @@
 package Model.MapAndCell;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import Model.Animal.*;
@@ -13,7 +15,17 @@ import Model.Products.Product;
 import Model.Products.Forage.Forage;
 import Model.Transportation.Helicopter;
 import Model.Transportation.Truck;
+import View.Animations.SpriteAnimation;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -509,9 +521,10 @@ public class Map {
     }
 
     ///////////////////////////KILLED_WILD_ANIMALS_BY_DOGS/////////////////////////
-    private void killedWildAnimalsByDogs(Group mapGroup) {
+    private void killedWildAnimalsByDogs(Group mapGroup) throws FileNotFoundException {
         for (Dog dog : dogs)
             if (!cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().isEmpty()) {
+                battleAnimation(mapGroup, dog.getX(), dog.getY());
                 cells[(int) dog.getX()][(int) dog.getY()].removeDog(dog, mapGroup);
                 dog.setIsKilled(true);
                 System.out.println();
@@ -520,7 +533,6 @@ public class Map {
                         cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0).getWildButton());
                 wildAnimals.remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0));
                 cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().remove(0);
-
             }
         Iterator iterator = dogs.iterator();
         while (iterator.hasNext()) {
@@ -530,6 +542,28 @@ public class Map {
         }
 
     }
+
+
+    public void battleAnimation(Group mapGroup, int x, int y) throws FileNotFoundException {
+        System.out.println("asd;flkjas;ldfkjaslk;fj    " + x + " ,,, " + y);
+        ImageView battle = new ImageView(new Image(new FileInputStream("" +
+                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Cages\\battle_1.png")));
+        mapGroup.getChildren().add(battle);
+        SpriteAnimation battleAnimation = new SpriteAnimation(battle, Duration.millis(1000), 20,
+                5, 0, 0, 250, 250);
+        battleAnimation.setCycleCount(5);
+        battleAnimation.play();
+
+        Path path = new Path(new MoveTo(250 + x * 9, 250 + y * 9), new LineTo(1200, 250 + y * 9));
+        path.setVisible(false);
+        mapGroup.getChildren().add(path);
+        PathTransition pathTransition = new PathTransition(Duration.seconds(2), path, battle);
+        pathTransition.setCycleCount(1);
+        pathTransition.play();
+
+    }
+
+
 
     ///////////////////////////CHARGE_WELL/////////////////////////////////////////
     public void chargeWell() {
@@ -661,7 +695,7 @@ public class Map {
     }
 
     /////////////////////DOG_TURN////////////////////////////////////////////
-    private void dogTurn(Group mapGroup) {
+    private void dogTurn(Group mapGroup) throws FileNotFoundException {
         this.moveDogs();
         this.killedWildAnimalsByDogs(mapGroup);
     }
@@ -678,7 +712,7 @@ public class Map {
     }
 
     /////////////////TURN////////////////////////////////////////////////////
-    public void turnMap(double increase, Group mapGroup) {
+    public void turnMap(double increase, Group mapGroup) throws FileNotFoundException {
         farmTime += increase;
         this.productTurn();
         this.liveStockTurn();
