@@ -7,11 +7,14 @@ import View.Animations.SpriteAnimation;
 import View.Buttons.LiveStocks.Wild.WildAnimalButton;
 import View.Buttons.ProductButton;
 import javafx.animation.Animation;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
@@ -109,16 +112,29 @@ public class WildAnimal extends Animal {
                 6, 0, 0, 132, 142);
         wildAnimalAnimation.play();
         cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
-        cageView.relocate(250 + getX(), 250 + getY());
+        cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                map.pickUpAndPutInWareHouse(x, y);
+                mapGroup.getChildren().remove(cageView);
+                mapGroup.getChildren().remove(wildAnimalView);
+            }
+        });
+        cageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.HAND);
+            }
+        });
+        cageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
         cageAnimation = new SpriteAnimation(cageView, Duration.millis(1), 9, 3, 0,
                 0, 260, 260);
         cageAnimation.play();
-        if (!wildButton.getText().equals("product") && this.isCaged) {
-            wildButton = WildAnimalButton.wildProductButton(wildButton, wildAnimalView, cageView, mapGroup,
-                    scene, this, map, farmTime);
-
-        }
-
     }
 
     public ImageView getWildAnimalView() {
@@ -133,6 +149,7 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.northEast) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "northWest.png")));
             wildAnimalView.setScaleX(-1);
+            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
             wildAnimalAnimation.setCycleCount(5);
@@ -145,6 +162,8 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.southEast) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "southWest.png")));
             wildAnimalView.setScaleX(-1);
+            cageView.relocate(300 + getX(), 260 + getY());
+
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
             wildAnimalAnimation.setCycleCount(5);
@@ -156,6 +175,7 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.northWest) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "northWest.png")));
             wildAnimalView.setScaleX(1);
+            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
             wildAnimalAnimation.setCycleCount(5);
@@ -168,6 +188,7 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.southWest) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "southWest.png")));
             wildAnimalView.setScaleX(1);
+            cageView.relocate(300 + getX(), 300 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
             wildAnimalAnimation.setCycleCount(5);
@@ -179,6 +200,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalNorthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.north) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "north.png")));
+            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 94, 116);
@@ -189,6 +211,7 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalSouthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.south) && getName().equals("lion")) {
+            cageView.relocate(270 + getX(), 305 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "south.png")));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
@@ -200,6 +223,7 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.east) && getName().equals("lion")) {
+            cageView.relocate(310 + getX(), 275 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "west.png")));
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
@@ -211,6 +235,7 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.west) && getName().equals("lion")) {
+            cageView.relocate(300 + getX(), 255 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "west.png")));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24, 3,
@@ -224,16 +249,28 @@ public class WildAnimal extends Animal {
             throws FileNotFoundException {
         Duration duration;
 
-        if (!wildButton.getText().equals("product")) {
-            wildButton = WildAnimalButton.wildButton(wildButton, scene, this, map);
-            mapGroup.getChildren().remove(wildButton);
-            wildAnimalView.relocate(250 + (int) getX() * 9, 250 + (int) getY() * 6);
-        }
+        wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                map.cageWildAnimal(getX(), getY());
+            }
+        });
 
-        wildButton.relocate(286 + getX() * 9, 284 + getY() * 6);
+        wildAnimalView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.HAND);
+            }
+        });
 
-        if (!mapGroup.getChildren().contains(wildButton))
-            mapGroup.getChildren().add(wildButton);
+        wildAnimalView.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+
+        wildAnimalView.relocate(250 + (int) getX() * 9, 250 + (int) getY() * 6);
 
         if (isEntered) {
             duration = Duration.millis(10);

@@ -528,9 +528,8 @@ public class Map {
                 cells[(int) dog.getX()][(int) dog.getY()].removeDog(dog, mapGroup);
                 dog.setIsKilled(true);
                 System.out.println();
-                mapGroup.getChildren().removeAll(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0)
-                        .getWildAnimalView(),
-                        cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0).getWildButton());
+                mapGroup.getChildren().remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0)
+                        .getWildAnimalView());
                 wildAnimals.remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0));
                 cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().remove(0);
             }
@@ -545,7 +544,6 @@ public class Map {
 
 
     public void battleAnimation(Group mapGroup, int x, int y) throws FileNotFoundException {
-        System.out.println("asd;flkjas;ldfkjaslk;fj    " + x + " ,,, " + y);
         ImageView battle = new ImageView(new Image(new FileInputStream("" +
                 "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Cages\\battle_1.png")));
         mapGroup.getChildren().add(battle);
@@ -557,7 +555,7 @@ public class Map {
         Path path = new Path(new MoveTo(250 + x * 9, 250 + y * 9), new LineTo(1200, 250 + y * 9));
         path.setVisible(false);
         mapGroup.getChildren().add(path);
-        PathTransition pathTransition = new PathTransition(Duration.seconds(2), path, battle);
+        PathTransition pathTransition = new PathTransition(Duration.seconds(3), path, battle);
         pathTransition.setCycleCount(1);
         pathTransition.play();
 
