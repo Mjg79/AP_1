@@ -115,6 +115,7 @@ public class HeliCopterView {
             public void handle(MouseEvent event) {
                 controller.getMap().getHelicopter().clear();
                 controller.getMap().getHelicopter().clearSalesGood();
+                MapView.resume();
                 stage.setScene(mapScene);
             }
         });
@@ -141,6 +142,7 @@ public class HeliCopterView {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+                MapView.resume();
                 stage.setScene(mapScene);
             }
         });

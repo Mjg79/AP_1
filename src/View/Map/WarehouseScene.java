@@ -3,6 +3,7 @@ package View.Map;
 import Model.Places.WareHouse;
 import View.Buttons.GeneralButton;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +20,7 @@ public class WarehouseScene {
     private WareHouse wareHouse;
     private Stage primaryStage;
     private Group warehouseRoot = new Group();
-    private final Scene wareHouseScence = new Scene(warehouseRoot,1000,750);
+    private final Scene wareHouseScene = new Scene(warehouseRoot,1000,750);
     private Scene backScene;
     public WarehouseScene(WareHouse wareHouse,Scene backScene) throws FileNotFoundException {
         this.wareHouse = wareHouse;
@@ -40,12 +41,12 @@ public class WarehouseScene {
         exit.setScaleX(4.3);
         exit.setScaleY(2);
         exit.setOpacity(0);
-        GeneralButton.buttonAppearanceWithCursor(exit,wareHouseScence);
+        GeneralButton.buttonAppearanceWithCursor(exit,wareHouseScene);
         exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                MapView.resume();
                 primaryStage.setScene(backScene);
-
             }
         });
         ImageView cancel = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "cancelButton.png")));
@@ -56,7 +57,7 @@ public class WarehouseScene {
     }
     public void changeToWarehouse(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        primaryStage.setScene(wareHouseScence);
+        primaryStage.setScene(wareHouseScene);
 
     }
 

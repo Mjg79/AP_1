@@ -48,9 +48,13 @@ public class MapView {
     private static boolean isPaused = false;
     private static boolean isResumed = false;
     private static boolean isPlaying = true;
+    private static Button hButton = new Button();//helicopterButton
+    private static Button truckButton = new Button();
+    private static Scene mapScene;
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
         MapView.controller = controller;
+        MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;
         try {
             warehouseScene = new WarehouseScene(wareHouse,mapScene);
@@ -76,9 +80,7 @@ public class MapView {
     private ImageView buffaloView = new ImageView();
     private ImageView helicopterView = new ImageView();
     private ImageView truckView = new ImageView();
-    private Button truckButton = new Button();
     private ImageView dogView = new ImageView();
-    private Button hButton = new Button();//helicopterButton
     private ImageView catView = new ImageView();
 
 
@@ -298,7 +300,10 @@ public class MapView {
                         truckButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
-                                warehouseScene.changeToWarehouse(primaryStage);
+                                if(isPlaying) {
+                                    MapView.pause();
+                                    warehouseScene.changeToWarehouse(primaryStage);
+                                }
                             }
                         });
                         showWildAnimals(controller.getMap(), mapGroup, mapScene, controller.getMap().getFarmTime());
@@ -373,13 +378,15 @@ public class MapView {
         hButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                primaryStage.setScene(helicopterScene);
+                if(isPlaying){
+                    MapView.pause();
+                    primaryStage.setScene(helicopterScene);
+                }
             }
         });
     }
 
     public static void pause(){
-        //controller.pause();
         isPaused = true;
         isPlaying = false;
         WellButton.pause();
@@ -387,12 +394,13 @@ public class MapView {
         CakeBakeryButton.pause();
         CookieBakeryButton.pause();
         ChickenButton.pause();
+        GeneralButton.buttonAppearanceDefault(hButton, mapScene);
+        GeneralButton.buttonAppearanceDefault(truckButton, mapScene);
         //OstrichButton.pause();
         //BuffaloButton.pause();
     }
 
     public static void resume(){
-        //controller.resume();
         isResumed = true;
         isPlaying = true;
         WellButton.resume();
@@ -400,6 +408,8 @@ public class MapView {
         CakeBakeryButton.resume();
         CookieBakeryButton.resume();
         ChickenButton.resume();
+        GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
+        GeneralButton.buttonAppearanceWithCursor(truckButton, mapScene);
         //OstrichButton.resume();
         //BuffaloButton.resume();
     }
