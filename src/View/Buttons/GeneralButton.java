@@ -28,11 +28,42 @@ public class GeneralButton {
          });
      }
 
+    public static void buyAnimalAppereanceDefault(Button button, ImageView buttonView) {
+        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                buttonView.setOpacity(0.9);
+            }
+        });
+
+        button.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                buttonView.setOpacity(0.9);
+            }
+        });
+    }
+
      public static void buttonAppearanceWithCursor(Button button, Scene scene) {
         button.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 scene.setCursor(Cursor.HAND);
+            }
+        });
+        button.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+    }
+
+    public static void buttonAppearanceDefault(Button button, Scene scene) {
+        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         button.setOnMouseExited(new EventHandler<MouseEvent>() {

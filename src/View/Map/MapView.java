@@ -38,15 +38,18 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class MapView {
-    private Controller controller;
+    private static Controller controller;
     private Stage primaryStage;
     private Scene helicopterScene;
     private WarehouseScene warehouseScene;
     private Pane backGroundPane = new Pane();
     private Pane grassButtonPane = new Pane();
+    private static boolean isPaused = false;
+    private static boolean isResumed = false;
+    private static boolean isPlaying = true;
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
-        this.controller = controller;
+        MapView.controller = controller;
         this.primaryStage = primaryStage;
         try {
             warehouseScene = new WarehouseScene(wareHouse,mapScene);
@@ -83,7 +86,7 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 100) {
+                if (controller.getMap().getBudget() >= 100 && isPlaying) {
                     try {
                         chickenView.setImage(new Image(new FileInputStream(animalBuy + "chickenAfter.png")));
                     } catch (FileNotFoundException e) {
@@ -108,7 +111,7 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 1000) {
+                if (controller.getMap().getBudget() >= 1000 && isPlaying) {
                     try {
                         ostrichView.setImage(new Image(new FileInputStream(animalBuy + "ostrichAfter.png")));
                     } catch (FileNotFoundException e) {
@@ -133,7 +136,7 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 10000) {
+                if (controller.getMap().getBudget() >= 10000 && isPlaying) {
                     try {
                         buffaloView.setImage(new Image(new FileInputStream(animalBuy + "buffaloAfter.png")));
                     } catch (FileNotFoundException e) {
@@ -185,14 +188,6 @@ public class MapView {
         GeneralButton.buttonAppearanceWithCursor(truckButton,mapScene);
         mapGroup.getChildren().add(truckButton);
 
-//        helicopterView.relocate(606,559);
-//        mapGroup.getChildren().add(helicopterView);
-//        hButton.relocate(656, 639);
-//        hButton.setText("helicopter\nhelicopter");
-//        GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
-//        hButton.setOpacity(0);
-//        mapGroup.getChildren().add(hButton);
-
         hButton.relocate(606, 559);
         hButton.setGraphic(helicopterView);
         hButton.setBorder(Border.EMPTY);
@@ -200,8 +195,6 @@ public class MapView {
         hButton.setPadding(Insets.EMPTY);
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
         mapGroup.getChildren().add(hButton);
-
-
 
         Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
         ImageView underBarView = new ImageView(underBar);
@@ -215,7 +208,7 @@ public class MapView {
     }
 
 
-    private void workShopButtons(Group mapGroup, Scene mapScene) throws FileNotFoundException {
+    private void workShopButtons(Group mapGroup, Scene mapScene) {
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("chicken", 200);
         Button well = WellButton.wellButton(mapGroup, mapScene, controller.getMap());
@@ -264,7 +257,7 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                label.setText("Budget\n" + Integer.toString((int)controller.getMap().getBudget()));
+                label.setText("Budget\n" + Integer.toString(controller.getMap().getBudget()));
             }
         };
         animationTimer.start();
@@ -278,13 +271,14 @@ public class MapView {
         timerLabel.setText("0");
         AnimationTimer timer = new AnimationTimer() {
             private long lastTime = 0;
+            private long pausedTime = 0;
             private double time = 0;
             private long second = 1000000000;
             @Override
             public void handle(long now) {
                 if (lastTime == 0)
                     lastTime = now;
-                if (now > lastTime + (second/10)) {
+                if (now > lastTime + (second/10) && isPlaying) {
                     lastTime = now;
                     time += 1;
                     System.out.println(time);
@@ -313,6 +307,13 @@ public class MapView {
                         map.turnMap(0.1);
                         System.out.println("term nam");
                     }
+                }
+                else if(isPaused){
+                    isPaused = false;
+                    pausedTime = now - lastTime;
+                }
+                else if(!isPlaying){
+                    lastTime = now - pausedTime;
                 }
             }
         };
@@ -373,6 +374,32 @@ public class MapView {
                 primaryStage.setScene(helicopterScene);
             }
         });
+    }
+
+    public static void pause(){
+        //controller.pause();
+        isPaused = true;
+        isPlaying = false;
+        WellButton.pause();
+        EggPowderPlantButton.pause();
+        CakeBakeryButton.pause();
+        CookieBakeryButton.pause();
+        ChickenButton.pause();
+        //OstrichButton.pause();
+        //BuffaloButton.pause();
+    }
+
+    public static void resume(){
+        //controller.resume();
+        isResumed = true;
+        isPlaying = true;
+        WellButton.resume();
+        EggPowderPlantButton.resume();
+        CakeBakeryButton.resume();
+        CookieBakeryButton.resume();
+        ChickenButton.resume();
+        //OstrichButton.resume();
+        //BuffaloButton.resume();
     }
 
 }

@@ -1,6 +1,7 @@
 package View.Buttons;
 
 import Model.MapAndCell.Map;
+import View.Map.MapView;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -186,7 +187,19 @@ public class MenuButton {
             if(menuButton.getGraphic().equals(menuButtonBlueView)){
                 menuButton.setGraphic(menuButtonGrayView);
                 mapGroup.getChildren().addAll(menuBarView, continueButton, mainMenuButton, restartButton, mapButton, optiansButton, helpButton);
-
+                menuButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        mapScene.setCursor(Cursor.DEFAULT);
+                    }
+                });
+                menuButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        mapScene.setCursor(Cursor.DEFAULT);
+                    }
+                });
+                MapView.pause();
                 //TODO:handle pause game and graying all game buttons
             }
         });
@@ -195,6 +208,19 @@ public class MenuButton {
         continueButton.setOnAction(event -> {
             menuButton.setGraphic(menuButtonBlueView);
             mapGroup.getChildren().removeAll(menuBarView, continueButton, mainMenuButton, restartButton, mapButton, optiansButton, helpButton);
+            menuButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mapScene.setCursor(Cursor.HAND);
+                }
+            });
+            menuButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mapScene.setCursor(Cursor.DEFAULT);
+                }
+            });
+            MapView.resume();
             //TODO:handle resume game and bluing game buttons if needed
         });
 

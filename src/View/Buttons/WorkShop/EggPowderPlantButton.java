@@ -14,8 +14,13 @@ import javafx.scene.input.MouseEvent;
 import java.io.FileNotFoundException;
 
 public class EggPowderPlantButton extends GeneralButton {
+    private static boolean isPaused = false;
+    private static boolean isResumed = false;
+    private static boolean isPlaying = true;
+    private static Scene  mapScene;
+    private static Button workshop = new Button(" workshop ");
     public static Button workShopButton(Group mapGroup, Scene mapScene, int x, int y, Map map) {
-        Button workshop = new Button(" workshop ");
+        EggPowderPlantButton.mapScene = mapScene;
         workshop.relocate(x, y);
         GeneralButton.buttonAppearanceWithCursor(workshop, mapScene);
         mapGroup.getChildren().add(workshop);
@@ -24,25 +29,36 @@ public class EggPowderPlantButton extends GeneralButton {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    Animation animation = EggPowderPlant.eggPowderPlantAnimation(true,
-                             mapGroup, 1);
-                    animation.setCycleCount(5);
-                    AnimationTimer timer = new AnimationTimer() {
-                        int criteria = 0;
+                    if(isPlaying) {
+                        Animation animation = EggPowderPlant.eggPowderPlantAnimation(true,
+                                mapGroup, 1);
+                        animation.setCycleCount(5);
+                        AnimationTimer timer = new AnimationTimer() {
+                            int criteria = 0;
 
-                        @Override
-                        public void handle(long now) {
-                            criteria++;
-                            workshop.setVisible(false);
-                            System.out.println(criteria);
-                            if (criteria == 370) {
-                                workshop.setVisible(true);
-                                this.stop();
+                            @Override
+                            public void handle(long now) {
+                                if (isPaused) {
+                                    animation.pause();
+                                    isPaused = false;
+                                }
+                                if (isResumed) {
+                                    animation.play();
+                                    isResumed = false;
+                                }
+                                if (isPlaying)
+                                    criteria++;
+                                workshop.setVisible(false);
+                                System.out.println(criteria);
+                                if (criteria == 370) {
+                                    workshop.setVisible(true);
+                                    this.stop();
+                                }
                             }
-                        }
-                    };
-                    timer.start();
-                    animation.play();
+                        };
+                        timer.start();
+                        animation.play();
+                    }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -51,5 +67,16 @@ public class EggPowderPlantButton extends GeneralButton {
 
 
         return workshop;
+    }
+    public static void pause(){
+        isPaused = true;
+        isPlaying = false;
+        GeneralButton.buttonAppearanceDefault(workshop, mapScene);
+    }
+
+    public static void resume(){
+        isResumed = true;
+        isPlaying = true;
+        GeneralButton.buttonAppearanceWithCursor(workshop, mapScene);
     }
 }
