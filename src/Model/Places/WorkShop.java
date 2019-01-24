@@ -11,9 +11,14 @@ public class WorkShop extends Element {
     private int possibleNumberOfOutputProducts;
     protected int maxNumberOfProducts;
     protected String nameOfOutputProduct;
-    protected double timeLastingForWorking = 1;
+    protected double timeLastingForWorking = 10;
     protected ArrayList<Product> outputProduct = new ArrayList<>();
     private double endOfTimeForWorking;
+
+    {
+        moneyForUpgrading = 100;
+        level = 1;
+    }
 
 
     public WorkShop(String name, int x, int y) {
@@ -41,6 +46,8 @@ public class WorkShop extends Element {
             this.name = "CakeBakery";
         }
     }
+
+
 
     private void checkCookieBakery(String name) {
         if (name.equals("CookieBakery")) {
@@ -124,8 +131,8 @@ public class WorkShop extends Element {
                 product.setX(this.x);
                 product.setY(this.y);
                 this.outputProduct.add(product);
-                return outputProduct;
             }
+            return outputProduct;
         }
         if (name.equals("CookieBakery")) {
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
@@ -133,8 +140,9 @@ public class WorkShop extends Element {
                 product.setX(this.x);
                 product.setY(this.y);
                 this.outputProduct.add(product);
-                return outputProduct;
             }
+            return outputProduct;
+
         }
         if (name.equals("EggPowderedPlant")) {
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
@@ -142,8 +150,8 @@ public class WorkShop extends Element {
                 product.setX(this.x);
                 product.setY(this.y);
                 this.outputProduct.add(product);
-                return outputProduct;
             }
+            return outputProduct;
         }
         if (name.equals("SewingFactory")) {
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
@@ -151,8 +159,9 @@ public class WorkShop extends Element {
                 product.setX(this.x);
                 product.setY(this.y);
                 this.outputProduct.add(product);
-                return outputProduct;
             }
+            System.out.println("outputProduct: " + outputProduct.size());
+            return outputProduct;
         }
         if (name.equals("WeavingFactory")) {
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
@@ -168,6 +177,10 @@ public class WorkShop extends Element {
     }
 
 
+    public double getTimeLastingForWorking() {
+        return timeLastingForWorking;
+    }
+
     @Override
     public void move (int finalX, int finalY) {
 
@@ -175,9 +188,10 @@ public class WorkShop extends Element {
 
     @Override
     public  boolean upgrade() {
-        if (level < 3) {
+        if (level < 4) {
             maxNumberOfProducts++;
             moneyForUpgrading += 100;
+            timeLastingForWorking -= 2;
             level++;
             return true;
         }

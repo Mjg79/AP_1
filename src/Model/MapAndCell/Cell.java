@@ -193,7 +193,7 @@ public class Cell extends Element {
 	public void showCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		setViewOfCell(group, scene,  map);
 		for (ImageView imageView: imageViews) {
-			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView),
+			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView) * 9,
 					250 + 7 * this.getY() + imageViews.indexOf(imageView));
 			if (!group.getChildren().contains(imageView))
 			group.getChildren().add(imageView);

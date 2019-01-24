@@ -3,8 +3,7 @@ package Model.Places;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
 import View.Animations.SpriteAnimation;
-import View.Brightness.WellAndWareHouseBrightness;
-import javafx.animation.Animation;
+import View.Brightness.Brightness;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -12,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
@@ -192,7 +190,7 @@ public class Well extends Element {
             }
         };
         timer.start();
-        WellAndWareHouseBrightness.changeBrightNess(current, volume, info, level, wellView);
+        Brightness.changeBrightNess4(current, volume, info, level, wellView);
     }
 }
 

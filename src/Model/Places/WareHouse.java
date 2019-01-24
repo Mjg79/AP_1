@@ -11,7 +11,7 @@ public class WareHouse extends Element {
     private HashMap<String, Integer> liveStocks = new HashMap<>();
 
     {
-        volume = 40;
+        volume = 80;
         level = 1;
         x = 20;//truly is a constant for specifying the x of wareHouse in map
         y = 40;//truly is a constant for specifying the y of wareHouse in map
@@ -71,6 +71,7 @@ public class WareHouse extends Element {
     public void addGoodOrLiveStock(Element element, int count) {
         if (!(element instanceof LiveStock)) {// if it is not a live stock
             if ((volume - current) >= element.getVolume() * count) {
+                current += element.getVolume() * count;
                 if (goods.containsKey(element.getName())) {
                     int previousCount = goods.get(element.getName());
                     goods.put(element.getName(), previousCount + count);
@@ -136,6 +137,8 @@ public class WareHouse extends Element {
             if (this.goods.get(string) < min)
                 min = this.goods.get(string);
         }
+
+        System.out.println("alsk;dfjkaslfjsklfjskl;ajf;lasjflkasj;laksjf +   " + min);
 
         for (String string : workShop.getNameOfInputProducts())
             //decrease number of all products by min that used by workshop

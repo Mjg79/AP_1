@@ -478,8 +478,9 @@ public class Map {
         while (iterator.hasNext()) {
             Product product = (Product)iterator.next();
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
+                System.out.println("asd;flkjsalkfkdjs;lkfjas;fkljsa");
                 wareHouse.addGoodOrLiveStock(product, 1);
-                removeOneProduct(product);
+//                removeOneProduct(product);
                 iterator.remove();
                 this.gatherForMissionNeeds(product.getName());
                 product.setIsPickedUp(true);
@@ -519,6 +520,7 @@ public class Map {
     private void pickUpByCatAndPutInWareHouse() {
         for (Cat cat : cats)
             this.pickUpProducts((int) cat.getX(), (int) cat.getY());
+        System.out.println("wareHouseCurrent: " + wareHouse.getCurrent());
 
     }
 

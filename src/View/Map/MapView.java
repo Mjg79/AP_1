@@ -7,7 +7,7 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
-import View.Brightness.WellAndWareHouseBrightness;
+import View.Brightness.Brightness;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
@@ -15,19 +15,15 @@ import View.Buttons.MenuButton;
 //import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
 import View.Buttons.WorkShop.CookieBakeryButton;
-import View.Buttons.WorkShop.EggPowderPlantButton;
+//import View.Buttons.WorkShop.EggPowderPlantButton;
 import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -39,7 +35,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -229,7 +224,6 @@ public class MapView {
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
-        EggPowderPlant.eggPowderPlantAnimation(false, mapGroup, 1).play();
         CakeBakery.cakeBakeryAnimation(false, mapGroup, 1).play();
         CookieBakery.cookieBakeryAnimation(false, mapGroup, 1).play();
 
@@ -270,8 +264,6 @@ public class MapView {
     private void workShopButtons(Group mapGroup, Scene mapScene) {
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("chicken", 200);
-        Button eggPowderPlant = EggPowderPlantButton.workShopButton(mapGroup, mapScene, 146, 236,
-                controller.getMap());
         Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup , mapScene, 146, 520,
                 controller.getMap());
         Button cookieBakery = CookieBakeryButton.workShopButton(mapGroup, mapScene, 711, 221,
@@ -308,10 +300,17 @@ public class MapView {
         mapBudget(map);
         upgradeWell(map, maps);
         upgradeHelicopter(map, maps);
+        upgradeEggPlant(map, maps);
+
         showAndUpgradeWareHouse(map, maps);
+
         maps.getWell().setWellView(map);
         maps.getWell().showWellInWorking(maps);
         maps.getWell().wellInfo(map);
+
+        EggPowderPlant.setEggPlantView(map, maps);
+        EggPowderPlant.showEggPlantInWorking(maps);
+        EggPowderPlant.eggPlantInfo(map, maps);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -467,7 +466,7 @@ public class MapView {
         isPaused = true;
         isPlaying = false;
 //        WellButton.pause();
-        EggPowderPlantButton.pause();
+//        EggPowderPlantButton.pause();
         CakeBakeryButton.pause();
         CookieBakeryButton.pause();
         ChickenButton.pause();
@@ -481,7 +480,7 @@ public class MapView {
         isResumed = true;
         isPlaying = true;
 //        WellButton.resume();
-        EggPowderPlantButton.resume();
+//        EggPowderPlantButton.resume();
         CakeBakeryButton.resume();
         CookieBakeryButton.resume();
         ChickenButton.resume();
@@ -532,6 +531,55 @@ public class MapView {
             public void handle(MouseEvent event) {
                 if (upgradeView.getOpacity() == 1) {
                     map.upgrade("well");
+                }
+            }
+        });
+
+    }
+
+    private void upgradeEggPlant(Group mapGroup, Map map) {
+        ImageView eggPlant = new ImageView();
+        Label text = new Label("0");
+        eggPlant.relocate(100, 330);
+        text.relocate(136, 334);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
+        mapGroup.getChildren().add(eggPlant);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    EggPowderPlant.setEggPlantView(mapGroup, map);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                try {
+                    if (map.getWell().getLevel() == 4) {
+                        eggPlant.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getWorkshops().get(0).getLevel() < 4
+                            && map.getWorkshops().get(0).getMoneyForUpgrading() <= map.getBudget()) {
+                        eggPlant.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        eggPlant.setOpacity(1);
+                    }else if (map.getWorkshops().get(0).getLevel() < 4
+                            && map.getWorkshops().get(0).getMoneyForUpgrading() > map.getBudget()){
+                        eggPlant.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        eggPlant.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        eggPlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (eggPlant.getOpacity() == 1) {
+                    map.upgrade("EggPowderedPlant");
                 }
             }
         });
@@ -670,7 +718,7 @@ public class MapView {
             }
         };
         timer.start();
-        WellAndWareHouseBrightness.changeBrightNess(current, volume, info, level,  wareHouseView);
+        Brightness.changeBrightNess4(current, volume, info, level,  wareHouseView);
     }
 
 }
