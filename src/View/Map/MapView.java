@@ -662,11 +662,11 @@ public class MapView {
                         upgradeWareHouse.setVisible(false);
                         text.setVisible(false);
                     }
-                    if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() <
+                    if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() <=
                             map.getBudget()) {
                         upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
                         upgradeWareHouse.setOpacity(1);
-                    }else if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() >=
+                    }else if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() >
                             map.getBudget()){
                         upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
                         upgradeWareHouse.setOpacity(0.9);

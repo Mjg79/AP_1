@@ -138,14 +138,18 @@ public class WareHouse extends Element {
                 min = this.goods.get(string);
         }
 
-        System.out.println("alsk;dfjkaslfjsklfjskl;ajf;lasjflkasj;laksjf +   " + min);
-
         for (String string : workShop.getNameOfInputProducts())
             //decrease number of all products by min that used by workshop
             goods.put(string, goods.get(string) - min);
 
         //it means that we have min numbers for starting the workshop;
         workShop.setPossibleNumberOfOutputProducts(min);
+        if (workShop.getName().equals("EggPowderedPlant"))
+            current -= min;
+        if (workShop.getName().equals("CookieBakery"))
+            current -= min * 2;
+        if (workShop.getName().equals("CakeBakery"))
+            current -= min * 3;
         return true;
     }
 

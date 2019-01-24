@@ -32,44 +32,45 @@ public class EggPowderPlant {
             if (!mapGroup.getChildren().contains(eggPlantView))
                 mapGroup.getChildren().add(eggPlantView);
             eggPlantView.setImage(new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\0"
-                    + level + ".png")));
+                        + level + ".png")));
             if (level == 1)
-                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
-                        0, 0, 128, 114).play();
+                eggAnimation = new  SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
+                        0, 0, 128, 114);
             if (level == 2)
-                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
-                        0, 0,144, 132).play();
+                eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
+                        0, 0,144, 132);
             if (level == 3)
-                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
-                        164, 150).play();
+                eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
+                        164, 150);
             if (level == 4)
-                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
+               eggAnimation =  new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
                         186, 158);
             previousLevel = level;
+            eggAnimation.setCycleCount(1);
+            eggAnimation.play();
+            System.out.println("workShop level: " + level);
         }
     }
     public static void showEggPlantInWorking(Map map) {
-        int level = map.getWorkshops().get(0).getLevel();
-        WorkShop eggPlant = map.getWorkshops().get(0);
         eggPlantView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (!eggPlant.isInWorking()) {
+                if (!map.getWorkshops().get(0).isInWorking()) {
                     map.startWorkshop("EggPowderedPlant");
-                    if (level == 1)
+                    System.out.println("workShop level in work: " + map.getWorkshops().get(0).getLevel());
+                    if (map.getWorkshops().get(0).getLevel() == 1)
                         eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1000), 16, 4,
                                 0, 0, 128, 114);
-
-                    if (level == 2)
+                    if (map.getWorkshops().get(0).getLevel() == 2)
                         eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1000), 16, 4,
                                 0, 0, 144, 132);
-                    if (level == 3)
+                    if (map.getWorkshops().get(0).getLevel() == 3)
                         eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1000), 16, 4,
                                 0, 0, 164, 150);
-                    if (level == 4)
+                    if (map.getWorkshops().get(0).getLevel() == 4)
                         eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1000), 16, 4,
                                 0, 0, 186, 158);
-                    eggAnimation.setCycleCount((int)eggPlant.getTimeLastingForWorking());
+                    eggAnimation.setCycleCount((int)map.getWorkshops().get(0).getTimeLastingForWorking());
                     eggAnimation.play();
                 }
             }

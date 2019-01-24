@@ -102,7 +102,6 @@ public class Product extends Element {
 
     private void checkFlour(String type) {
         if (type.equals("flour")) {
-            System.out.println("kljsalkfj;aslkdfjas;klfdjas;kldfj");
             name = "flour";
             volume = 1;
             price = 10;

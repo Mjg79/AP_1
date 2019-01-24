@@ -461,6 +461,7 @@ public class Map {
             while (iterator1.hasNext()) {
                 Cat cat = (Cat) iterator1.next();
                 if (cat.getX() == wildAnimal.getX() && cat.getY() == wildAnimal.getY()) {
+                    mapGroup.getChildren().add(cat.getCatView());
                     iterator1.remove();
                 }
             }
@@ -480,7 +481,7 @@ public class Map {
             if (wareHouse.getCurrent() + product.getVolume() <= wareHouse.getVolume()) {
                 System.out.println("asd;flkjsalkfkdjs;lkfjas;fkljsa");
                 wareHouse.addGoodOrLiveStock(product, 1);
-//                removeOneProduct(product);
+                removeOneProduct(product);
                 iterator.remove();
                 this.gatherForMissionNeeds(product.getName());
                 product.setIsPickedUp(true);
@@ -520,7 +521,6 @@ public class Map {
     private void pickUpByCatAndPutInWareHouse() {
         for (Cat cat : cats)
             this.pickUpProducts((int) cat.getX(), (int) cat.getY());
-        System.out.println("wareHouseCurrent: " + wareHouse.getCurrent());
 
     }
 

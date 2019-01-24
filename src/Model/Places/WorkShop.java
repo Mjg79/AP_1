@@ -189,6 +189,7 @@ public class WorkShop extends Element {
     @Override
     public  boolean upgrade() {
         if (level < 4) {
+            System.out.println("eggPowderPlant level: " + level);
             maxNumberOfProducts++;
             moneyForUpgrading += 100;
             timeLastingForWorking -= 2;
