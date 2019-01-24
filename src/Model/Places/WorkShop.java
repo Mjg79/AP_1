@@ -51,7 +51,7 @@ public class WorkShop extends Element {
 
     private void checkCookieBakery(String name) {
         if (name.equals("CookieBakery")) {
-            this.name = "cookieBakery";
+            this.name = "CookieBakery";
             nameOfInputProducts.add("powderedEgg");
             maxNumberOfProducts = 1;
             nameOfOutputProduct = "cookie";
@@ -135,15 +135,17 @@ public class WorkShop extends Element {
             return outputProduct;
         }
         if (name.equals("CookieBakery")) {
+            System.out.println("salam salam salam ");
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
                 Product product = new Product(time, "cookie");
+                System.out.println("asd;flkjasfl;dkjas;lfkjsalk;fkjaslk;fjaskl;dfjslkfjsa;lfdjsl");
                 product.setX(this.x);
                 product.setY(this.y);
                 this.outputProduct.add(product);
             }
             return outputProduct;
-
         }
+
         if (name.equals("EggPowderedPlant")) {
             for (int i = 0; i < this.getPossibleNumberOfOutputProducts(); i++) {
                 Product product = new Product(time, "powderedEgg");

@@ -155,23 +155,27 @@ public class Cell extends Element {
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "grass1.png"))));
 	}
 
-	private void addEgg(Group group, Scene scene, Map map, Product product) throws FileNotFoundException {
+	private void addEgg(Product product) throws FileNotFoundException {
 		if (product.getName().equals("egg"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "Egg\\normal_2.png"))));
 
 	}
 
-	private void addPowderEgg(Group group, Scene scene , Map map, Product product) throws FileNotFoundException {
+	private void addPowderEgg(Product product) throws FileNotFoundException {
 		if (product.getName().equals("powderedEgg"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "EggPowder.png"))));
 	}
 
-	private void addFlour(Group group, Scene scene , Map map, Product product) throws FileNotFoundException {
+	private void addFlour(Product product) throws FileNotFoundException {
 		if (product.getName().equals("flour"))
 			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "flour.png"))));
 	}
 
-
+	private void addCookie(Product product) throws FileNotFoundException {
+		if (product.getName().equals("cookie")) {
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "cookie.png"))));
+		}
+	}
 
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		if (previousNumberOfCell != products.size()) {
@@ -181,9 +185,10 @@ public class Cell extends Element {
 			group.getChildren().remove(button);
 			previousNumberOfCell = products.size();
 			for (Product product: products) {
-				addEgg(group, scene, map, product);
-				addPowderEgg(group, scene, map, product);
-				addFlour(group, scene, map, product);
+				addEgg(product);
+				addPowderEgg(product);
+				addFlour(product);
+				addCookie(product);
 			}
 		}
 	}

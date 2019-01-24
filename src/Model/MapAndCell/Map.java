@@ -461,7 +461,7 @@ public class Map {
             while (iterator1.hasNext()) {
                 Cat cat = (Cat) iterator1.next();
                 if (cat.getX() == wildAnimal.getX() && cat.getY() == wildAnimal.getY()) {
-                    mapGroup.getChildren().add(cat.getCatView());
+                    mapGroup.getChildren().remove(cat.getCatView());
                     iterator1.remove();
                 }
             }
@@ -578,9 +578,10 @@ public class Map {
     //////////////////////////START_WORKSHOP//////////////////////////////////////
     public void startWorkshop(String workShopName) {
         for (WorkShop workShop : workshops) {
+            System.out.println("workshops: " + workShop.getName());
             if (!workShop.getName().equals(workShopName))
                 continue;
-            System.out.println(workShop.getName());
+            System.out.println("workShop name: " + workShop.getName());
             if (!workShop.isInWorking() && wareHouse.isItPossibleForStartingWorkshop(workShop)) {
                 System.out.println("start");
                 workShop.startWorking(this.farmTime);
@@ -728,8 +729,9 @@ public class Map {
         this.dogTurn(mapGroup);
         this.catTurn();
         this.wellTurn();
-        for (WorkShop workShop : workshops)
+        for (WorkShop workShop : workshops) {
             this.checkWorkshopForGettingOutput(workShop);
+        }
 
         this.checkHelicopterCameBackFromBazar();
         this.checkIsTruckInWareHouse();

@@ -14,7 +14,6 @@ import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
 //import View.Buttons.WellButton;
 import View.Buttons.WorkShop.CakeBakeryButton;
-import View.Buttons.WorkShop.CookieBakeryButton;
 //import View.Buttons.WorkShop.EggPowderPlantButton;
 import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
@@ -225,7 +224,6 @@ public class MapView {
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
         CakeBakery.cakeBakeryAnimation(false, mapGroup, 1).play();
-        CookieBakery.cookieBakeryAnimation(false, mapGroup, 1).play();
 
 
 //        Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
@@ -266,8 +264,7 @@ public class MapView {
         hashMap.put("chicken", 200);
         Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup , mapScene, 146, 520,
                 controller.getMap());
-        Button cookieBakery = CookieBakeryButton.workShopButton(mapGroup, mapScene, 711, 221,
-                controller.getMap());
+
         //TODO: our criteria for putting button for gathering product and grass: (250-250) to (730-530)
         refreshGrassButtons(mapScene);
     }
@@ -301,6 +298,7 @@ public class MapView {
         upgradeWell(map, maps);
         upgradeHelicopter(map, maps);
         upgradeEggPlant(map, maps);
+        upgradeCookieBakery(map, maps);
 
         showAndUpgradeWareHouse(map, maps);
 
@@ -311,6 +309,10 @@ public class MapView {
         EggPowderPlant.setEggPlantView(map, maps);
         EggPowderPlant.showEggPlantInWorking(maps);
         EggPowderPlant.eggPlantInfo(map, maps);
+
+        CookieBakery.setCookieBakeryView(map, maps);
+        CookieBakery.showCookieBakeryInWorking(maps);
+        CookieBakery.cookieBakeryInfo(map, maps);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -468,7 +470,7 @@ public class MapView {
 //        WellButton.pause();
 //        EggPowderPlantButton.pause();
         CakeBakeryButton.pause();
-        CookieBakeryButton.pause();
+//        CookieBakeryButton.pause();
         ChickenButton.pause();
         GeneralButton.buttonAppearanceDefault(hButton, mapScene);
         GeneralButton.buttonAppearanceDefault(truckButton, mapScene);
@@ -482,7 +484,7 @@ public class MapView {
 //        WellButton.resume();
 //        EggPowderPlantButton.resume();
         CakeBakeryButton.resume();
-        CookieBakeryButton.resume();
+//        CookieBakeryButton.resume();
         ChickenButton.resume();
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
         GeneralButton.buttonAppearanceWithCursor(truckButton, mapScene);
@@ -555,7 +557,7 @@ public class MapView {
                 }
                 text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
                 try {
-                    if (map.getWell().getLevel() == 4) {
+                    if (map.getWorkshops().get(0).getLevel() == 4) {
                         eggPlant.setVisible(false);
                         text.setVisible(false);
                     }
@@ -585,6 +587,57 @@ public class MapView {
         });
 
     }
+
+    private void upgradeCookieBakery(Group mapGroup, Map map) {
+        ImageView cookieBakery = new ImageView();
+        Label text = new Label("0");
+        cookieBakery.relocate(900, 330);
+        text.relocate(936, 334);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
+        mapGroup.getChildren().add(cookieBakery);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    CookieBakery.setCookieBakeryView(mapGroup, map);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                try {
+                    if (map.getWorkshops().get(1).getLevel() == 4) {
+                        cookieBakery.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getWorkshops().get(1).getLevel() < 4
+                            && map.getWorkshops().get(0).getMoneyForUpgrading() <= map.getBudget()) {
+                        cookieBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        cookieBakery.setOpacity(1);
+                    }else if (map.getWorkshops().get(1).getLevel() < 4
+                            && map.getWorkshops().get(1).getMoneyForUpgrading() > map.getBudget()){
+                        cookieBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        cookieBakery.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        cookieBakery.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (cookieBakery.getOpacity() == 1) {
+                    map.upgrade("CookieBakery");
+                }
+            }
+        });
+
+    }
+
+
 
     private void upgradeHelicopter(Group mapGroup, Map map) {
         ImageView upgradeHelicopter = new ImageView();

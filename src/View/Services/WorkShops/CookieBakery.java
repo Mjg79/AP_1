@@ -1,10 +1,16 @@
 package View.Services.WorkShops;
 
+import Model.MapAndCell.Map;
+import Model.Places.WorkShop;
 import View.Animations.SpriteAnimation;
-import javafx.animation.Animation;
+import View.Brightness.Brightness;
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
@@ -13,51 +19,113 @@ import java.io.FileNotFoundException;
 public class CookieBakery {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
-
-    private static int level = 1;
-    private static ImageView cookieBakeryView;
+    private static ImageView cookieBakeryView = new ImageView();
     private boolean isUpgraded = false;
-    static {
-        try {
-            cookieBakeryView = new ImageView(new Image(
-                    new FileInputStream(serviceFiles + "cookieBakery\\0" + level + ".png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    private Duration duration;
+    private static  SpriteAnimation cookieAnimation;
+    private static int previousLevel = 0;
+
+    public static void setCookieBakeryView(Group mapGroup, Map map) throws FileNotFoundException {
+        cookieBakeryView.relocate(695, 151);
+        int level = map.getWorkshops().get(1).getLevel();
+        if (previousLevel != level) {
+            if (!mapGroup.getChildren().contains(cookieBakeryView))
+                mapGroup.getChildren().add(cookieBakeryView);
+            cookieBakeryView.setImage(new Image(new FileInputStream(serviceFiles + "cookieBakery\\0"
+                    + level + ".png")));
+            if (level == 1)
+                cookieAnimation = new  SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
+                        0, 0, 134, 142);
+            if (level == 2)
+                cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
+                        0, 0,158, 150);
+            if (level == 3)
+                cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        158, 166);
+            if (level == 4)
+                cookieAnimation =  new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        166, 170);
+            previousLevel = level;
+            cookieAnimation.setCycleCount(1);
+            cookieAnimation.play();
         }
     }
+    public static void showCookieBakeryInWorking(Map map) {
+        cookieBakeryView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!map.getWorkshops().get(1).isInWorking()) {
+                    map.startWorkshop("CookieBakery");
+                    if (map.getWorkshops().get(1).getLevel() == 1)
+                        cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1000), 16, 4,
+                                0, 0, 134, 142);
+                    if (map.getWorkshops().get(1).getLevel() == 2)
+                        cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1000), 16, 4,
+                                0, 0, 158, 150);
+                    if (map.getWorkshops().get(1).getLevel() == 3)
+                        cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1000), 16, 4,
+                                0, 0, 158, 166);
+                    if (map.getWorkshops().get(1).getLevel() == 4)
+                        cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1000), 16, 4,
+                                0, 0, 166, 170);
+                    cookieAnimation.setCycleCount((int)map.getWorkshops().get(1).getTimeLastingForWorking());
+                    cookieAnimation.play();
+                }
+            }
 
+            ;
+        });
 
-    public void upgradeEggPowderPlantView(int level, Group map) throws FileNotFoundException {
-        if (map.getChildren().contains(cookieBakeryView))
-            map.getChildren().remove(cookieBakeryView);
-        Image well = new Image(new FileInputStream(serviceFiles + "cookieBakery\\0" + level + ".png"));
-        cookieBakeryView.setImage(well);
-    }
-    public static Animation cookieBakeryAnimation(boolean check , Group map, int level) throws FileNotFoundException {
-        if (!map.getChildren().contains(cookieBakeryView)) {
-            cookieBakeryView.relocate(695, 151);
-            map.getChildren().add(cookieBakeryView);
-        }
-        int duration;
-        if (check)
-            duration = 1000;
-        else
-            duration = 1;
-        if (level == 1)
-            return new SpriteAnimation(cookieBakeryView, Duration.millis(duration), 16, 4, 0, 0,
-                    134, 142);
-        if (level == 2)
-            return new SpriteAnimation(cookieBakeryView, Duration.millis(duration), 16, 4, 0, 0,
-                    158, 150);
-        if (level == 3)
-            return new SpriteAnimation(cookieBakeryView, Duration.millis(duration), 16, 4, 0, 0,
-                    158, 166);
-        if (level == 4)
-            return new SpriteAnimation(cookieBakeryView, Duration.millis(duration), 16, 4, 0, 0,
-                    166, 170);
-        return new SpriteAnimation(cookieBakeryView, Duration.millis(duration), 16, 4, 0, 0,
-                186, 184);
     }
 
+    public static void cookieBakeryInfo(Group group, Map map) throws FileNotFoundException {
+        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
+                "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+        WorkShop eggPlant = map.getWorkshops().get(1);
+        info.setScaleY(0.7);
+        info.setScaleX(0.7);
+        info.relocate(770, 74);
+        group.getChildren().add(info);
+        Label input = new Label();
+        input.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+        Label level = new Label();
+        level.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+        Label output = new Label();
+        output.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+        Label checking = new Label();
+        checking.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+        input.relocate(832, 94);
+        output.relocate(930, 94);
+        level.relocate(832, 134);
+        checking.relocate(925, 134);
+        level.setOpacity(0);
+        input.setOpacity(0);
+        output.setOpacity(0);
+        info.setOpacity(0);
+        checking.setOpacity(0);
+        group.getChildren().addAll(level, output, input, checking);
+        final String[] inputs = {""};
+        final String[] outputs = {""};
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                outputs[0] = "";
+                inputs[0] = "";
+                for (String in: eggPlant.getNameOfInputProducts())
+                    if(eggPlant.getNameOfInputProducts().indexOf(in) != 0)
+                        inputs[0] = inputs[0].concat(" ," + in);
+                    else
+                        inputs[0] = inputs[0].concat(eggPlant.getMaxNumberOfProducts() + " " + in);
+                input.setText("in: " + inputs[0]);
+                output.setText("out: " + eggPlant.getMaxNumberOfProducts() + " cookie");
+                level.setText("level: " + eggPlant.getLevel());
+                checking.setText("canWork: " +
+                        (!eggPlant.isInWorking()));
+            }
+        };
+        timer.start();
+        Brightness.changeBrightNess5(input, checking, info, level, output, cookieBakeryView);
+    }
 
 }
