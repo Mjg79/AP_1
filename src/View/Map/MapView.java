@@ -53,12 +53,13 @@ public class MapView {
     private static Button truckButton = new Button();
     private static Scene mapScene;
 
-    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene) {
+    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene
+    ,Map map) {
         MapView.controller = controller;
         MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;
         try {
-            warehouseScene = new WarehouseScene(wareHouse,mapScene);
+            warehouseScene = new WarehouseScene(wareHouse,mapScene,map);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
