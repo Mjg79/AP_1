@@ -57,10 +57,12 @@ public class Map {
         HashMap<String,Integer> hashMap = new HashMap<>();
         hashMap.put("chicken", 12);
         hashMap.put("egg", 12);
+        hashMap.put("flour", 7);
         missionNeeds = hashMap;
         HashMap<String, Integer> salam = new HashMap<>();
         salam.put("chicken", 0);
         salam.put("egg", 0);
+        salam.put("flour", 0);
         gatherElements = salam;
         workshops.add(new WorkShop("EggPowderedPlant", 5, 5));
         workshops.add(new WorkShop("CookieBakery", 34, 6));
@@ -648,8 +650,14 @@ public class Map {
     ///////////////////////CHECK_HELICOPTER_COME_BACK_FROM_BAZAR/////////////////////
     private void checkHelicopterCameBackFromBazar() {
         if (this.helicopter.checkWasHelicopterCameBackFromBazar(farmTime)) {
-            for (Element element : helicopter.getSalesGoods())
-                cells[makeRandomNumbers()][makeRandomNumbers()].addElement(element);
+            for (Element element : helicopter.getSalesGoods()) {
+                int x = makeRandomNumbers();
+                int y = makeRandomNumbers();
+                element.setX(x);
+                element.setY(y);
+                cells[x][y].addElement(element);
+                products.add((Product)element);
+            }
         }
     }
 

@@ -4,7 +4,7 @@ public abstract class Element {
     protected int x;
     protected int y;
     protected Direction direction;
-    protected int level = 0;
+    protected int level = 1;
     protected int volume;
     protected int price;
     protected String name;

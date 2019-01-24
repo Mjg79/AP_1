@@ -39,7 +39,7 @@ public class Helicopter extends Element {
             boxes.add(box);
         }
         moneyForUpgrading = 400;
-        level = 3;
+        level = 1;
     }
 
     public ArrayList<Box> getBoxes() {
@@ -77,11 +77,12 @@ public class Helicopter extends Element {
 
     @Override
     public boolean upgrade() {
-        if (level < 3) {
+        if (level < 5) {
             numOfBoxes += 2;
             boxes.add(new Box());
             boxes.add(new Box());
             moneyForUpgrading += 100;
+            timeDurationForWorking -= 2;
             level++;
             return true;
         }
@@ -166,9 +167,13 @@ public class Helicopter extends Element {
     }
 
     public void clear() {
-        if (this.isInWareHouse && isHelicopterContainsAny())
-            for (Box box: boxes)
+        if (this.isInWareHouse && isHelicopterContainsAny()) {
+            allCost = 0;
+            mapBudget = 0;
+            isStartedForAddingToBoxes = false;
+            for (Box box : boxes)
                 box.removeElement();
+        }
     }
 
 
@@ -216,9 +221,18 @@ public class Helicopter extends Element {
 
 
     private void setImageHelicopterGo(Group mapGroup, Map map) throws FileNotFoundException {
-        helicopterGo.setImage(new Image(new FileInputStream(HELICOPTERFILE + "0" +
-                map.getHelicopter().getLevel() + "_mini.png")));
-
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    helicopterGo.setImage(new Image(new FileInputStream(HELICOPTERFILE + "0" +
+                            map.getHelicopter().getLevel() + "_mini.png")));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
     }
 
 }

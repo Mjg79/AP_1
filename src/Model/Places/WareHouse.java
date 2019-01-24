@@ -12,7 +12,7 @@ public class WareHouse extends Element {
 
     {
         volume = 40;
-        level = 0;
+        level = 1;
         x = 20;//truly is a constant for specifying the x of wareHouse in map
         y = 40;//truly is a constant for specifying the y of wareHouse in map
         moneyForUpgrading = 150;
@@ -25,7 +25,7 @@ public class WareHouse extends Element {
 
     @Override
     public boolean upgrade() {
-        if(level < 3) {// maximum level is 3
+        if(level < 5) {// maximum level is 3
             level++;
             volume += 80;
             moneyForUpgrading += 50;

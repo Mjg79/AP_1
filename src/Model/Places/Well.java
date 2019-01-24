@@ -3,6 +3,7 @@ package Model.Places;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
 import View.Animations.SpriteAnimation;
+import View.Brightness.WellAndWareHouseBrightness;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -177,6 +178,10 @@ public class Well extends Element {
         current.relocate(533, 167);
         volume.relocate(600, 167);
         level.relocate(571, 187);
+        level.setOpacity(0);
+        current.setOpacity(0);
+        volume.setOpacity(0);
+        info.setOpacity(0);
         group.getChildren().addAll(level, volume, current);
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -187,6 +192,7 @@ public class Well extends Element {
             }
         };
         timer.start();
+        WellAndWareHouseBrightness.changeBrightNess(current, volume, info, level, wellView);
     }
 }
 

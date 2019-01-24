@@ -7,6 +7,7 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
+import View.Brightness.WellAndWareHouseBrightness;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
@@ -20,9 +21,13 @@ import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,6 +39,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -85,7 +91,7 @@ public class MapView {
     private ImageView truckView = new ImageView();
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
-
+    private ImageView wareHouseView = new ImageView();
 
 
     private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
@@ -228,10 +234,10 @@ public class MapView {
         CookieBakery.cookieBakeryAnimation(false, mapGroup, 1).play();
 
 
-        Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
-        ImageView wareHouseView = new ImageView(wareHouse);
-        wareHouseView.relocate(390, 579);
-        mapGroup.getChildren().add(wareHouseView);
+//        Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
+//        wareHouseView = new ImageView(wareHouse);
+//        wareHouseView.relocate(390, 579);
+//        mapGroup.getChildren().add(wareHouseView);
         mapGroup.getChildren().add(truckView);
         truckButton = new Button();
         truckButton.relocate(278,650);
@@ -301,6 +307,8 @@ public class MapView {
         timeShow(controller.getMap(), map, mapScene);
         mapBudget(map);
         upgradeWell(map, maps);
+        upgradeHelicopter(map, maps);
+        showAndUpgradeWareHouse(map, maps);
         maps.getWell().setWellView(map);
         maps.getWell().showWellInWorking(maps);
         maps.getWell().wellInfo(map);
@@ -530,4 +538,141 @@ public class MapView {
 
     }
 
+    private void upgradeHelicopter(Group mapGroup, Map map) {
+        ImageView upgradeHelicopter = new ImageView();
+        Label text = new Label();
+        upgradeHelicopter.relocate(556, 689);
+        text.relocate(586, 692);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
+        mapGroup.getChildren().add(upgradeHelicopter);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                text.setText(Integer.toString((int)map.getHelicopter().getMoneyForUpgrading()));
+                try {
+                    if (map.getHelicopter().getLevel() == 4) {
+                        upgradeHelicopter.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() <
+                            map.getBudget()) {
+                        upgradeHelicopter.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        upgradeHelicopter.setOpacity(1);
+                    }else if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() >=
+                            map.getBudget()){
+                        upgradeHelicopter.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        upgradeHelicopter.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        upgradeHelicopter.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (upgradeHelicopter.getOpacity() == 1) {
+                    map.upgrade("helicopter");
+                }
+            }
+        });
+
+    }
+
+    private void showAndUpgradeWareHouse(Group mapGroup, Map map) throws FileNotFoundException {
+        wareHouseView.relocate(390, 579);
+        mapGroup.getChildren().add(wareHouseView);
+        wareHouseView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+            }
+        });
+        ImageView upgradeWareHouse = new ImageView();
+        Label text = new Label();
+        upgradeWareHouse.relocate(316, 695);
+        text.relocate(346, 698);
+        wareHouseInfo(mapGroup, map);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
+        mapGroup.getChildren().add(upgradeWareHouse);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    wareHouseView.setImage(new Image(new FileInputStream(serviceFiles + "Depot\\0"
+                            + map.getWareHouse().getLevel() + ".png")));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                text.setText(Integer.toString((int)map.getWareHouse().getMoneyForUpgrading()));
+                try {
+                    if (map.getWareHouse().getLevel() == 4) {
+                        upgradeWareHouse.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() <
+                            map.getBudget()) {
+                        upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        upgradeWareHouse.setOpacity(1);
+                    }else if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() >=
+                            map.getBudget()){
+                        upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        upgradeWareHouse.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        upgradeWareHouse.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (upgradeWareHouse.getOpacity() == 1) {
+                    map.upgrade("wareHouse");
+
+                }
+            }
+        });
+
+
+    }
+
+    private void wareHouseInfo(Group group, Map map) throws FileNotFoundException {
+        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
+                "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+        info.setScaleY(0.5);
+        info.setScaleX(0.5);
+        info.setOpacity(0);
+        info.relocate(495, 540);
+        group.getChildren().add(info);
+        Label current = new Label();
+        current.setStyle("-fx-opacity: 0;-fx-text-fill: #fae00e ;-fx-font-size: 16; -fx-font-family: 'A Spirit Of Doha Black'");
+        Label level = new Label();
+        level.setStyle("-fx-opacity: 0; -fx-text-fill: #fae00e ;-fx-font-size: 16; -fx-font-family: 'A Spirit Of Doha Black'");
+        Label volume = new Label();
+        volume.setStyle("-fx-opacity: 0;-fx-text-fill: #fae00e ;-fx-font-size: 16; -fx-font-family: 'A Spirit Of Doha Black'");
+        current.relocate(578, 582);
+        volume.relocate(635, 582);
+        level.relocate(616, 602);
+        group.getChildren().addAll(level, volume, current);
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                current.setText("current: " + map.getWareHouse().getCurrent());
+                volume.setText("volume: " + map.getWareHouse().getVolume());
+                level.setText("level: " + map.getWareHouse().getLevel());
+            }
+        };
+        timer.start();
+        WellAndWareHouseBrightness.changeBrightNess(current, volume, info, level,  wareHouseView);
+    }
+
 }
+
+
