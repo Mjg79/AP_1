@@ -3,7 +3,21 @@ package Model.Transportation;
 
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
+import Model.MapAndCell.Map;
+import View.Animations.SpriteAnimation;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Truck extends Element {
@@ -14,13 +28,17 @@ public class Truck extends Element {
     private double endTimeForSellingElements;
     private boolean isInWareHouse = true;
     private int countReturnToWareHouse = 0;
-    private static int timeDurationForWorking = 20;
+    private int timeDurationForWorking = 20;
+    private final String TRUCKFILE= "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Truck\\";
+    private ImageView truckView = new ImageView();
     {
         for (int i = 0; i < numOfBoxes; i++)
             boxes.add(new Box());
         moneyForUpgrading = 200;
         this.level = 1;
     }
+
+
 
     public ArrayList<Box> getBoxes() {
         return boxes;
@@ -42,7 +60,7 @@ public class Truck extends Element {
         return endTimeForSellingElements;
     }
 
-    public static int getTimeDurationForWorking() {
+    public int getTimeDurationForWorking() {
         return timeDurationForWorking;
     }
 
@@ -150,6 +168,58 @@ public class Truck extends Element {
         if (isInWareHouse && isTruckContainsAny())
             for (Box box: boxes)
                 box.removeElement();
+    }
+
+    public void goTruck(Map map, Group mapGroup) throws FileNotFoundException {
+
+        setImageOfTruck(mapGroup, map);
+        truckView.setScaleX(-1);
+        mapGroup.getChildren().add(truckView);
+        SpriteAnimation truckAnimation = new SpriteAnimation(truckView, Duration.millis(50), 6,
+                3, 0, 0, 48, 48);
+        truckAnimation.setAutoReverse(true);
+        truckAnimation.setCycleCount(Animation.INDEFINITE);
+        truckAnimation.play();
+
+        Path path = new Path(new MoveTo(785, 30), new LineTo(980, 30));
+        path.setVisible(false);
+        mapGroup.getChildren().add(path);
+        PathTransition pathTransition = new PathTransition(
+                Duration.millis(map.getTruck().getTimeDurationForWorking()* 600), path, truckView);
+        pathTransition.setAutoReverse(true);
+        pathTransition.setCycleCount(2);
+        pathTransition.play();
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if ((int)pathTransition.getCurrentTime().toSeconds() ==
+                        map.getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
+                    truckView.setScaleX(1);
+                }
+                if (pathTransition.getCurrentTime().toSeconds() == 0 && truckView.getScaleX() == 1) {
+                    truckAnimation.stop();
+                    mapGroup.getChildren().remove(truckView);
+                    this.stop();
+                }
+            }
+        };
+        timer.start();
+    }
+
+    private void setImageOfTruck(Group mapGroup, Map map) throws FileNotFoundException {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    truckView.setImage(new Image(new FileInputStream(TRUCKFILE + "0" +
+                            map.getTruck().getLevel() + "_mini.png")));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
     }
 
 }

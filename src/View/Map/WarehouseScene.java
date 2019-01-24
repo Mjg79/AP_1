@@ -5,6 +5,7 @@ import Model.Animal.LiveStocks.AnimalType;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
+import Model.Products.Product;
 import Model.Transportation.Truck;
 import View.Buttons.GeneralButton;
 import javafx.event.EventHandler;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class WarehouseScene {
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\" ;
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
-    private Label chickenText,cowText,ostrichText;
+    private Label chickenText,cowText,ostrichText,wallet;
     private WareHouse wareHouse;
     private Stage primaryStage;
     private Truck truck;
@@ -36,6 +37,11 @@ public class WarehouseScene {
     public WarehouseScene(WareHouse wareHouse, Scene backScene, Map map) throws FileNotFoundException {
         this.wareHouse = wareHouse;
         this.backScene = backScene;
+        wallet = new Label();
+        wallet.setText("0");
+        wallet.relocate(500,500);
+        wallet.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'Bauhaus 93'");
+        warehouseRoot.getChildren().add(wallet);
         this.map = map;
         truck = map.getTruck();
         Image backGround = null;
@@ -49,10 +55,12 @@ public class WarehouseScene {
         mapViewBackGround.setFitWidth(1000);
         mapViewBackGround.setFitHeight(750);
         warehouseRoot.getChildren().add(mapViewBackGround);
-        cancelOrOk();
     }
 
     private void cancelOrOk() throws FileNotFoundException {
+        warehouseRoot.getChildren().remove(wallet);
+        wallet.setText(""+truck.getWallet());
+        warehouseRoot.getChildren().add(wallet);
         ImageView grayOk = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGray.png")));
         grayOk.relocate(340,670);
         ImageView blueOk = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGreen.png")));
@@ -75,6 +83,7 @@ public class WarehouseScene {
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                map.getTruck().clear();
                 MapView.resume();
                 warehouseRoot.getChildren().remove(3,warehouseRoot.getChildren().size());
                 primaryStage.setScene(backScene);
@@ -89,6 +98,7 @@ public class WarehouseScene {
         try {
             addLivestocksToView(map);
             addGoods();
+            cancelOrOk();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -100,12 +110,33 @@ public class WarehouseScene {
         int temp = 0;
         for(String good:wareHouse.getGoods().keySet()){
             ImageView productImage = new ImageView(new Image(new FileInputStream(PRODUCTFILE+good+".png")));
-            productImage.relocate(20,20);
+            productImage.relocate(50,125+temp*20);
+            Label productPrice = new Label(""+wareHouse.getGoods().get(good));
+            productPrice.relocate(100,128+temp*20);
+            productPrice.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'Bauhaus 93'");
+            ImageView add = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"oneAddBlue.png")));
+            add.relocate(150,128*temp*20);
+            add.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    System.out.println("clicked");
+                    map.addElementToTruck(new Product(map.getFarmTime(),good),1);
+                    try {
+                        if (map.getWareHouse().getGoods().get(good) == 0) {
+                            add.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png")));
+                        }
+                        cancelOrOk();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
             temp++;
-            Label productNumber = new Label(""+wareHouse.getGoods().get(good));
-            productNumber.relocate(30,30);
+            warehouseRoot.getChildren().add(add);
             warehouseRoot.getChildren().add(productImage);
-            warehouseRoot.getChildren().add(productNumber);
+            warehouseRoot.getChildren().add(productPrice);
         }
     }
 
