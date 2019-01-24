@@ -135,7 +135,6 @@ public class Cell extends Element {
 	}
 
 	public void removeAllElements() {
-		this.products.clear();
 		this.cats.clear();
 		this.liveStocks.clear();
 	}

@@ -27,14 +27,16 @@ public class GrassButton extends GeneralButton {
         grass.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                map.plantForage((x - 250) / 12, (y - 250) / 7, 300);
-                try {
-                    for (int i = -1; i <= 1; i++)
-                        for (int j = -1; j <= 1; j++)
-                            new Forage(map.getFarmTime()).grassAnimation(
-                                    backGroundPane, x + i * 12, y + j * 12).play();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWell().getCurrent() > 0) {
+                    map.plantForage((x - 250) / 12, (y - 250) / 7, 300);
+                    try {
+                        for (int i = -1; i <= 1; i++)
+                            for (int j = -1; j <= 1; j++)
+                                new Forage(map.getFarmTime()).grassAnimation(
+                                        backGroundPane, x + i * 12, y + j * 12).play();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
