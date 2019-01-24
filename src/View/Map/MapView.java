@@ -591,8 +591,8 @@ public class MapView {
     private void upgradeCookieBakery(Group mapGroup, Map map) {
         ImageView cookieBakery = new ImageView();
         Label text = new Label("0");
-        cookieBakery.relocate(900, 330);
-        text.relocate(936, 334);
+        cookieBakery.relocate(850, 230);
+        text.relocate(886, 234);
         text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
         mapGroup.getChildren().add(cookieBakery);
         mapGroup.getChildren().add(text);
