@@ -469,8 +469,11 @@ public class Map {
     }
     ////////////////////////////CAGE_WILD_ANIMAL///////////////////////////////////
     public void cageWildAnimal(int x, int y) {
-        for (WildAnimal wildAnimal : cells[x][y].getWildAnimals())
+        for (WildAnimal wildAnimal : cells[x][y].getWildAnimals()) {
             wildAnimal.setIsCaged(true);
+            wildAnimal.setTimeLeftFromLastClick(50);
+        }
+
     }
 
     ///////////////////////////PICKUP_ELEMENTS_FROM_MAP/////////////////////////////

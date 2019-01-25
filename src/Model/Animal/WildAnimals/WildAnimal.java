@@ -8,6 +8,7 @@ import View.Buttons.LiveStocks.Wild.WildAnimalButton;
 import View.Buttons.ProductButton;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -22,6 +23,8 @@ import java.io.FileNotFoundException;
 
 public class WildAnimal extends Animal {
     private boolean isCaged = false;
+    private int numOfClickedOnCage = 1;
+    private int timeLeftFromLastClick = 0;
 
     {
         name = "lion";
@@ -62,17 +65,6 @@ public class WildAnimal extends Animal {
 
     private boolean removeTheLiveStockAnimation(Group mapGroup) {
         if (mapGroup.getChildren().contains(wildAnimalView)) {
-            if (cagePlayed) {
-                cageAnimation.stop();
-                wildAnimalAnimation.stop();
-                return false;
-            }
-            if (isCaged && mapGroup.getChildren().contains(cageView)) {
-                wildAnimalAnimation.stop();
-                cageAnimation.stop();
-                cagePlayed = true;
-                return true;
-            }
             if (previousDir != getDirection() || this.isCaged()) {
                 if (wildAnimalAnimation != null)
                     wildAnimalAnimation.stop();
@@ -107,17 +99,36 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalCagedSituation(Group mapGroup, Scene scene, Map map, double farmTime)
             throws FileNotFoundException {
-        wildAnimalView.setImage(new Image(new FileInputStream(LION + "caged.png")));
-        wildAnimalAnimation = new SpriteAnimation(wildAnimalView, Duration.millis(1), 24,
-                6, 0, 0, 132, 142);
-        wildAnimalAnimation.play();
-        cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
+        if(!(wildAnimalView.getImage() == new Image(new FileInputStream(LION + "caged.png")))){
+            wildAnimalView.setImage(new Image(new FileInputStream(LION + "caged.png")));
+            wildAnimalView.setScaleX(1);
+            wildAnimalView.setScaleY(1);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 132, 142));
+        }
+        if(!(cageView.getImage() == new Image(new FileInputStream(CAGE + "build01.png"))) && timeLeftFromLastClick > 24)
+            cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
+        if(cageView.getViewport() == null || !cageView.getViewport().equals(new Rectangle2D(260 * (numOfClickedOnCage % 3), 260 * (numOfClickedOnCage / 3), 260, 260)) && timeLeftFromLastClick > 25)
+            cageView.setViewport(new Rectangle2D(260 * (numOfClickedOnCage % 3), 260 * (numOfClickedOnCage / 3), 260, 260));
+        cageView.relocate(195 + (int) getX() * 9, 200 + (int) getY() * 6);
         cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                map.pickUpAndPutInWareHouse(x, y);
-                mapGroup.getChildren().remove(cageView);
-                mapGroup.getChildren().remove(wildAnimalView);
+                if((numOfClickedOnCage >= 8)) {
+                    map.pickUpAndPutInWareHouse(x, y);
+                    mapGroup.getChildren().remove(cageView);
+                    mapGroup.getChildren().remove(wildAnimalView);
+                }
+                else {
+                    numOfClickedOnCage++;
+                    if(timeLeftFromLastClick <= 24) {
+                        try {
+                            cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    timeLeftFromLastClick = 50;
+                }
             }
         });
         cageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -132,9 +143,20 @@ public class WildAnimal extends Animal {
                 scene.setCursor(Cursor.DEFAULT);
             }
         });
-        cageAnimation = new SpriteAnimation(cageView, Duration.millis(1), 9, 3, 0,
-                0, 260, 260);
-        cageAnimation.play();
+        if(timeLeftFromLastClick > 0)
+            timeLeftFromLastClick--;
+        if(timeLeftFromLastClick == 24)
+            cageView.setImage(new Image(new FileInputStream(CAGE + "break01.png")));
+        if(timeLeftFromLastClick < 25 && timeLeftFromLastClick > 0){
+            wildAnimalView.setViewport(new Rectangle2D(132 * ((24 - timeLeftFromLastClick) % 6), 142 * ((24 - timeLeftFromLastClick) / 6), 132, 142));
+            cageView.setViewport(new Rectangle2D(260 * ((24 - timeLeftFromLastClick) % 5), 260 * ((24 - timeLeftFromLastClick) / 5), 260, 260));
+        }
+        else if(timeLeftFromLastClick == 0){
+            isCaged = false;
+            cageView.setImage(new Image(new FileInputStream(CAGE + "build01.png")));
+            cageView.setViewport(new Rectangle2D(0, 0, 260, 260));
+            suitableSpriteAnimationForWild(mapGroup, scene, map, farmTime, Duration.millis(1000));
+        }
     }
 
     public ImageView getWildAnimalView() {
@@ -149,7 +171,6 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.northEast) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "northWest.png")));
             wildAnimalView.setScaleX(-1);
-            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
             wildAnimalAnimation.setCycleCount(5);
@@ -162,8 +183,6 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.southEast) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "southWest.png")));
             wildAnimalView.setScaleX(-1);
-            cageView.relocate(300 + getX(), 260 + getY());
-
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
             wildAnimalAnimation.setCycleCount(5);
@@ -175,7 +194,6 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.northWest) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "northWest.png")));
             wildAnimalView.setScaleX(1);
-            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
             wildAnimalAnimation.setCycleCount(5);
@@ -188,7 +206,6 @@ public class WildAnimal extends Animal {
         if (getDirection().equals(Direction.southWest) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "southWest.png")));
             wildAnimalView.setScaleX(1);
-            cageView.relocate(300 + getX(), 300 + getY());
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
             wildAnimalAnimation.setCycleCount(5);
@@ -200,7 +217,6 @@ public class WildAnimal extends Animal {
     private void wildAnimalNorthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.north) && getName().equals("lion")) {
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "north.png")));
-            cageView.relocate(300 + getX(), 260 + getY());
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 94, 116);
@@ -211,7 +227,6 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalSouthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.south) && getName().equals("lion")) {
-            cageView.relocate(270 + getX(), 305 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "south.png")));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
@@ -223,7 +238,6 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.east) && getName().equals("lion")) {
-            cageView.relocate(310 + getX(), 275 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "west.png")));
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
@@ -235,7 +249,6 @@ public class WildAnimal extends Animal {
 
     private void wildAnimalWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.west) && getName().equals("lion")) {
-            cageView.relocate(300 + getX(), 255 + getY());
             wildAnimalView.setImage(new Image(new FileInputStream(LION + "west.png")));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24, 3,
@@ -248,7 +261,6 @@ public class WildAnimal extends Animal {
     public void wildAnimalMoving(Map map, Scene scene, Group mapGroup, boolean isEntered, double farmTime)
             throws FileNotFoundException {
         Duration duration;
-
         wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -282,4 +294,11 @@ public class WildAnimal extends Animal {
 
     }
 
+    public int getTimeLeftFromLastClick() {
+        return timeLeftFromLastClick;
+    }
+
+    public void setTimeLeftFromLastClick(int timeLeftFromLastClick) {
+        this.timeLeftFromLastClick = timeLeftFromLastClick;
+    }
 }

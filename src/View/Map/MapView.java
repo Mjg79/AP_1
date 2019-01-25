@@ -372,7 +372,6 @@ public class MapView {
                                 }
                             }
                         });
-                        showWildAnimals(controller.getMap(), mapGroup, mapScene, controller.getMap().getFarmTime());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
