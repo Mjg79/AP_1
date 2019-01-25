@@ -7,6 +7,7 @@ import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Places.WareHouse;
+import Model.Places.WorkShop;
 import View.Brightness.Brightness;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
@@ -301,6 +302,7 @@ public class MapView {
         EggPowderPlant.setEggPlantView(map, maps);
         EggPowderPlant.showEggPlantInWorking(maps);
         EggPowderPlant.eggPlantInfo(map, maps);
+        showHelicopterInfo(maps, map);
 
         CookieBakery.setCookieBakeryView(map, maps);
         CookieBakery.showCookieBakeryInWorking(maps);
@@ -355,6 +357,7 @@ public class MapView {
                         showLiveStocks(mapGroup, mapScene, controller.getMap().getFarmTime());
                         showWildAnimals(controller.getMap(), mapGroup, mapScene, controller.getMap().getFarmTime());
                         showHelicopter(controller.getMap(), mapGroup);
+
                         setHButton();
                         showTruck(map,mapScene,mapGroup);
                         showCats(mapGroup, mapScene);
@@ -445,6 +448,43 @@ public class MapView {
             hButton.setVisible(true);
             helicopterView.setVisible(true);
         }
+    }
+
+    private void showHelicopterInfo(Map map, Group group) throws FileNotFoundException {
+            ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
+                    "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+            WorkShop cakeBakery = map.getWorkshops().get(2);
+            info.setScaleY(0.7);
+            info.setScaleX(0.7);
+            info.relocate(680, 470);
+            group.getChildren().add(info);
+            Label timeDuration = new Label();
+            timeDuration.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+            Label level = new Label();
+            level.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+            Label numOfBoxes = new Label();
+            numOfBoxes.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
+            timeDuration.relocate(740, 494);
+            numOfBoxes.relocate(828, 494);
+            level.relocate(740, 524);
+            level.setOpacity(0);
+            timeDuration.setOpacity(0);
+            numOfBoxes.setOpacity(0);
+            info.setOpacity(0);
+            group.getChildren().addAll(level, numOfBoxes, timeDuration);
+
+            AnimationTimer timer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    timeDuration.setText("time duration: " + map.getHelicopter().getTimeDurationForWorking());
+                    numOfBoxes.setText("numOfBoxes: " + map.getHelicopter().getNumOfBoxes());
+                    level.setText("level: " + map.getHelicopter().getLevel());
+                }
+            };
+            timer.start();
+            Brightness.changeHelicopterBrightness(timeDuration,  info, level, numOfBoxes, hButton);
+
+
     }
 
 
