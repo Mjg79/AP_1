@@ -81,7 +81,7 @@ public class CookieBakery {
     public static void cookieBakeryInfo(Group group, Map map) throws FileNotFoundException {
         ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
                 "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
-        WorkShop eggPlant = map.getWorkshops().get(1);
+        WorkShop cookieBakery = map.getWorkshops().get(1);
         info.setScaleY(0.7);
         info.setScaleX(0.7);
         info.relocate(770, 74);
@@ -112,16 +112,16 @@ public class CookieBakery {
             public void handle(long now) {
                 outputs[0] = "";
                 inputs[0] = "";
-                for (String in: eggPlant.getNameOfInputProducts())
-                    if(eggPlant.getNameOfInputProducts().indexOf(in) != 0)
+                for (String in: cookieBakery.getNameOfInputProducts())
+                    if(cookieBakery.getNameOfInputProducts().indexOf(in) != 0)
                         inputs[0] = inputs[0].concat(" ," + in);
                     else
-                        inputs[0] = inputs[0].concat(eggPlant.getMaxNumberOfProducts() + " " + in);
+                        inputs[0] = inputs[0].concat(cookieBakery.getMaxNumberOfProducts() + " " + in);
                 input.setText("in: " + inputs[0]);
-                output.setText("out: " + eggPlant.getMaxNumberOfProducts() + " cookie");
-                level.setText("level: " + eggPlant.getLevel());
+                output.setText("out: " + cookieBakery.getMaxNumberOfProducts() + " cookie");
+                level.setText("level: " + cookieBakery.getLevel());
                 checking.setText("canWork: " +
-                        (!eggPlant.isInWorking()));
+                        (!cookieBakery.isInWorking()));
             }
         };
         timer.start();
