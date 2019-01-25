@@ -177,6 +177,13 @@ public class Cell extends Element {
 		}
 	}
 
+	private void addCake(Product product) throws FileNotFoundException {
+		if (product.getName().equals("cake")) {
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "cake.png"))));
+		}
+	}
+
+
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		if (previousNumberOfCell != products.size()) {
 			for (ImageView imageView : imageViews)
@@ -189,6 +196,7 @@ public class Cell extends Element {
 				addPowderEgg(product);
 				addFlour(product);
 				addCookie(product);
+				addCake(product);
 			}
 		}
 	}

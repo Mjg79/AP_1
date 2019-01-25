@@ -13,7 +13,6 @@ import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
 //import View.Buttons.WellButton;
-import View.Buttons.WorkShop.CakeBakeryButton;
 //import View.Buttons.WorkShop.EggPowderPlantButton;
 import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
@@ -37,7 +36,6 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 
 public class MapView {
     private static Controller controller;
@@ -223,7 +221,6 @@ public class MapView {
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
-        CakeBakery.cakeBakeryAnimation(false, mapGroup, 1).play();
 
 
 //        Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
@@ -259,13 +256,7 @@ public class MapView {
     }
 
 
-    private void workShopButtons(Group mapGroup, Scene mapScene) {
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        hashMap.put("chicken", 200);
-        Button cakeBakeryPlant = CakeBakeryButton.workShopButton(mapGroup , mapScene, 146, 520,
-                controller.getMap());
-
-        //TODO: our criteria for putting button for gathering product and grass: (250-250) to (730-530)
+    private void grassButtons(Group mapGroup, Scene mapScene) {
         refreshGrassButtons(mapScene);
     }
 
@@ -280,7 +271,7 @@ public class MapView {
 
     public void buttons(Group mapGroup, Scene mapScene) throws FileNotFoundException {
         MissionNeeds.showMissionAndGathers(mapGroup, controller.getMap());
-        this.workShopButtons(mapGroup, mapScene);
+        this.grassButtons(mapGroup, mapScene);
         this.setBuyChickenView(mapGroup, mapScene);
         this.setBuyOstrichView(mapGroup, mapScene);
         this.setBuyBuffaloView(mapGroup, mapScene);
@@ -299,6 +290,7 @@ public class MapView {
         upgradeHelicopter(map, maps);
         upgradeEggPlant(map, maps);
         upgradeCookieBakery(map, maps);
+        upgradeCakeBakery(map, maps);
 
         showAndUpgradeWareHouse(map, maps);
 
@@ -313,6 +305,10 @@ public class MapView {
         CookieBakery.setCookieBakeryView(map, maps);
         CookieBakery.showCookieBakeryInWorking(maps);
         CookieBakery.cookieBakeryInfo(map, maps);
+
+        CakeBakery.setCakeBakeryView(map, maps);
+        CakeBakery.showCookieBakeryInWorking(maps);
+        CakeBakery.cakeBakeryInfo(map, maps);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -469,7 +465,7 @@ public class MapView {
         isPlaying = false;
 //        WellButton.pause();
 //        EggPowderPlantButton.pause();
-        CakeBakeryButton.pause();
+//        CakeBakeryButton.pause();
 //        CookieBakeryButton.pause();
         ChickenButton.pause();
         GeneralButton.buttonAppearanceDefault(hButton, mapScene);
@@ -483,7 +479,7 @@ public class MapView {
         isPlaying = true;
 //        WellButton.resume();
 //        EggPowderPlantButton.resume();
-        CakeBakeryButton.resume();
+//        CakeBakeryButton.resume();
 //        CookieBakeryButton.resume();
         ChickenButton.resume();
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
@@ -611,7 +607,7 @@ public class MapView {
                         text.setVisible(false);
                     }
                     if (map.getWorkshops().get(1).getLevel() < 4
-                            && map.getWorkshops().get(0).getMoneyForUpgrading() <= map.getBudget()) {
+                            && map.getWorkshops().get(1).getMoneyForUpgrading() <= map.getBudget()) {
                         cookieBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
                         cookieBakery.setOpacity(1);
                     }else if (map.getWorkshops().get(1).getLevel() < 4
@@ -637,6 +633,54 @@ public class MapView {
 
     }
 
+    private void upgradeCakeBakery(Group mapGroup, Map map) {
+        ImageView cakeBakery = new ImageView();
+        Label text = new Label("0");
+        cakeBakery.relocate(130, 385);
+        text.relocate(166, 389);
+        text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
+        mapGroup.getChildren().add(cakeBakery);
+        mapGroup.getChildren().add(text);
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    CakeBakery.setCakeBakeryView(mapGroup, map);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                try {
+                    if (map.getWorkshops().get(2).getLevel() == 4) {
+                        cakeBakery.setVisible(false);
+                        text.setVisible(false);
+                    }
+                    if (map.getWorkshops().get(2).getLevel() < 4
+                            && map.getWorkshops().get(2).getMoneyForUpgrading() <= map.getBudget()) {
+                        cakeBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
+                        cakeBakery.setOpacity(1);
+                    }else if (map.getWorkshops().get(2).getLevel() < 4
+                            && map.getWorkshops().get(2).getMoneyForUpgrading() > map.getBudget()){
+                        cakeBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
+                        cakeBakery.setOpacity(0.9);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        animationTimer.start();
+
+        cakeBakery.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (cakeBakery.getOpacity() == 1) {
+                    map.upgrade("CakeBakery");
+                }
+            }
+        });
+
+    }
 
 
     private void upgradeHelicopter(Group mapGroup, Map map) {
