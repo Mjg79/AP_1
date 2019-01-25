@@ -72,6 +72,7 @@ public class WareHouse extends Element {
         if (!(element instanceof LiveStock)) {// if it is not a live stock
             if ((volume - current) >= element.getVolume() * count) {
                 current += element.getVolume() * count;
+                System.out.println("salam be sah adflkj");
                 if (goods.containsKey(element.getName())) {
                     int previousCount = goods.get(element.getName());
                     goods.put(element.getName(), previousCount + count);

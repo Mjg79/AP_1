@@ -24,6 +24,7 @@ public class LiveStock extends Animal {
     private double startTimeBeingInMap;
     private static final double maxHungerLevel = 8;
     private double hungerLevel = maxHungerLevel;
+    private boolean moveWisely = false;
     private boolean mustEatForage = false;
     private AnimalType type;
 
@@ -42,6 +43,14 @@ public class LiveStock extends Animal {
 
     public void setStartTimeForEatingForage(double time) {
         this.startTimeForEatingForage = time;
+    }
+
+    public boolean isMoveWisely() {
+        return moveWisely;
+    }
+
+    public void setMoveWisely(boolean moveWisely) {
+        this.moveWisely = moveWisely;
     }
 
     public LiveStock(double startBeingInMap, String type) {
@@ -138,6 +147,8 @@ public class LiveStock extends Animal {
     private static final String OSTRICH = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\Ostrich\\";
     private static final String BUFFALO = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\Buffalo\\";
     private Direction previousDir = Direction.northEast;
+    private int previousX = 50;
+    private int previousY = 50;
     public boolean graphicDeath = false;
     public int durationDeath = 0;
     private SpriteAnimation liveStockAnimation;
@@ -148,6 +159,15 @@ public class LiveStock extends Animal {
     }
 
     private boolean removeTheLiveStockAnimation(Group mapGroup) throws FileNotFoundException {
+
+        if (previousX == x && previousY == y && moveWisely) {
+            return true;
+        }
+
+        if (previousX != x && previousY != y) {
+            previousX = x;
+            previousY = y;
+        }
         if (graphicDeath) {
             if (durationDeath == 0)
                 liveStockAnimation.stop();
@@ -173,20 +193,31 @@ public class LiveStock extends Animal {
     }
     private void suitableSpriteAnimationForChicken(Group group, Duration duration)
             throws FileNotFoundException {
-        liveStockSouthEastMoving(duration);
-        liveStockNorthEastMoving(duration);
-        liveStockNorthWestMoving(duration);
-        liveStockSouthWestMoving(duration);
-        liveStockNorthMoving(duration);
-        liveStockSouthMoving(duration);
-        liveStockEastMoving(duration);
-        liveStockWestMoving(duration);
+        System.out.println("\n\npreviousX: " + previousX + ", PreviousY: " + previousY);
+        if (previousX == x && previousY == y && moveWisely) {
+            this.liveStockEatingSituation();
+        }
+
+        else {
+            liveStockSouthEastMoving(duration);
+            liveStockNorthEastMoving(duration);
+            liveStockNorthWestMoving(duration);
+            liveStockSouthWestMoving(duration);
+            liveStockNorthMoving(duration);
+            liveStockSouthMoving(duration);
+            liveStockEastMoving(duration);
+            liveStockWestMoving(duration);
+
+        }
+
     }
 
     private void liveStockEatingSituation() throws FileNotFoundException {
         liveStockView.setImage(new Image(new FileInputStream(CHICKEN + "eat.png")));
         liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
                 5, 0, 0, 74, 64);
+        liveStockAnimation.setCycleCount(2);
+        liveStockAnimation.play();
 
     }
 
@@ -305,6 +336,8 @@ public class LiveStock extends Animal {
         if (removeTheLiveStockAnimation(mapGroup)) {
             suitableSpriteAnimationForChicken(mapGroup, duration);
         }
+
+
     }
 
 }

@@ -325,13 +325,13 @@ public class Map {
                         }
                     } //for finding closest forage to liveStock
                 liveStock.changeHungerLevel(-0.05);
+                    liveStock.setMoveWisely(true);
                 this.BFS(liveStock, closestForageX, closestForageY);
-                System.out.println("move wisely");
             } else { // liveStock should move randomly
+                liveStock.setMoveWisely(false);
                 liveStock.changeHungerLevel(-0.05);
                 liveStock.changeDirectionByKnowingCurrentPostition();
                 liveStock.moveRandomly(1);
-                System.out.println("Move randomly");
             }
             cells[liveStock.getX()][liveStock.getY()].getLiveStocks().add(liveStock);
         }
@@ -537,6 +537,8 @@ public class Map {
                 System.out.println();
                 mapGroup.getChildren().remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0)
                         .getWildAnimalView());
+                mapGroup.getChildren().remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0)
+                        .getCageView());
                 wildAnimals.remove(cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().get(0));
                 cells[(int) dog.getX()][(int) dog.getY()].getWildAnimals().remove(0);
             }

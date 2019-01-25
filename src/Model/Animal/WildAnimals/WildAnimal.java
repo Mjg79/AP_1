@@ -98,6 +98,10 @@ public class WildAnimal extends Animal {
         }
     }
 
+    public ImageView getCageView() {
+        return cageView;
+    }
+
     private void wildAnimalCagedSituation(Group mapGroup, Scene scene, Map map, double farmTime)
             throws FileNotFoundException {
         if(!(wildAnimalView.getImage() == new Image(new FileInputStream(LION + "caged.png")))){

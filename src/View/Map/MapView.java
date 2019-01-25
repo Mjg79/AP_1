@@ -347,7 +347,6 @@ public class MapView {
                 if (now > lastTime + (second/10) && isPlaying) {
                     lastTime = now;
                     time += 1;
-                    System.out.println(time);
                     if (time == 10)
                         map.addWildAnimal();
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
@@ -380,7 +379,6 @@ public class MapView {
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("term nam");
                     }
                 }
                 else if(isPaused){
@@ -402,6 +400,7 @@ public class MapView {
             if (liveStock.durationDeath == 10)
                 liveStock.setIsKilled(true);
             liveStock.chickenMoving(scene, mapGroup, false,controller.getMap().getFarmTime());
+            System.out.println("thisX: " + liveStock.getX() + ", thisY: " + liveStock.getY());
         }
     }
 
@@ -502,29 +501,17 @@ public class MapView {
     public static void pause(){
         isPaused = true;
         isPlaying = false;
-//        WellButton.pause();
-//        EggPowderPlantButton.pause();
-//        CakeBakeryButton.pause();
-//        CookieBakeryButton.pause();
         ChickenButton.pause();
         GeneralButton.buttonAppearanceDefault(hButton, mapScene);
         GeneralButton.buttonAppearanceDefault(truckButton, mapScene);
-        //OstrichButton.pause();
-        //BuffaloButton.pause();
     }
 
     public static void resume(){
         isResumed = true;
         isPlaying = true;
-//        WellButton.resume();
-//        EggPowderPlantButton.resume();
-//        CakeBakeryButton.resume();
-//        CookieBakeryButton.resume();
         ChickenButton.resume();
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
         GeneralButton.buttonAppearanceWithCursor(truckButton, mapScene);
-        //OstrichButton.resume();
-        //BuffaloButton.resume();
     }
 
     private void upgradeWell(Group mapGroup, Map map) {
