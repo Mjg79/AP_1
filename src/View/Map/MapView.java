@@ -224,10 +224,6 @@ public class MapView {
         backGroundPane.getChildren().add(mapViewBackGround);
 
 
-//        Image wareHouse = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
-//        wareHouseView = new ImageView(wareHouse);
-//        wareHouseView.relocate(390, 579);
-//        mapGroup.getChildren().add(wareHouseView);
         mapGroup.getChildren().add(truckView);
         truckButton = new Button();
         truckButton.relocate(278,650);
@@ -399,7 +395,7 @@ public class MapView {
                 liveStock.graphicDeath = true;
             if (liveStock.durationDeath == 10)
                 liveStock.setIsKilled(true);
-            liveStock.chickenMoving(scene, mapGroup, false,controller.getMap().getFarmTime());
+            liveStock.liveStockMoving(scene, mapGroup, false,controller.getMap().getFarmTime());
             System.out.println("thisX: " + liveStock.getX() + ", thisY: " + liveStock.getY());
         }
     }

@@ -41,7 +41,7 @@ public class ChickenButton extends GeneralButton {
                     if(isPlaying) {
                         if (map.getBudget() >= 100) {
                             map.buyAnimal("chicken");
-                            map.getLiveStocks().get(map.getLiveStocks().size() - 1).chickenMoving(mapScene,
+                            map.getLiveStocks().get(map.getLiveStocks().size() - 1).liveStockMoving(mapScene,
                                     mapGroup, true, map.getFarmTime());
                         }
                     }

@@ -33,7 +33,15 @@ public class BuffaloButton extends GeneralButton {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-             //TODO:BUY BUFFALO
+                if (map.getBudget() >= 10000) {
+                    map.buyAnimal("buffalo");
+                    try {
+                        map.getLiveStocks().get(map.getLiveStocks().size() - 1).liveStockMoving(mapScene,
+                                mapGroup, true, map.getFarmTime());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
         return button;

@@ -108,6 +108,8 @@ public class Helicopter extends Element {
                         box.getCurrent() == box.getVolume())
                     continue;
                 box.addElement(element, 1);
+                if (box.getElement().get(box.getContent()) == 0)
+                    box.addElement(element,1);
                 salesGoods.add(element);
                 allCost += element.getPrice();
                 break;

@@ -16,8 +16,6 @@ import Model.Products.Forage.Forage;
 import Model.Transportation.Helicopter;
 import Model.Transportation.Truck;
 import View.Animations.SpriteAnimation;
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -35,7 +33,7 @@ public class Map {
     private String name;
     private boolean isMissionCompleted = false;
     private double farmTime = 0;
-    private int budget = 9000;
+    private int budget = 90000;
     private WareHouse wareHouse = new WareHouse();
     private Well well = new Well();
     private Truck truck = new Truck();
@@ -202,9 +200,9 @@ public class Map {
 
     }
 
-    private void addCow() {
+    private void addBuffalo() {
         if (budget >= 10000) {
-            LiveStock cow = new LiveStock(this.farmTime, "cow");
+            LiveStock cow = new LiveStock(this.farmTime, "buffalo");
             liveStocks.add(cow);
             wareHouse.addGoodOrLiveStock(cow, 1);
             cells[(int) cow.getX()][(int) cow.getY()].getLiveStocks().add(cow);
@@ -265,8 +263,8 @@ public class Map {
             case "ostrich":
                 this.addOstrich();
                 break;
-            case "cow":
-                this.addCow();
+            case "buffalo":
+                this.addBuffalo();
                 break;
             case "cat":
                 this.addCat();
@@ -665,6 +663,7 @@ public class Map {
                 element.setY(y);
                 cells[x][y].addElement(element);
                 products.add((Product)element);
+
             }
         }
     }

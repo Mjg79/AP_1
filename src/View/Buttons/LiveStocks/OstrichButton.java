@@ -6,12 +6,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class OstrichButton extends GeneralButton {
@@ -34,8 +32,16 @@ public class OstrichButton extends GeneralButton {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-            //TODO:BUYING OSTRICH
-            }
+                        if (map.getBudget() >= 1000) {
+                            map.buyAnimal("ostrich");
+                            try {
+                                map.getLiveStocks().get(map.getLiveStocks().size() - 1).liveStockMoving(mapScene,
+                                        mapGroup, true, map.getFarmTime());
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                }
         });
         return button;
     }

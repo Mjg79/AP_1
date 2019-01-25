@@ -183,6 +183,20 @@ public class Cell extends Element {
 		}
 	}
 
+	private void addFeather(Product product) throws FileNotFoundException {
+		if (product.getName().equals("feather")) {
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "feather.png"))));
+		}
+	}
+
+	private void addHorn(Product product) throws FileNotFoundException {
+		if (product.getName().equals("horn")) {
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "horn.png"))));
+		}
+	}
+
+
+
 
 	private void setViewOfCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		if (previousNumberOfCell != products.size()) {
@@ -197,6 +211,8 @@ public class Cell extends Element {
 				addFlour(product);
 				addCookie(product);
 				addCake(product);
+				addFeather(product);
+				addHorn(product);
 			}
 		}
 	}

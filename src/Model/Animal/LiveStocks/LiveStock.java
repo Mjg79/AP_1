@@ -5,15 +5,10 @@ import Model.ElementAndBoxAndDirection.Direction;
 import Model.Products.Product;
 import View.Animations.SpriteAnimation;
 import javafx.animation.Animation;
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
@@ -55,7 +50,6 @@ public class LiveStock extends Animal {
 
     public LiveStock(double startBeingInMap, String type) {
         this.startTimeBeingInMap = startBeingInMap;
-        System.out.println(this.startTimeBeingInMap + " for chicken");
         if (type.equals("chicken")) {
             this.type = AnimalType.chicken;
             price = 50;
@@ -64,12 +58,12 @@ public class LiveStock extends Animal {
             name = "chicken";
         }
 
-        if (type.equals("cow")) {
+        if (type.equals("buffalo")) {
             this.type = AnimalType.cow;
             price = 5000;
             volume = 10;
             level = 0;
-            name = "cow";
+            name = "buffalo";
         }
 
         if (type.equals("ostrich")) {
@@ -191,7 +185,7 @@ public class LiveStock extends Animal {
         }
         return false;
     }
-    private void suitableSpriteAnimationForChicken(Group group, Duration duration)
+    private void suitableSpriteAnimationForLiveStock(Group group, Duration duration)
             throws FileNotFoundException {
         System.out.println("\n\npreviousX: " + previousX + ", PreviousY: " + previousY);
         if (previousX == x && previousY == y && moveWisely) {
@@ -213,11 +207,28 @@ public class LiveStock extends Animal {
     }
 
     private void liveStockEatingSituation() throws FileNotFoundException {
-        liveStockView.setImage(new Image(new FileInputStream(CHICKEN + "eat.png")));
-        liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
-                5, 0, 0, 74, 64);
-        liveStockAnimation.setCycleCount(2);
-        liveStockAnimation.play();
+        if (getName().equals("chicken")) {
+            liveStockView.setImage(new Image(new FileInputStream(CHICKEN + "eat.png")));
+            liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
+                    5, 0, 0, 74, 64);
+            liveStockAnimation.setCycleCount(2);
+            liveStockAnimation.play();
+        }
+
+        if (getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "eat.png")));
+            liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
+                    4, 0, 0, 114, 114);
+            liveStockAnimation.setCycleCount(2);
+            liveStockAnimation.play();
+        }
+        if (getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "eat.png")));
+            liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
+                    6, 0, 0, 160, 122) ;
+            liveStockAnimation.setCycleCount(2);
+            liveStockAnimation.play();
+        }
 
     }
 
@@ -229,6 +240,21 @@ public class LiveStock extends Animal {
             durationDeath++;
             liveStockAnimation.setCycleCount(1);
         }
+        if (getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "death.png")));
+            liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 24,
+                    6, 0, 0, 144, 128);
+            durationDeath++;
+            liveStockAnimation.setCycleCount(1);
+        }
+        if (getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "death.png")));
+            liveStockAnimation = new SpriteAnimation(liveStockView, Duration.millis(1000), 30,
+                    5, 0, 0, 166, 134);
+            durationDeath++;
+            liveStockAnimation.setCycleCount(1);
+        }
+
     }
 
     private void liveStockNorthEastMoving(Duration duration) throws FileNotFoundException {
@@ -237,6 +263,22 @@ public class LiveStock extends Animal {
             liveStockView.setScaleX(-1);
             liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
                     5, 0, 0, 68, 80);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.northEast) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "northWest.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 92, 140);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.northEast) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "northWest.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 150, 132);
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
@@ -252,6 +294,23 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
+        if (getDirection().equals(Direction.southEast) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "southWest.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 92, 126);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.southEast) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "southWest.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 150, 120);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+
     }
 
     private void liveStockNorthWestMoving(Duration duration) throws FileNotFoundException {
@@ -260,6 +319,22 @@ public class LiveStock extends Animal {
             liveStockView.setScaleX(1);
             liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
                     5, 0, 0, 68, 80);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.northWest) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "northWest.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 92, 140);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.northWest) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "northWest.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 150, 132);
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
@@ -276,6 +351,24 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
+        if (getDirection().equals(Direction.southWest) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "southWest.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 92, 126);
+
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.southWest) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "southWest.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 150, 120);
+
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
 
     }
 
@@ -288,6 +381,23 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
+        if (getDirection().equals(Direction.north) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "north.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 86, 142);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.north) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "north.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 134, 124);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+
     }
 
     private void liveStockSouthMoving(Duration duration) throws FileNotFoundException {
@@ -299,6 +409,23 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
+        if (getDirection().equals(Direction.south) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "south.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 86, 126);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.south) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "south.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    6, 0, 0, 132, 110);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+
     }
 
     private void liveStockEastMoving(Duration duration) throws FileNotFoundException {
@@ -310,6 +437,23 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
+        if (getDirection().equals(Direction.east) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "west.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 100, 132);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.east) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "west.png")));
+            liveStockView.setScaleX(-1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24,
+                    4, 0, 0, 174, 128);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+
     }
 
     private void liveStockWestMoving(Duration duration) throws FileNotFoundException {
@@ -321,11 +465,25 @@ public class LiveStock extends Animal {
             liveStockAnimation.setCycleCount(Animation.INDEFINITE);
             liveStockAnimation.play();
         }
-        //TODO:OSTRICH
-        //TODO:BUFFALO
+        if (getDirection().equals(Direction.west) && getName().equals("ostrich")) {
+            liveStockView.setImage(new Image(new FileInputStream(OSTRICH + "west.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24, 4,
+                    0, 0, 100, 132);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
+        if (getDirection().equals(Direction.west) && getName().equals("buffalo")) {
+            liveStockView.setImage(new Image(new FileInputStream(BUFFALO + "west.png")));
+            liveStockView.setScaleX(1);
+            liveStockAnimation = new SpriteAnimation(liveStockView, duration, 24, 4,
+                    0, 0, 174, 128);
+            liveStockAnimation.setCycleCount(Animation.INDEFINITE);
+            liveStockAnimation.play();
+        }
     }
 
-    public void chickenMoving(Scene scene, Group mapGroup, boolean isEntered, double farmTime) throws FileNotFoundException {
+    public void liveStockMoving(Scene scene, Group mapGroup, boolean isEntered, double farmTime) throws FileNotFoundException {
         Duration duration;
         liveStockView.relocate(250 + (int)getX() * 12, 250 + (int)getY() * 7);
         if (isEntered) {
@@ -334,7 +492,7 @@ public class LiveStock extends Animal {
         else
             duration = Duration.millis(1000);
         if (removeTheLiveStockAnimation(mapGroup)) {
-            suitableSpriteAnimationForChicken(mapGroup, duration);
+            suitableSpriteAnimationForLiveStock(mapGroup, duration);
         }
 
 

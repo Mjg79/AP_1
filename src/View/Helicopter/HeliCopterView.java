@@ -68,7 +68,7 @@ public class HeliCopterView {
         flour1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                controller.getMap().addElementToHelicopter(new Product(0
+                controller.getMap().addElementToHelicopter(new Product(controller.getMap().getFarmTime()
                         , "flour"));
             }
         });
