@@ -21,24 +21,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class HeliCopterView {
-    private Scene mapScene;
-    private Scene hScene;
-    private Group hGroup;
-    private Stage stage;
-    private MapView mapView;
-    private Group mapGroup;
-    private Controller controller;
+    private transient Scene mapScene;
+    private transient Scene hScene;
+    private transient Group hGroup;
+    private transient Stage stage;
+    private transient Group mapGroup;
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
-    public HeliCopterView(Stage stage, Controller controller, Scene mapScene, Scene hScene, Group hGroup,
-                          MapView mapView, Group mapGroup) {
+    public HeliCopterView(Stage stage, Scene mapScene, Scene hScene, Group hGroup
+                          , Group mapGroup) {
         this.mapScene = mapScene;
         this.hScene = hScene;
         this.hGroup = hGroup;
-        this.controller = controller;
         this.stage = stage;
-        this.mapView = mapView;
         this.mapGroup = mapGroup;
     }
 
@@ -55,7 +51,7 @@ public class HeliCopterView {
         hGroup.getChildren().add(price);
     }
 
-    private void flourAddingToHelicopter() {
+    private void flourAddingToHelicopter(Controller controller) {
         Button flour1 = new Button(" 1    ");
         ImageView addView = new ImageView();
         flour1.setOpacity(0);
@@ -99,7 +95,7 @@ public class HeliCopterView {
         timer.start();
     }
 
-    private void setCancelButton() throws FileNotFoundException {
+    private void setCancelButton(Controller controller) throws FileNotFoundException {
         ImageView cancelView = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES
                 + "cancelButton.png")));
         hGroup.getChildren().add(cancelView);
@@ -123,7 +119,7 @@ public class HeliCopterView {
 
 
 
-    private void setOkButton() {
+    private void setOkButton(Controller controller) {
         Button okButton = new Button("ok\n\n");
         okButton.setScaleX(5);
         okButton.relocate(110, 660);
@@ -169,7 +165,7 @@ public class HeliCopterView {
         timer.start();
     }
 
-    private void showSuitableHelicopter() {
+    private void showSuitableHelicopter(Controller controller) {
         ImageView helicopterView = new ImageView();
         helicopterView.relocate(500, 400);
         hGroup.getChildren().add(helicopterView);
@@ -187,17 +183,17 @@ public class HeliCopterView {
         timer.start();
     }
 
-    public void helicopterShow() throws FileNotFoundException {
+    public void helicopterShow(Controller controller) throws FileNotFoundException {
         initializeHelicopterScene();
-        flourAddingToHelicopter();
-        showSuitableHelicopter();
-        setOkButton();
-        setCancelButton();
-        showAllCost();
+        flourAddingToHelicopter(controller);
+        showSuitableHelicopter(controller);
+        setOkButton(controller);
+        setCancelButton(controller);
+        showAllCost(controller);
     }
 
 
-    private void showAllCost() {
+    private void showAllCost(Controller controller) {
         Label text = new Label("0");
         hGroup.getChildren().add(text);
         text.relocate(230, 580);

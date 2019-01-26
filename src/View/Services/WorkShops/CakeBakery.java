@@ -21,10 +21,10 @@ import javafx.scene.input.MouseEvent;
 public class CakeBakery {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
-    private static ImageView cakeBakeryView = new ImageView();
+    private transient static ImageView cakeBakeryView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
-    private static  SpriteAnimation cakeAnimation;
+    private transient static  SpriteAnimation cakeAnimation;
     private static int previousLevel = 0;
 
     public static void setCakeBakeryView(Group mapGroup, Map map) throws FileNotFoundException {

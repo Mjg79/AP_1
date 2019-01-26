@@ -80,6 +80,10 @@ public class Controller {
         return map;
     }
 
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public void operateInstruction() {
         isIdentified = false;
         String[] split = instruction.split("\\s");

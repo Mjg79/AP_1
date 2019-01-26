@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class MissionNeeds {
     private static final String PRODUCTS = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
-    private ArrayList<Label> needs = new ArrayList<>();
-    private static ArrayList<Label> gathers = new ArrayList<>();
+    private transient ArrayList<Label> needs = new ArrayList<>();
+    private transient static ArrayList<Label> gathers = new ArrayList<>();
 
     private static void showMissionNeeds(Group mapGroup, Map map) throws FileNotFoundException {
         int number = 0;

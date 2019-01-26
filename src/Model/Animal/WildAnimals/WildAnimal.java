@@ -52,16 +52,16 @@ public class WildAnimal extends Animal {
     }
 
     /////////////////////GRAPHIC_WILDANIMAL////////////////////////////////////////////////////
-    private Button wildButton = new Button("lions");
-    private ImageView wildAnimalView = new ImageView();
-    private ImageView cageView = new ImageView();
+    private transient Button wildButton = new Button("lions");
+    private transient ImageView wildAnimalView = new ImageView();
+    private transient ImageView cageView = new ImageView();
     private static final String LION = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\Lion\\";
     private static final String CAGE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Cages\\";
     private Direction previousDir = Direction.northEast;
     private boolean cagePlayed = false;
 
-    private SpriteAnimation wildAnimalAnimation;
-    private SpriteAnimation cageAnimation;
+    private transient SpriteAnimation wildAnimalAnimation;
+    private transient SpriteAnimation cageAnimation;
 
 
     private boolean removeTheLiveStockAnimation(Group mapGroup) {

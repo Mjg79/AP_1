@@ -39,8 +39,8 @@ public class Dog extends Animal {
 
 
     //////////////////////DOG_GRAPHIC////////////////////////////////////////////////////////
-    private ImageView dogView = new ImageView();
-    private SpriteAnimation dogAnimation;
+    private transient ImageView dogView = new ImageView();
+    private transient SpriteAnimation dogAnimation;
     private static final String DOG = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\dog\\";
     private Direction previousDir = Direction.northEast;
 

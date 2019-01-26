@@ -18,9 +18,9 @@ public class CatButton extends GeneralButton {
     private static boolean isPaused = false;
     private static boolean isResumed = false;
     private static boolean isPlaying = true;
-    private static ImageView buttonView;
-    private static Scene mapScene;
-    private static Button button = new Button("chick");
+    private transient static ImageView buttonView;
+    private transient static Scene mapScene;
+    private transient static Button button = new Button("chick");
     public static Button catButton(Group mapGroup, Map map, ImageView buttonView, Scene mapScene)
             throws FileNotFoundException {
         button.setStyle("-fx-font-size: 16;");

@@ -5,6 +5,7 @@ import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
 import View.Animations.SpriteAnimation;
+import View.Map.MapView;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
@@ -30,7 +31,7 @@ public class Truck extends Element {
     private int countReturnToWareHouse = 0;
     private int timeDurationForWorking = 20;
     private final String TRUCKFILE= "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Truck\\";
-    private ImageView truckView = new ImageView();
+    private transient ImageView truckView = new ImageView();
     {
         for (int i = 0; i < numOfBoxes; i++)
             boxes.add(new Box());
@@ -38,7 +39,9 @@ public class Truck extends Element {
         this.level = 1;
     }
 
-
+    public void setWallet(int wallet) {
+        this.wallet = wallet;
+    }
 
     public ArrayList<Box> getBoxes() {
         return boxes;
@@ -136,7 +139,7 @@ public class Truck extends Element {
     }
 
 
-    public int startWorking(double time) {
+    public void startWorking(double time) {
         if(this.isInWareHouse && this.isTruckContainsAny()) {
             startTimeForSellingElements = time;
             endTimeForSellingElements = time + timeDurationForWorking;
@@ -146,7 +149,7 @@ public class Truck extends Element {
                 box.removeElement();
             }
         }
-        return wallet;
+        // wallet handeld in timer
     }
 
     public boolean isInWareHouse() {
@@ -181,7 +184,7 @@ public class Truck extends Element {
         truckAnimation.setCycleCount(Animation.INDEFINITE);
         truckAnimation.play();
 
-        Path path = new Path(new MoveTo(785, 30), new LineTo(980, 30));
+        Path path = new Path(new MoveTo(785, 70), new LineTo(980, 70));
         path.setVisible(false);
         mapGroup.getChildren().add(path);
         PathTransition pathTransition = new PathTransition(
@@ -193,6 +196,8 @@ public class Truck extends Element {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                MapView.getTruckButton().setVisible(false);
+                MapView.getTruckView().setVisible(false);
                 if ((int)pathTransition.getCurrentTime().toSeconds() ==
                         map.getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
                     truckView.setScaleX(1);
@@ -200,6 +205,9 @@ public class Truck extends Element {
                 if (pathTransition.getCurrentTime().toSeconds() == 0 && truckView.getScaleX() == 1) {
                     truckAnimation.stop();
                     mapGroup.getChildren().remove(truckView);
+                    MapView.getTruckButton().setVisible(true);
+                    MapView.getTruckView().setVisible(true);
+                    map.setBudget(map.getBudget()+map.getTruck().getWallet());
                     this.stop();
                 }
             }

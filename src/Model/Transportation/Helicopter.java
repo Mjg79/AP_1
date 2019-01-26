@@ -182,7 +182,7 @@ public class Helicopter extends Element {
 
     ///////////////////////graphic_helicopter////////////////////////////
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
-    private ImageView helicopterGo = new ImageView();
+    private transient ImageView helicopterGo = new ImageView();
     public void goHelicopter(Map map, Group mapGroup) throws FileNotFoundException {
 
         setImageHelicopterGo(mapGroup, map);

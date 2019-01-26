@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 
 public class MenuButton {
     public static Button inGameMenuButton(Group mapGroup, Scene mapScene){
-        final Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
+        final  Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
         final Image menuButtonGrayImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonGray.png");
         final Image menuButtonBlueImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonBlue.png");
         final Image continueButtonImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/continueButton.png");

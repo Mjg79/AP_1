@@ -28,11 +28,12 @@ public class Cell extends Element {
 	private ArrayList<Product> products = new ArrayList<>();
 	private double farmTime = 0;
 	private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
-	private ArrayList<ImageView> imageViews = new ArrayList<>();
-	private  Button button = new Button();
+	private transient ArrayList<ImageView> imageViews;
+	private transient Button button;
 
 	{
 		name = "cell";
+		imageViews = new ArrayList<>();
 	}
 
 	public Cell(int x, int y) {
@@ -163,7 +164,7 @@ public class Cell extends Element {
 
 	private void addPowderEgg(Product product) throws FileNotFoundException {
 		if (product.getName().equals("powderedEgg"))
-			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "EggPowder.png"))));
+			imageViews.add(new ImageView(new Image(new FileInputStream(productFile + "powderedEgg.png"))));
 	}
 
 	private void addFlour(Product product) throws FileNotFoundException {
@@ -221,14 +222,18 @@ public class Cell extends Element {
 
 	public void showCell(Group group, Scene scene, Map map) throws FileNotFoundException {
 		setViewOfCell(group, scene,  map);
-		for (ImageView imageView: imageViews) {
+		if (imageViews == null)
+           imageViews = new ArrayList<>();
+ 		for (ImageView imageView: imageViews) {
 			imageView.relocate(250 + 12 * this.getX() + imageViews.indexOf(imageView) * 9,
 					250 + 7 * this.getY() + imageViews.indexOf(imageView));
 			if (!group.getChildren().contains(imageView))
 			group.getChildren().add(imageView);
 		}
-		if (imageViews.size() != 0 && !group.getChildren().contains(button))
-				button = ProductButton.productButton(button, group, scene, x, y, map, map.getFarmTime());
+		if (imageViews.size() != 0 && !group.getChildren().contains(button)) {
+		    button = new Button();
+			button = ProductButton.productButton(button, group, scene, x, y, map, map.getFarmTime());
+		}
 	}
 
 }

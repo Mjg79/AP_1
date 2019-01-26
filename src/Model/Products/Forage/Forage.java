@@ -25,7 +25,7 @@ public class Forage extends Product {
 
 
     ///////////////GRAPHIC_SECTION///////////////////////////
-    private ImageView imageView;
+    private transient ImageView imageView;
 
     public SpriteAnimation grassAnimation(Pane backGroundPane, int x, int y) throws FileNotFoundException {
         imageView = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\" +

@@ -136,7 +136,7 @@ public class LiveStock extends Animal {
     }
 
     ///////////////////GERAPHIC_SECTION////////////////////////////////////////
-    private ImageView liveStockView = new ImageView();
+    private transient ImageView liveStockView = new ImageView();
     private static final String CHICKEN = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\GuineaFowl\\";
     private static final String OSTRICH = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\Ostrich\\";
     private static final String BUFFALO = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\Buffalo\\";
@@ -145,7 +145,7 @@ public class LiveStock extends Animal {
     private int previousY = 50;
     public boolean graphicDeath = false;
     public int durationDeath = 0;
-    private SpriteAnimation liveStockAnimation;
+    private transient SpriteAnimation liveStockAnimation;
 
 
     public ImageView getLiveStockView() {

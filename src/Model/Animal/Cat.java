@@ -46,8 +46,8 @@ public class Cat extends Animal {
     }
 
     //////////////////////GRAPHIC_CAT////////////////////////////////////
-    private ImageView catView = new ImageView();
-    private SpriteAnimation catAnimation;
+    private transient ImageView catView = new ImageView();
+    private transient SpriteAnimation catAnimation;
     private static final String CAT = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\cat\\";
     private Direction previousDir = Direction.northEast;
 

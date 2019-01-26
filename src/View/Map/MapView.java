@@ -39,31 +39,36 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class MapView {
-    private static Controller controller;
-    private Stage primaryStage;
-    private Scene helicopterScene;
-    private WarehouseScene warehouseScene;
-    private Pane backGroundPane = new Pane();
-    private Pane grassButtonPane = new Pane();
+    private transient static Controller controller;
+    private transient Stage primaryStage;
+    private transient Scene helicopterScene;
+    private transient WarehouseScene warehouseScene;
+    private transient Pane backGroundPane = new Pane();
+    private transient Pane grassButtonPane = new Pane();
     private static boolean isPaused = false;
     private static boolean isResumed = false;
     private static boolean isPlaying = true;
-    private static Button hButton = new Button();//helicopterButton
-    private static Button truckButton = new Button();
-    private static Scene mapScene;
+    private transient static Button hButton = new Button();//helicopterButton
+    private transient static Button truckButton = new Button();
+    private transient static Scene mapScene;
+    private transient Group mapGroup;
+    private transient String fileName;
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene
-    ,Map map) {
+    ,Map map,Group mapGroup) {
         MapView.controller = controller;
         MapView.mapScene = mapScene;
+        this.mapGroup = mapGroup;
         this.primaryStage = primaryStage;
         try {
-            warehouseScene = new WarehouseScene(wareHouse,mapScene,map);
+            warehouseScene = new WarehouseScene(wareHouse,mapScene,map,mapGroup);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         this.helicopterScene = helicopterScene;
     }
+
+
 
     private static final String backGround =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
@@ -81,13 +86,28 @@ public class MapView {
     private ImageView ostrichView = new ImageView();
     private ImageView buffaloView = new ImageView();
     private ImageView helicopterView = new ImageView();
-    private ImageView truckView = new ImageView();
+    private static ImageView truckView = new ImageView();
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
     private ImageView wareHouseView = new ImageView();
 
+    public static ImageView getTruckView() {
+        return truckView;
+    }
 
-    private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public static Button getTruckButton() {
+        return truckButton;
+    }
+
+    private void setBuyChickenView(Group mapGroup , Scene mapScene) throws FileNotFoundException {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -622,7 +642,7 @@ public class MapView {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                text.setText(Integer.toString((int)map.getWorkshops().get(1).getMoneyForUpgrading()));
                 try {
                     if (map.getWorkshops().get(1).getLevel() == 4) {
                         cookieBakery.setVisible(false);
@@ -671,7 +691,7 @@ public class MapView {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                text.setText(Integer.toString((int)map.getWorkshops().get(2).getMoneyForUpgrading()));
                 try {
                     if (map.getWorkshops().get(2).getLevel() == 4) {
                         cakeBakery.setVisible(false);

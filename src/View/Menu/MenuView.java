@@ -1,8 +1,9 @@
 package View.Menu;
 
+import Controller.Controller;
 import Model.MapAndCell.Map;
-import View.Buttons.GeneralButton;
-import View.View;
+import View.Helicopter.HeliCopterView;
+import View.Map.MapView;
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -32,7 +33,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class MenuView {
-    private Text name = new Text();
+    private transient Text name = new Text();
     private static final String backGround =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
     private static final String accounts = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\accounts";
@@ -464,23 +465,25 @@ public class MenuView {
     }
 
 
-    public void mapChooseMenu(Stage stage, Group chooseMap, Scene choseMap, Scene menu) throws FileNotFoundException {
-        this.intializeMapChooseMenu(chooseMap, choseMap);
-        ArrayList<Button> mapButtons = new ArrayList<>();
-        for (int i = 1; i <= 4; i++)
-            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i),
-                    128 + 140 * (i - 1), 123, choseMap));
-        for (int i = 1; i <= 3; i++)
-            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i + 4),
-                    193 + 140 * (i - 1), 199, choseMap));
-        for (int i = 1; i <= 2; i++)
-            mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(i + 7),
-                    276 + 140 * (i - 1), 270, choseMap));
-        mapButtons.add(mapButtonChoosable(new Button(), chooseMap, "map" + Integer.toString(10),
-                334, 336, choseMap));
+    public void mapChooseMenu(Stage stage, Group chooseMap, Scene choseMap, Scene menu
+    , Controller controller) throws FileNotFoundException {
 
-//        showButtons(mapButtons);
+        Group map = new Group();
+        Scene mapScene = new Scene(map, 1000, 750);
+
+        Group hGroup = new Group();
+        Scene hScene = new Scene(hGroup, 1000, 750);
+
+        MapView mapView = new MapView(controller,stage ,controller.getMap().getWareHouse(),mapScene,  hScene,
+                controller.getMap(),map);
+
+        HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
+                hScene, hGroup, map);
+        heliCopterView.helicopterShow(controller);
+
+        this.intializeMapChooseMenu(chooseMap, choseMap);
         Button backToMenu = new Button("  backToMenu  ");
+        ArrayList<Button> mapButtons = new ArrayList<>();
         backToMenu.relocate(520, 425);
         chooseMap.getChildren().add(backToMenu);
         backToMenu.setStyle("-fx-font-family: 'Bodoni MT Black'; -fx-font-size: 16; -fx-font-style: italic;" +
@@ -494,7 +497,41 @@ public class MenuView {
                 stage.setScene(menu);
             }
         });
+        for (int i = 0; i < 6; i++)
+        makeButtons(chooseMap, stage, mapScene, controller, mapView, map, 370, 120 + 50 * i,
+                "map" + Integer.toString(i + 1));
+
     }
+
+    private void makeButtons(Group menuGroup, Stage stage, Scene mapScene, Controller controller, MapView mapView,
+                             Group map, int x, int y, String name) {
+        Button map1 = new Button(name);
+        setButtonChoosable(map1);
+        menuGroup.getChildren().add(map1);
+        map1.relocate(x, y);
+            map1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Gson deserializer = new Gson();
+                    try {
+                        controller.setMap(deserializer.fromJson(new FileReader(getCurrentAccount()
+                                + "\\" + name + ".json"), Map.class));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+
+                    }
+                    try {
+                        mapView.gameMap(map, mapScene, controller.getMap());
+                        mapView.setFileName(getCurrentAccount() + "\\" + name + ".json");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    stage.setScene(mapScene);
+
+                }
+            });
+    }
+
 
     private Button mapButtonChoosable(Button map, Group chooseMap, String mapName,
                                       int x, int y, Scene choseMap) {
@@ -518,31 +555,31 @@ public class MenuView {
                 " -fx-background-radius: 15px; visibility: false");
     }
 
-//    private void showButtons(ArrayList<Button> buttons) {
-//        Gson desserializer = new Gson();
-//        AnimationTimer timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//                for (int i = 1; i < buttons.size(); i++) {
-//                    System.out.println(getCurrentAccount() + "\\" + "map1.json");
-//                    try {
-//                      Map map = null;
-//                        if (!getCurrentAccount().equals("")) {
-//                            map = desserializer.fromJson(new FileReader(getCurrentAccount() + "\\" +
-//                                    "map1" + ".json"), Map.class);
-//                            if (map.isMissionCompleted())
-//                                setButtonChoosable(buttons.get(0));
-//                        } else
-//                            setButtonUnChoosable(buttons.get(0));
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                        this.stop();
-//                    }
-//
-//                }
-//            }
-//
-//        };
-//        timer.start();
-//    }
+    private void showButtons(ArrayList<Button> buttons) {
+        Gson desserializer = new Gson();
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                for (int i = 1; i < buttons.size(); i++) {
+                    System.out.println(getCurrentAccount() + "\\" + "map1.json");
+                    try {
+                      Map map = null;
+                        if (!getCurrentAccount().equals("")) {
+                            map = desserializer.fromJson(new FileReader(getCurrentAccount() + "\\" +
+                                    "map1" + ".json"), Map.class);
+                            if (map.isMissionCompleted())
+                                setButtonChoosable(buttons.get(0));
+                        } else
+                            setButtonUnChoosable(buttons.get(0));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        this.stop();
+                    }
+
+                }
+            }
+
+        };
+        timer.start();
+    }
 }

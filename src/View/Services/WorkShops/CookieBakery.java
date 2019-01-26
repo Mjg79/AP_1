@@ -19,10 +19,10 @@ import java.io.FileNotFoundException;
 public class CookieBakery {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
-    private static ImageView cookieBakeryView = new ImageView();
+    private transient static ImageView cookieBakeryView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
-    private static  SpriteAnimation cookieAnimation;
+    private transient static  SpriteAnimation cookieAnimation;
     private static int previousLevel = 0;
 
     public static void setCookieBakeryView(Group mapGroup, Map map) throws FileNotFoundException {

@@ -107,10 +107,10 @@ public class Well extends Element {
     //////////////////GRAPHICS AND ANIMATOIN SECTION////////////////////////////////
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
-    private ImageView wellView = new ImageView();
+    private transient ImageView wellView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
-    private SpriteAnimation wellAnimation;
+    private transient SpriteAnimation wellAnimation;
     private int previousLevel = 0;
 
     public void setWellView(Group mapGroup) throws FileNotFoundException {
