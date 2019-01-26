@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.MapAndCell.Map;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
+import View.Map.WarehouseScene;
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -481,9 +482,10 @@ public class MenuView {
 
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
+        Map map1 = controller.getMap();
+        WarehouseScene warehouseScene = new WarehouseScene(mapScene,map1,map,controller);
 
-        MapView mapView = new MapView(controller,stage ,controller.getMap().getWareHouse(),mapScene,  hScene,
-                controller.getMap(), choseMap, menu);
+        MapView mapView = new MapView(controller,stage ,mapScene,  hScene, choseMap, menu,warehouseScene);
 
         HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
                 hScene, hGroup, map);

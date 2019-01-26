@@ -56,18 +56,14 @@ public class MapView {
     private transient Scene chooseMap;
     private transient Scene menu;
 
-    public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene
-    ,Map map, Scene chooseMap, Scene menu) {
+    public MapView(Controller controller, Stage primaryStage,Scene mapScene, Scene helicopterScene
+    , Scene chooseMap, Scene menu,WarehouseScene warehouseScene) {
         this.controller = controller;
         MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;
         this.chooseMap = chooseMap;
         this.menu = menu;
-        try {
-            warehouseScene = new WarehouseScene(wareHouse,mapScene,map);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.warehouseScene = warehouseScene;
         this.helicopterScene = helicopterScene;
     }
 
@@ -87,10 +83,18 @@ public class MapView {
     private ImageView ostrichView = new ImageView();
     private ImageView buffaloView = new ImageView();
     private ImageView helicopterView = new ImageView();
-    private ImageView truckView = new ImageView();
+    private static ImageView truckView = new ImageView();
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
     private ImageView wareHouseView = new ImageView();
+
+    public static Button getTruckButton() {
+        return truckButton;
+    }
+
+    public static ImageView getTruckView() {
+        return truckView;
+    }
 
     public String getFileName() {
         return fileName;
