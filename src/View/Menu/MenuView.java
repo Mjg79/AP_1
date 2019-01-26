@@ -198,6 +198,14 @@ public class MenuView {
                 " -fx-text-fill: linear-gradient(from 0% 0% to 100% 250%, repeat, whitesmoke 0%, black 60%);" +
                 "-fx-border-radius: 5; -fx-background-radius: 10;");
         exit.relocate(331, 413);
+
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.exit(0);
+            }
+        });
+
         buttonOpacityChanged(exit);
         mainMenu.getChildren().add(exit);
 
