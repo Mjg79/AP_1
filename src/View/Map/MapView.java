@@ -51,14 +51,16 @@ public class MapView {
     private static Button hButton = new Button();//helicopterButton
     private static Button truckButton = new Button();
     private static Scene mapScene;
+    private Group mapGroup;
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene
-    ,Map map) {
+    ,Map map,Group mapGroup) {
         MapView.controller = controller;
         MapView.mapScene = mapScene;
+        this.mapGroup = mapGroup;
         this.primaryStage = primaryStage;
         try {
-            warehouseScene = new WarehouseScene(wareHouse,mapScene,map);
+            warehouseScene = new WarehouseScene(wareHouse,mapScene,map,mapGroup);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -81,13 +83,20 @@ public class MapView {
     private ImageView ostrichView = new ImageView();
     private ImageView buffaloView = new ImageView();
     private ImageView helicopterView = new ImageView();
-    private ImageView truckView = new ImageView();
+    private static ImageView truckView = new ImageView();
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
     private ImageView wareHouseView = new ImageView();
 
+    public static ImageView getTruckView() {
+        return truckView;
+    }
 
-    private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
+    public static Button getTruckButton() {
+        return truckButton;
+    }
+
+    private void setBuyChickenView(Group mapGroup , Scene mapScene) throws FileNotFoundException {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {

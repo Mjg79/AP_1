@@ -620,17 +620,18 @@ public class Map {
 
     public void addElementToTruck(Element element, int count) {
         if (wareHouse.isHaveThisElement(element) && this.truck.isInWareHouse()) {
-            if (count == 1)
+            if (count != 1) {
                 this.addAllOfAnElementToTruck(element);
-            else
+            }else {
                 this.addOneElementToTruck(element);
-            this.wareHouse.addGoodOrLiveStock(element, this.truck.getCountReturnToWareHouse());
+            }
+            //this.wareHouse.addGoodOrLiveStock(element, this.truck.getCountReturnToWareHouse());
         }
     }
 
     ////////////////////////GO_TRUCK////////////////////////////////////////////////
     public void goTruck() {
-        budget += this.truck.startWorking(this.farmTime);
+        this.truck.startWorking(this.farmTime);
     }
 
     ///////////////////////CHECK_TRUCK_IS_IN_wareHouse/////////////////////////////
@@ -646,6 +647,10 @@ public class Map {
     ////////////////////////ADD_ELEMENT_IN_HELICOPTER//////////////////////////////
     public void addElementToHelicopter(Element element) {
         this.helicopter.putOneCountOfAnElementInHelicopter(element, budget);
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
     }
 
     ////////////////////////GO_HELICOPTER/////////////////////////////////
