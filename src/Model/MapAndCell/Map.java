@@ -254,7 +254,6 @@ public class Map {
         if (gatherElements.equals(missionNeeds)) {
             isMissionCompleted = true;
             System.out.println("mission completed.");
-            System.exit(0);
         }
     }
 

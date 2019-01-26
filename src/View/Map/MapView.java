@@ -15,10 +15,12 @@ import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
 //import View.Buttons.WellButton;
 //import View.Buttons.WorkShop.EggPowderPlantButton;
+import View.MissionNeed;
 import View.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
+import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -35,28 +37,32 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class MapView {
-    private static Controller controller;
-    private Stage primaryStage;
-    private Scene helicopterScene;
-    private WarehouseScene warehouseScene;
-    private Pane backGroundPane = new Pane();
-    private Pane grassButtonPane = new Pane();
+    private  Controller controller;
+    private transient Stage primaryStage;
+    private transient Scene helicopterScene;
+    private transient WarehouseScene warehouseScene;
+    private transient Pane backGroundPane = new Pane();
+    private transient Pane grassButtonPane = new Pane();
     private static boolean isPaused = false;
     private static boolean isResumed = false;
     private static boolean isPlaying = true;
-    private static Button hButton = new Button();//helicopterButton
-    private static Button truckButton = new Button();
-    private static Scene mapScene;
+    private transient static Button hButton = new Button();//helicopterButton
+    private transient static Button truckButton = new Button();
+    private transient static Scene mapScene;
+    private transient String fileName;
+    private transient Scene chooseMap;
+    private transient Scene menu;
 
     public MapView(Controller controller, Stage primaryStage,WareHouse wareHouse,Scene mapScene, Scene helicopterScene
-    ,Map map) {
-        MapView.controller = controller;
+    ,Map map, Scene chooseMap, Scene menu) {
+        this.controller = controller;
         MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;
+        this.chooseMap = chooseMap;
+        this.menu = menu;
         try {
             warehouseScene = new WarehouseScene(wareHouse,mapScene,map);
         } catch (FileNotFoundException e) {
@@ -86,8 +92,15 @@ public class MapView {
     private ImageView catView = new ImageView();
     private ImageView wareHouseView = new ImageView();
 
+    public String getFileName() {
+        return fileName;
+    }
 
-    private void setBuyChickenView(Group mapGroup ,Scene mapScene) throws FileNotFoundException {
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    private void setBuyChickenView(Group mapGroup , Scene mapScene) throws FileNotFoundException {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -214,8 +227,10 @@ public class MapView {
 
 
     public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
-        mapGroup.getChildren().add(backGroundPane);
-        mapGroup.getChildren().add(grassButtonPane);
+        if (!mapGroup.getChildren().contains(backGroundPane) && !mapGroup.getChildren().contains(grassButtonPane)) {
+            mapGroup.getChildren().add(backGroundPane);
+            mapGroup.getChildren().add(grassButtonPane);
+        }
         Image backGround1 = new Image(new FileInputStream(
                 "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
         ImageView mapViewBackGround = new ImageView(backGround1);
@@ -223,7 +238,7 @@ public class MapView {
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
 
-
+        if (!mapGroup.getChildren().contains(truckView))
         mapGroup.getChildren().add(truckView);
         truckButton = new Button();
         truckButton.relocate(278,650);
@@ -239,17 +254,20 @@ public class MapView {
         hButton.setBackground(Background.EMPTY);
         hButton.setPadding(Insets.EMPTY);
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
-        mapGroup.getChildren().add(hButton);
+        if (!mapGroup.getChildren().contains(hButton))
+         mapGroup.getChildren().add(hButton);
 
         Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
         ImageView underBarView = new ImageView(underBar);
         underBarView.relocate(0, 580);
-        mapGroup.getChildren().add(underBarView);
+        if (!mapGroup.getChildren().contains(underBarView))
+            mapGroup.getChildren().add(underBarView);
 
         Image moneyAndTransportation = new Image(new FileInputStream(farmFrenzyScenesDesign + "upperbar.png"));
         ImageView moneyAndTransportationView = new ImageView(moneyAndTransportation);
         moneyAndTransportationView.relocate(620, 0);
-        mapGroup.getChildren().add(moneyAndTransportationView);
+        if (!mapGroup.getChildren().contains(moneyAndTransportationView))
+            mapGroup.getChildren().add(moneyAndTransportationView);
     }
 
 
@@ -274,9 +292,16 @@ public class MapView {
         this.setBuyBuffaloView(mapGroup, mapScene);
         this.setBuyCatView(mapGroup, mapScene);
         this.setBuyDogView(mapGroup, mapScene);
-        MenuButton.inGameMenuButton(mapGroup, mapScene);
+        MenuButton.inGameMenuButton(mapGroup, mapScene, this,  primaryStage, chooseMap, menu);
     }
 
+    public  Controller getController() {
+        return controller;
+    }
+
+    public void missionCompleted() throws FileNotFoundException {
+        MissionNeed.backToMenu(primaryStage, menu);
+    }
 
     public void gameMap(Group map, Scene mapScene , Map maps) throws FileNotFoundException {
         this.initializeGameMap(map, mapScene, maps);
@@ -622,7 +647,7 @@ public class MapView {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                text.setText(Integer.toString((int)map.getWorkshops().get(1).getMoneyForUpgrading()));
                 try {
                     if (map.getWorkshops().get(1).getLevel() == 4) {
                         cookieBakery.setVisible(false);
@@ -671,7 +696,7 @@ public class MapView {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
+                text.setText(Integer.toString((int)map.getWorkshops().get(2).getMoneyForUpgrading()));
                 try {
                     if (map.getWorkshops().get(2).getLevel() == 4) {
                         cakeBakery.setVisible(false);
@@ -716,6 +741,23 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (controller.getMap().isMissionCompleted()) {
+                    Gson serializer = new Gson();
+                    try {
+                        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(getFileName()));
+                        serializer.toJson(controller.getMap(), Map.class, writer);
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        missionCompleted();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    this.stop();
+                }
                 text.setText(Integer.toString((int)map.getHelicopter().getMoneyForUpgrading()));
                 try {
                     if (map.getHelicopter().getLevel() == 4) {
@@ -751,7 +793,8 @@ public class MapView {
 
     private void showAndUpgradeWareHouse(Group mapGroup, Map map) throws FileNotFoundException {
         wareHouseView.relocate(390, 579);
-        mapGroup.getChildren().add(wareHouseView);
+        if (!mapGroup.getChildren().contains(wareHouseView))
+            mapGroup.getChildren().add(wareHouseView);
         wareHouseView.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -765,7 +808,8 @@ public class MapView {
         wareHouseInfo(mapGroup, map);
         text.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 20; -fx-font-weight: BOLD");
         mapGroup.getChildren().add(upgradeWareHouse);
-        mapGroup.getChildren().add(text);
+        if (!mapGroup.getChildren().contains(text))
+            mapGroup.getChildren().add(text);
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -817,7 +861,8 @@ public class MapView {
         info.setScaleX(0.5);
         info.setOpacity(0);
         info.relocate(495, 540);
-        group.getChildren().add(info);
+        if (!group.getChildren().contains(info))
+            group.getChildren().add(info);
         Label current = new Label();
         current.setStyle("-fx-opacity: 0;-fx-text-fill: #fae00e ;-fx-font-size: 16; -fx-font-family: 'A Spirit Of Doha Black'");
         Label level = new Label();
@@ -827,7 +872,8 @@ public class MapView {
         current.relocate(578, 582);
         volume.relocate(635, 582);
         level.relocate(616, 602);
-        group.getChildren().addAll(level, volume, current);
+        if (!group.getChildren().contains(level))
+            group.getChildren().addAll(level, volume, current);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {

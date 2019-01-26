@@ -24,11 +24,13 @@ public class ChickenButton extends GeneralButton {
         button.setStyle("-fx-font-size: 16;");
         button.setOpacity(0);
         buttonView.setOpacity(0.9);
-        mapGroup.getChildren().add(buttonView);
+        if (!mapGroup.getChildren().contains(buttonView))
+            mapGroup.getChildren().add(buttonView);
         buttonView.relocate(10, 10);
         button.relocate(13, 26);
         button.setShape(new Circle(10));
-        mapGroup.getChildren().add(button);
+        if (!mapGroup.getChildren().contains(button))
+            mapGroup.getChildren().add(button);
         ChickenButton.buttonView = buttonView;
         ChickenButton.mapScene = mapScene;
         buyAnimalAppereance(button, buttonView);

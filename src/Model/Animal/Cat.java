@@ -179,6 +179,8 @@ public class Cat extends Animal {
 
     public void catMoving(Scene scene, Group mapGroup, boolean isEntered) throws FileNotFoundException {
         Duration duration;
+        if (catView == null)
+            catView = new ImageView();
         catView.relocate(250 + getX() * 12, 250 + getY() * 7);
         if (isEntered) {
             duration = Duration.millis(10);

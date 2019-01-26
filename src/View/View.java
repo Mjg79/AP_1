@@ -21,7 +21,6 @@ public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        View view = new View();
         MenuView menuView = new MenuView();
         Controller controller = new Controller();
         Group mainMenu = new Group();
@@ -32,25 +31,15 @@ public class View extends Application {
 
         Group chooseMap = new Group();
         Scene choseMap = new Scene(chooseMap, 818, 557);
-        menuView.mapChooseMenu(primaryStage, chooseMap, choseMap, menu);
+        menuView.mapChooseMenu(primaryStage, chooseMap, choseMap, menu, controller);
 
         Group map = new Group();
         Scene mapScene = new Scene(map, 1000, 750);
 
-        Group hGroup = new Group();
-        Scene hScene = new Scene(hGroup, 1000, 750);
-
-        MapView mapView = new MapView(controller,primaryStage,controller.getMap().getWareHouse(),mapScene,  hScene,
-                controller.getMap());
-        mapView.gameMap(map, mapScene, controller.getMap());
-
         menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
         menuView.nameMenu(primaryStage, menu, nameMenu, names, mainMenu, choseMap);
 
-        HeliCopterView heliCopterView = new HeliCopterView(primaryStage, controller, mapScene,
-                hScene, hGroup, mapView, map);
-        heliCopterView.helicopterShow();
-        primaryStage.setScene(mapScene);
+        primaryStage.setScene(menu);
         primaryStage.show();
     }
 

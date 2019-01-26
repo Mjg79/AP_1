@@ -27,10 +27,12 @@ public class DogButton extends GeneralButton {
         button.setStyle("-fx-font-size: 16;");
         button.setOpacity(0);
         buttonView.setOpacity(0.9);
-        mapGroup.getChildren().add(buttonView);
+        if (!mapGroup.getChildren().contains(buttonView))
+            mapGroup.getChildren().add(buttonView);
         buttonView.relocate(310, 10);
         button.relocate(313, 26);
         button.setShape(new Circle(10));
+        if (!mapGroup.getChildren().contains(button))
         mapGroup.getChildren().add(button);
         DogButton.buttonView = buttonView;
         DogButton.mapScene = mapScene;

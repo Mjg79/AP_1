@@ -3,6 +3,7 @@ package View.Buttons;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
 import Model.Products.Forage.Forage;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,7 +22,8 @@ public class ProductButton {
                                        Map map, double farmTime) throws FileNotFoundException {
         productButton.setOpacity(0);
         productButton.relocate(265 + x * 12,262 + y * 7 );
-        group.getChildren().add(productButton);
+        if (!group.getChildren().contains(productButton))
+            group.getChildren().add(productButton);
         GeneralButton.buttonAppearanceWithCursor(productButton, scene);
         productButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

@@ -2,6 +2,7 @@ package View.Buttons;
 
 import Model.MapAndCell.Map;
 import View.Map.MapView;
+import com.google.gson.Gson;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -13,11 +14,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class MenuButton {
-    public static Button inGameMenuButton(Group mapGroup, Scene mapScene){
+    public static Button inGameMenuButton(Group mapGroup, Scene mapScene,MapView mapView, Stage stage, Scene chooseMap,
+                                          Scene menu){
         final  Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
         final Image menuButtonGrayImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonGray.png");
         final Image menuButtonBlueImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonBlue.png");
@@ -225,7 +231,21 @@ public class MenuButton {
         });
 
         mainMenuButton.setOnAction(event -> {
-            //TODO:handle going to main menu
+            Gson serializer = new Gson();
+            OutputStreamWriter writer = null;
+            try {
+                writer = new OutputStreamWriter(new FileOutputStream(mapView.getFileName()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            serializer.toJson(mapView.getController().getMap(), Map.class, writer);
+            try {
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mapGroup.getChildren().removeAll();
+            stage.setScene(menu);
         });
 
         restartButton.setOnAction(event -> {
@@ -233,7 +253,22 @@ public class MenuButton {
         });
 
         mapButton.setOnAction(event -> {
-            //TODO:handle going to map
+            Gson serializer = new Gson();
+            OutputStreamWriter writer = null;
+            try {
+                writer = new OutputStreamWriter(new FileOutputStream(mapView.getFileName()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            serializer.toJson(mapView.getController().getMap(), Map.class, writer);
+            try {
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mapGroup.getChildren().removeAll();
+            stage.setScene(chooseMap);
         });
 
         optiansButton.setOnAction(event -> {

@@ -193,26 +193,26 @@ public class Truck extends Element {
         pathTransition.setCycleCount(2);
         pathTransition.play();
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                MapView.getTruckButton().setVisible(false);
-                MapView.getTruckView().setVisible(false);
-                if ((int)pathTransition.getCurrentTime().toSeconds() ==
-                        map.getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
-                    truckView.setScaleX(1);
-                }
-                if (pathTransition.getCurrentTime().toSeconds() == 0 && truckView.getScaleX() == 1) {
-                    truckAnimation.stop();
-                    mapGroup.getChildren().remove(truckView);
-                    MapView.getTruckButton().setVisible(true);
-                    MapView.getTruckView().setVisible(true);
-                    map.setBudget(map.getBudget()+map.getTruck().getWallet());
-                    this.stop();
-                }
-            }
-        };
-        timer.start();
+//        AnimationTimer timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                MapView.getTruckButton().setVisible(false);
+//                MapView.getTruckView().setVisible(false);
+//                if ((int)pathTransition.getCurrentTime().toSeconds() ==
+//                        map.getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
+//                    truckView.setScaleX(1);
+//                }
+//                if (pathTransition.getCurrentTime().toSeconds() == 0 && truckView.getScaleX() == 1) {
+//                    truckAnimation.stop();
+//                    mapGroup.getChildren().remove(truckView);
+//                    MapView.getTruckButton().setVisible(true);
+//                    MapView.getTruckView().setVisible(true);
+//                    map.setBudget(map.getBudget()+map.getTruck().getWallet());
+//                    this.stop();
+//                }
+//            }
+//        };
+//        timer.start();
     }
 
     private void setImageOfTruck(Group mapGroup, Map map) throws FileNotFoundException {

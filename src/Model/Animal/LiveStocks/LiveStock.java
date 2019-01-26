@@ -485,6 +485,8 @@ public class LiveStock extends Animal {
 
     public void liveStockMoving(Scene scene, Group mapGroup, boolean isEntered, double farmTime) throws FileNotFoundException {
         Duration duration;
+        if (liveStockView == null)
+            liveStockView = new ImageView();
         liveStockView.relocate(250 + (int)getX() * 12, 250 + (int)getY() * 7);
         if (isEntered) {
             duration = Duration.millis(10);

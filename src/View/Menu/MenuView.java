@@ -92,9 +92,9 @@ public class MenuView {
         mainMenu.getChildren().add(items);
 
         Image image = new Image(new FileInputStream(
-                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\farmFrenzy_Logo.png"));
+                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Logo.png"));
         ImageView imageView = new ImageView(image);
-        imageView.relocate(180, 150);
+        imageView.relocate(180, 130);
         imageView.setFitWidth(441);
         imageView.setFitHeight(100);
         mainMenu.getChildren().add(imageView);
@@ -475,7 +475,7 @@ public class MenuView {
         Scene hScene = new Scene(hGroup, 1000, 750);
 
         MapView mapView = new MapView(controller,stage ,controller.getMap().getWareHouse(),mapScene,  hScene,
-                controller.getMap(),map);
+                controller.getMap(), choseMap, menu);
 
         HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
                 hScene, hGroup, map);
