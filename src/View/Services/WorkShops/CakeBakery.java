@@ -21,6 +21,31 @@ import javafx.scene.input.MouseEvent;
 public class CakeBakery {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
+
+    private static Image cakeBckeryImageL1;
+    private static Image cakeBckeryImageL2;
+    private static Image cakeBckeryImageL3;
+    private static Image cakeBckeryImageL4;
+    private static Image helpBoxImage1;
+    private static Image helpBoxImage2;
+    private static Image helpBoxImage13;
+    private static Image helpBoxImage24;
+
+    static {
+        try {
+            helpBoxImage1 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox1.png"));
+            helpBoxImage2 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox2.png"));
+            helpBoxImage13 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox13.png"));
+            helpBoxImage24 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox24.png"));
+            cakeBckeryImageL1 = new Image(new FileInputStream(serviceFiles + "cakeBakery\\01.png"));
+            cakeBckeryImageL2 = new Image(new FileInputStream(serviceFiles + "cakeBakery\\02.png"));
+            cakeBckeryImageL3 = new Image(new FileInputStream(serviceFiles + "cakeBakery\\03.png"));
+            cakeBckeryImageL4 = new Image(new FileInputStream(serviceFiles + "cakeBakery\\04.png"));
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+    }
+
     private transient static ImageView cakeBakeryView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
@@ -33,21 +58,27 @@ public class CakeBakery {
         if (previousLevel != level) {
             if (!mapGroup.getChildren().contains(cakeBakeryView))
                 mapGroup.getChildren().add(cakeBakeryView);
-            cakeBakeryView.setImage(new Image(new FileInputStream(serviceFiles + "cakeBakery\\0"
-                    + level + ".png")));
 
-            if (level == 1)
-                cakeAnimation = new  SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
+            if (!(cakeBakeryView.getImage() == cakeBckeryImageL1) && level == 1) {
+                cakeBakeryView.setImage(cakeBckeryImageL1);
+                cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
                         0, 0, 184, 172);
-            if (level == 2)
+            }
+            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL2) && level == 2){
+                cakeBakeryView.setImage(cakeBckeryImageL2);
                 cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
                         0, 0,158, 148);
-            if (level == 3)
+            }
+            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL3) && level == 3){
+                cakeBakeryView.setImage(cakeBckeryImageL3);
                 cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
                         170, 168);
-            if (level == 4)
+            }
+            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL4) && level == 4){
+                cakeBakeryView.setImage(cakeBckeryImageL4);
                 cakeAnimation =  new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
                         176, 170);
+            }
             previousLevel = level;
             cakeAnimation.setCycleCount(1);
             cakeAnimation.play();
@@ -83,8 +114,7 @@ public class CakeBakery {
     }
 
     public static void cakeBakeryInfo(Group group, Map map) throws FileNotFoundException {
-        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
-                "\\farmFrenzySaveFiles\\helpBox\\helpBox13.png")));
+        ImageView info = new ImageView(helpBoxImage13);
         WorkShop cakeBakery = map.getWorkshops().get(2);
         info.setScaleY(0.7);
         info.setScaleX(0.7);

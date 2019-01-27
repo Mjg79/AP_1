@@ -49,6 +49,24 @@ public class Cat extends Animal {
     private transient ImageView catView = new ImageView();
     private transient SpriteAnimation catAnimation;
     private static final String CAT = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Animals\\cat\\";
+    private static Image catImageNorth;
+    private static Image catImageNorthWest;
+    private static Image catImageWest;
+    private static Image catImageSouthWest;
+    private static Image catImageSouth;
+
+    static {
+        try {
+            catImageNorth = new Image(new FileInputStream(CAT + "north.png"));
+            catImageNorthWest = new Image(new FileInputStream(CAT + "northWest.png"));
+            catImageWest = new Image(new FileInputStream(CAT + "west.png"));
+            catImageSouthWest = new Image(new FileInputStream(CAT + "southWest.png"));
+            catImageSouth = new Image(new FileInputStream(CAT + "south.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Direction previousDir = Direction.northEast;
 
 
@@ -87,7 +105,7 @@ public class Cat extends Animal {
 
     private void catNorthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northEast)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "northWest.png")));
+            catView.setImage(catImageNorthWest);
             catView.setScaleX(-1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 72, 80);
@@ -99,7 +117,7 @@ public class Cat extends Animal {
 
     private void catSouthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southEast)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "southWest.png")));
+            catView.setImage(catImageSouthWest);
             catView.setScaleX(-1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 72, 84);
@@ -110,7 +128,7 @@ public class Cat extends Animal {
 
     private void catNorthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northWest)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "northWest.png")));
+            catView.setImage(catImageNorthWest);
             catView.setScaleX(1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 72, 80);
@@ -122,7 +140,7 @@ public class Cat extends Animal {
 
     private void catSouthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southWest)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "southWest.png")));
+            catView.setImage(catImageSouthWest);
             catView.setScaleX(1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 72, 84);
@@ -135,7 +153,7 @@ public class Cat extends Animal {
 
     private void catNorthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.north)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "north.png")));
+            catView.setImage(catImageNorth);
             catView.setScaleX(1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 48, 84);
@@ -146,7 +164,7 @@ public class Cat extends Animal {
 
     private void catSouthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.south)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "south.png")));
+            catView.setImage(catImageSouth);
             catView.setScaleX(1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     6, 0, 0, 50, 91);
@@ -157,7 +175,7 @@ public class Cat extends Animal {
 
     private void catEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.east)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "west.png")));
+            catView.setImage(catImageWest);
             catView.setScaleX(-1);
             catAnimation = new SpriteAnimation(catView, duration, 24,
                     4, 0, 0, 88, 68);
@@ -168,7 +186,7 @@ public class Cat extends Animal {
 
     private void catWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.west)) {
-            catView.setImage(new Image(new FileInputStream(CAT + "west.png")));
+            catView.setImage(catImageWest);
             catView.setScaleX(1);
             catAnimation = new SpriteAnimation(catView, duration, 24, 4,
                     0, 0, 88, 68);

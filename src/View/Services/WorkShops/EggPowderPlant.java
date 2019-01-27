@@ -19,6 +19,29 @@ import java.io.FileNotFoundException;
 public class EggPowderPlant {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
+    private static Image eggPowderPlantImageL1;
+    private static Image eggPowderPlantImageL2;
+    private static Image eggPowderPlantImageL3;
+    private static Image eggPowderPlantImageL4;
+    private static Image helpBoxImage1;
+    private static Image helpBoxImage2;
+    private static Image helpBoxImage13;
+    private static Image helpBoxImage24;
+
+    static {
+        try {
+            helpBoxImage1 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox1.png"));
+            helpBoxImage2 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox2.png"));
+            helpBoxImage13 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox13.png"));
+            helpBoxImage24 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox24.png"));
+            eggPowderPlantImageL1 = new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\01.png"));
+            eggPowderPlantImageL2 = new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\02.png"));
+            eggPowderPlantImageL3 = new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\03.png"));
+            eggPowderPlantImageL4 = new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\04.png"));
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+    }
     private static ImageView eggPlantView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
@@ -31,20 +54,26 @@ public class EggPowderPlant {
         if (previousLevel != level) {
             if (!mapGroup.getChildren().contains(eggPlantView))
                 mapGroup.getChildren().add(eggPlantView);
-            eggPlantView.setImage(new Image(new FileInputStream(serviceFiles + "eggPowderPlant\\0"
-                        + level + ".png")));
-            if (level == 1)
+            if (!(eggPlantView.getImage() == eggPowderPlantImageL1) && level == 1){
+                eggPlantView.setImage(eggPowderPlantImageL1);
                 eggAnimation = new  SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
                         0, 0, 128, 114);
-            if (level == 2)
+            }
+            if (!(eggPlantView.getImage() == eggPowderPlantImageL2) && level == 2){
+                eggPlantView.setImage(eggPowderPlantImageL2);
                 eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
                         0, 0,144, 132);
-            if (level == 3)
+            }
+            if (!(eggPlantView.getImage() == eggPowderPlantImageL3) && level == 3){
+                eggPlantView.setImage(eggPowderPlantImageL3);
                 eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
                         164, 150);
-            if (level == 4)
-               eggAnimation =  new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
+            }
+            if (!(eggPlantView.getImage() == eggPowderPlantImageL4) && level == 4){
+                eggPlantView.setImage(eggPowderPlantImageL4);
+                eggAnimation =  new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
                         186, 158);
+            }
             previousLevel = level;
             eggAnimation.setCycleCount(1);
             eggAnimation.play();
@@ -81,8 +110,7 @@ public class EggPowderPlant {
     }
 
     public static void eggPlantInfo(Group group, Map map) throws FileNotFoundException {
-        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
-                "\\farmFrenzySaveFiles\\helpBox\\helpBox13.png")));
+        ImageView info = new ImageView(helpBoxImage13);
         WorkShop eggPlant = map.getWorkshops().get(0);
         info.setScaleY(0.7);
         info.setScaleX(0.7);

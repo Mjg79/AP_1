@@ -19,6 +19,29 @@ import java.io.FileNotFoundException;
 public class CookieBakery {
     private static final String serviceFiles =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
+    private static Image cookieBakeryImageL1;
+    private static Image cookieBakeryImageL2;
+    private static Image cookieBakeryImageL3;
+    private static Image cookieBakeryImageL4;
+    private static Image helpBoxImage1;
+    private static Image helpBoxImage2;
+    private static Image helpBoxImage13;
+    private static Image helpBoxImage24;
+
+    static {
+        try {
+            helpBoxImage1 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox1.png"));
+            helpBoxImage2 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox2.png"));
+            helpBoxImage13 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox13.png"));
+            helpBoxImage24 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox24.png"));
+            cookieBakeryImageL1 = new Image(new FileInputStream(serviceFiles + "cookieBakery\\01.png"));
+            cookieBakeryImageL2 = new Image(new FileInputStream(serviceFiles + "cookieBakery\\02.png"));
+            cookieBakeryImageL3 = new Image(new FileInputStream(serviceFiles + "cookieBakery\\03.png"));
+            cookieBakeryImageL4 = new Image(new FileInputStream(serviceFiles + "cookieBakery\\04.png"));
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+    }
     private transient static ImageView cookieBakeryView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
@@ -31,20 +54,26 @@ public class CookieBakery {
         if (previousLevel != level) {
             if (!mapGroup.getChildren().contains(cookieBakeryView))
                 mapGroup.getChildren().add(cookieBakeryView);
-            cookieBakeryView.setImage(new Image(new FileInputStream(serviceFiles + "cookieBakery\\0"
-                    + level + ".png")));
-            if (level == 1)
+            if (!(cookieBakeryView.getImage() == cookieBakeryImageL1) && level == 1){
+                cookieBakeryView.setImage(cookieBakeryImageL1);
                 cookieAnimation = new  SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
                         0, 0, 134, 142);
-            if (level == 2)
+            }
+            if (!(cookieBakeryView.getImage() == cookieBakeryImageL2) && level == 2){
+                cookieBakeryView.setImage(cookieBakeryImageL2);
                 cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
                         0, 0,158, 150);
-            if (level == 3)
+            }
+            if (!(cookieBakeryView.getImage() == cookieBakeryImageL3) && level == 3){
+                cookieBakeryView.setImage(cookieBakeryImageL3);
                 cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
                         158, 166);
-            if (level == 4)
+            }
+            if (!(cookieBakeryView.getImage() == cookieBakeryImageL4) && level == 4){
+                cookieBakeryView.setImage(cookieBakeryImageL4);
                 cookieAnimation =  new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
                         166, 170);
+            }
             previousLevel = level;
             cookieAnimation.setCycleCount(1);
             cookieAnimation.play();
@@ -79,8 +108,7 @@ public class CookieBakery {
     }
 
     public static void cookieBakeryInfo(Group group, Map map) throws FileNotFoundException {
-        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
-                "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+        ImageView info = new ImageView(helpBoxImage2);
         WorkShop cookieBakery = map.getWorkshops().get(1);
         info.setScaleY(0.7);
         info.setScaleX(0.7);

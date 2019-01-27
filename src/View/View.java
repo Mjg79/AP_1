@@ -10,14 +10,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class View extends Application {
-    private static final String backGround =
-            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
-    private static final String accounts = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\accounts";
-
-    private static final String serviceFiles =
-            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
-    private static final String farmFrenzyScenesDesign =
-            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\";
 
     @Override
     public void start(Stage primaryStage) throws Exception{

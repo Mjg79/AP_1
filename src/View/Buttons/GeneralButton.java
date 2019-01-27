@@ -9,8 +9,6 @@ import javafx.scene.input.MouseEvent;
 
 
 public class GeneralButton {
-     protected static final String animalBuy = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\buttons\\buyAnimal\\";
-
 
      public static void buyAnimalAppereance(Button button, ImageView buttonView) {
          button.setOnMouseEntered(new EventHandler<MouseEvent>() {
