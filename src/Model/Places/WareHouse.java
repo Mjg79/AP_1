@@ -11,7 +11,6 @@ public class WareHouse extends Element {
     private HashMap<String, Integer> liveStocks = new HashMap<>();
 
     {
-        goods.put("egg", 10);
         volume = 80;
         level = 1;
         x = 20;//truly is a constant for specifying the x of wareHouse in map
