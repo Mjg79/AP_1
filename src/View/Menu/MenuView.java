@@ -531,7 +531,6 @@ public class MenuView {
 
                     }
                     try {
-                        mapView.getWarehouseScene().show();
                         mapView.gameMap(map, mapScene, controller.getMap());
                         mapView.setFileName(getCurrentAccount() + "\\" + name + ".json");
                     } catch (FileNotFoundException e) {

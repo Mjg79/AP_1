@@ -3,7 +3,6 @@ package View.Buttons;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
 import Model.Products.Forage.Forage;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class ProductButton {
-    private static final String productFile = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\products\\";
 
     public static Button productButton(Button productButton, Group group, Scene scene, int x, int y,
                                        Map map, double farmTime) throws FileNotFoundException {

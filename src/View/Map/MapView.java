@@ -6,12 +6,16 @@ import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
+import Model.Places.WareHouse;
 import Model.Places.WorkShop;
 import View.Brightness.Brightness;
 import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
+//import View.Buttons.WellButton;
+//import View.Buttons.WorkShop.EggPowderPlantButton;
+import View.MissionNeed.*;
 import View.MissionNeed.MissionNeed;
 import View.MissionNeed.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
@@ -35,7 +39,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
-
 
 public class MapView {
     private  Controller controller;
@@ -65,8 +68,6 @@ public class MapView {
         this.helicopterScene = helicopterScene;
     }
 
-    private static final String backGround =
-            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
     private static final String accounts = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\accounts";
 
     private static final String serviceFiles =
@@ -76,6 +77,75 @@ public class MapView {
     private static final String animalBuy =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\buttons\\buyAnimal\\";
     private static final String upgrade = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\upgrade\\";
+    private static Image backGroundImage;
+    private static Image chickenAfterImage;
+    private static Image chickenBeforeImage;
+    private static Image ostrichAfterImage;
+    private static Image ostrichBeforeImage;
+    private static Image buffaloAfterImage;
+    private static Image buffaloBeforeImage;
+    private static Image catAfterImage;
+    private static Image catBeforeImage;
+    private static Image dogAfterImage;
+    private static Image dogBeforeImage;
+    private static Image underBarImage;
+    private static Image upperBarImage;
+    private static Image truckImageL1;
+    private static Image truckImageL2;
+    private static Image truckImageL3;
+    private static Image truckImageL4;
+    private static Image helicopterImageL1;
+    private static Image helicopterImageL2;
+    private static Image helicopterImageL3;
+    private static Image helicopterImageL4;
+    private static Image helpBoxImage1;
+    private static Image helpBoxImage2;
+    private static Image helpBoxImage13;
+    private static Image helpBoxImage24;
+    private static Image purchaseButtonBlueImage;
+    private static Image purchaseButtonGrayImage;
+    private static Image depotImageL1;
+    private static Image depotImageL2;
+    private static Image depotImageL3;
+    private static Image depotImageL4;
+
+    static {
+        try {
+            backGroundImage = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
+            chickenAfterImage = new Image(new FileInputStream(animalBuy + "chickenAfter.png"));
+            chickenBeforeImage = new Image(new FileInputStream(animalBuy + "chickenBefore.png"));
+            ostrichAfterImage = new Image(new FileInputStream(animalBuy + "ostrichAfter.png"));
+            ostrichBeforeImage = new Image(new FileInputStream(animalBuy + "ostrichBefore.png"));
+            buffaloAfterImage = new Image(new FileInputStream(animalBuy + "buffaloAfter.png"));
+            buffaloBeforeImage = new Image(new FileInputStream(animalBuy + "buffaloBefore.png"));
+            catAfterImage = new Image(new FileInputStream(animalBuy + "catAfter.png"));
+            catBeforeImage = new Image(new FileInputStream(animalBuy + "catBefore.png"));
+            dogAfterImage = new Image(new FileInputStream(animalBuy + "dogAfter.png"));
+            dogBeforeImage = new Image(new FileInputStream(animalBuy + "dogBefore.png"));
+            underBarImage = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
+            upperBarImage = new Image(new FileInputStream(farmFrenzyScenesDesign + "upperbar.png"));
+            truckImageL1 = new Image(new FileInputStream(serviceFiles + "Truck\\01.png"));
+            truckImageL2 = new Image(new FileInputStream(serviceFiles + "Truck\\02.png"));
+            truckImageL3 = new Image(new FileInputStream(serviceFiles + "Truck\\03.png"));
+            truckImageL4 = new Image(new FileInputStream(serviceFiles + "Truck\\04.png"));
+            helicopterImageL1 = new Image(new FileInputStream(serviceFiles + "Helicopter\\01.png"));
+            helicopterImageL2 = new Image(new FileInputStream(serviceFiles + "Helicopter\\02.png"));
+            helicopterImageL3 = new Image(new FileInputStream(serviceFiles + "Helicopter\\03.png"));
+            helicopterImageL4 = new Image(new FileInputStream(serviceFiles + "Helicopter\\04.png"));
+            helpBoxImage1 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox1.png"));
+            helpBoxImage2 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox2.png"));
+            helpBoxImage13 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox13.png"));
+            helpBoxImage24 = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\helpBox\\helpBox24.png"));
+            purchaseButtonBlueImage = new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png"));
+            purchaseButtonGrayImage = new Image(new FileInputStream(upgrade + "purchaseButtonGray.png"));
+            depotImageL1 = new Image(new FileInputStream(serviceFiles + "Depot\\01.png"));
+            depotImageL2 = new Image(new FileInputStream(serviceFiles + "Depot\\02.png"));
+            depotImageL3 = new Image(new FileInputStream(serviceFiles + "Depot\\03.png"));
+            depotImageL4 = new Image(new FileInputStream(serviceFiles + "Depot\\04.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     private ImageView chickenView = new ImageView();
     private ImageView ostrichView = new ImageView();
@@ -110,20 +180,10 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 100 && isPlaying) {
-                    try {
-                        chickenView.setImage(new Image(new FileInputStream(animalBuy + "chickenAfter.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        chickenView.setImage(new Image(new FileInputStream(animalBuy + "chickenBefore.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (!(chickenView.getImage() == chickenAfterImage) && controller.getMap().getBudget() >= 100 && isPlaying)
+                    chickenView.setImage(chickenAfterImage);
+                else if(!(chickenView.getImage() == chickenBeforeImage) && !(controller.getMap().getBudget() >= 100 && isPlaying))
+                    chickenView.setImage(chickenBeforeImage);
             }
         };
         animationTimer.start();
@@ -135,20 +195,10 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 1000 && isPlaying) {
-                    try {
-                        ostrichView.setImage(new Image(new FileInputStream(animalBuy + "ostrichAfter.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        ostrichView.setImage(new Image(new FileInputStream(animalBuy + "ostrichBefore.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (!(ostrichView.getImage() == ostrichAfterImage) && controller.getMap().getBudget() >= 1000 && isPlaying)
+                    ostrichView.setImage(ostrichAfterImage);
+                else if(!(ostrichView.getImage() == ostrichBeforeImage) && !(controller.getMap().getBudget() >= 1000 && isPlaying))
+                    ostrichView.setImage(ostrichBeforeImage);
             }
         };
         animationTimer.start();
@@ -160,20 +210,10 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 10000 && isPlaying) {
-                    try {
-                        buffaloView.setImage(new Image(new FileInputStream(animalBuy + "buffaloAfter.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        buffaloView.setImage(new Image(new FileInputStream(animalBuy + "buffaloBefore.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (!(buffaloView.getImage() == buffaloAfterImage) && controller.getMap().getBudget() >= 10000 && isPlaying)
+                    buffaloView.setImage(buffaloAfterImage);
+                else if(!(buffaloView.getImage() == buffaloBeforeImage) && !(controller.getMap().getBudget() >= 10000 && isPlaying))
+                    buffaloView.setImage(buffaloBeforeImage);
             }
         };
         animationTimer.start();
@@ -185,20 +225,10 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 2500 && isPlaying) {
-                    try {
-                        catView.setImage(new Image(new FileInputStream(animalBuy + "catAfter.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        catView.setImage(new Image(new FileInputStream(animalBuy + "catBefore.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (!(catView.getImage() == catAfterImage) && controller.getMap().getBudget() >= 2500 && isPlaying)
+                        catView.setImage(catAfterImage);
+                else if(!(catView.getImage() == catBeforeImage) && !(controller.getMap().getBudget() >= 2500 && isPlaying))
+                        catView.setImage(catBeforeImage);
             }
         };
         animationTimer.start();
@@ -210,20 +240,10 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (controller.getMap().getBudget() >= 2600 && isPlaying) {
-                    try {
-                        dogView.setImage(new Image(new FileInputStream(animalBuy + "dogAfter.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        dogView.setImage(new Image(new FileInputStream(animalBuy + "dogBefore.png")));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (!(dogView.getImage() == dogAfterImage) && controller.getMap().getBudget() >= 2600 && isPlaying)
+                    dogView.setImage(dogAfterImage);
+                else if(!(dogView.getImage() == dogBeforeImage) && !(controller.getMap().getBudget() >= 2600 && isPlaying))
+                    dogView.setImage(dogBeforeImage);
             }
         };
         animationTimer.start();
@@ -237,9 +257,8 @@ public class MapView {
             mapGroup.getChildren().add(backGroundPane);
             mapGroup.getChildren().add(grassButtonPane);
         }
-        Image backGround1 = new Image(new FileInputStream(
-                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\mapBackGround.png"));
-        ImageView mapViewBackGround = new ImageView(backGround1);
+
+        ImageView mapViewBackGround = new ImageView(backGroundImage);
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
@@ -263,14 +282,12 @@ public class MapView {
         if (!mapGroup.getChildren().contains(hButton))
          mapGroup.getChildren().add(hButton);
 
-        Image underBar = new Image(new FileInputStream(farmFrenzyScenesDesign + "underbar.png"));
-        ImageView underBarView = new ImageView(underBar);
+        ImageView underBarView = new ImageView(underBarImage);
         underBarView.relocate(0, 580);
         if (!mapGroup.getChildren().contains(underBarView))
             mapGroup.getChildren().add(underBarView);
 
-        Image moneyAndTransportation = new Image(new FileInputStream(farmFrenzyScenesDesign + "upperbar.png"));
-        ImageView moneyAndTransportationView = new ImageView(moneyAndTransportation);
+        ImageView moneyAndTransportationView = new ImageView(upperBarImage);
         moneyAndTransportationView.relocate(620, 0);
         if (!mapGroup.getChildren().contains(moneyAndTransportationView))
             mapGroup.getChildren().add(moneyAndTransportationView);
@@ -458,14 +475,26 @@ public class MapView {
     }
 
     private void showTruck(Map map,Scene mapScene,Group group) throws FileNotFoundException {
-        truckView.setImage(new Image(new FileInputStream(serviceFiles + "Truck\\0"+
-                controller.getMap().getTruck().getLevel()+ ".png")));
+        if(!(truckView.getImage() == truckImageL1) && controller.getMap().getTruck().getLevel() == 1)
+            truckView.setImage(truckImageL1);
+        else if(!(truckView.getImage() == truckImageL2) && controller.getMap().getTruck().getLevel() == 2)
+            truckView.setImage(truckImageL2);
+        else if(!(truckView.getImage() == truckImageL3) && controller.getMap().getTruck().getLevel() == 3)
+            truckView.setImage(truckImageL3);
+        else if(!(truckView.getImage() == truckImageL4) && controller.getMap().getTruck().getLevel() == 4)
+            truckView.setImage(truckImageL4);
         truckView.relocate(220, 589);
     }
 
     private void showHelicopter(Map map, Group group) throws FileNotFoundException {
-        helicopterView.setImage(new Image(new FileInputStream(serviceFiles + "Helicopter\\0" +
-                controller.getMap().getHelicopter().getLevel()+  ".png")));
+        if(!(helicopterView.getImage() == helicopterImageL1) && controller.getMap().getTruck().getLevel() == 1)
+            helicopterView.setImage(helicopterImageL1);
+        else if(!(helicopterView.getImage() == helicopterImageL2) && controller.getMap().getTruck().getLevel() == 2)
+            helicopterView.setImage(helicopterImageL2);
+        else if(!(helicopterView.getImage() == helicopterImageL3) && controller.getMap().getTruck().getLevel() == 3)
+            helicopterView.setImage(helicopterImageL3);
+        else if(!(helicopterView.getImage() == helicopterImageL4) && controller.getMap().getTruck().getLevel() == 4)
+            helicopterView.setImage(helicopterImageL4);
         if (!map.getHelicopter().isInWareHouse()) {
             hButton.setVisible(false);
             helicopterView.setVisible(false);
@@ -476,8 +505,7 @@ public class MapView {
     }
 
     private void showHelicopterInfo(Map map, Group group) throws FileNotFoundException {
-            ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
-                    "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+            ImageView info = new ImageView(helpBoxImage2);
             WorkShop cakeBakery = map.getWorkshops().get(2);
             info.setScaleY(0.7);
             info.setScaleX(0.7);
@@ -558,20 +586,16 @@ public class MapView {
                     e.printStackTrace();
                 }
                 text.setText(Integer.toString((int)map.getWell().getMoneyForUpgrading()));
-                try {
-                    if (map.getWell().getLevel() == 3) {
-                        upgradeView.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() < map.getBudget()) {
-                        upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        upgradeView.setOpacity(1);
-                    }else if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() >= map.getBudget()){
-                        upgradeView.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        upgradeView.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWell().getLevel() == 3) {
+                    upgradeView.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() < map.getBudget()) {
+                    upgradeView.setImage(purchaseButtonBlueImage);
+                    upgradeView.setOpacity(1);
+                }else if (map.getWell().getLevel() < 3 && map.getWell().getMoneyForUpgrading() >= map.getBudget()){
+                    upgradeView.setImage(purchaseButtonGrayImage);
+                    upgradeView.setOpacity(0.9);
                 }
             }
         };
@@ -605,22 +629,18 @@ public class MapView {
                     e.printStackTrace();
                 }
                 text.setText(Integer.toString((int)map.getWorkshops().get(0).getMoneyForUpgrading()));
-                try {
-                    if (map.getWorkshops().get(0).getLevel() == 4) {
-                        eggPlant.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getWorkshops().get(0).getLevel() < 4
-                            && map.getWorkshops().get(0).getMoneyForUpgrading() <= map.getBudget()) {
-                        eggPlant.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        eggPlant.setOpacity(1);
-                    }else if (map.getWorkshops().get(0).getLevel() < 4
-                            && map.getWorkshops().get(0).getMoneyForUpgrading() > map.getBudget()){
-                        eggPlant.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        eggPlant.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWorkshops().get(0).getLevel() == 4) {
+                    eggPlant.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getWorkshops().get(0).getLevel() < 4
+                        && map.getWorkshops().get(0).getMoneyForUpgrading() <= map.getBudget()) {
+                    eggPlant.setImage(purchaseButtonBlueImage);
+                    eggPlant.setOpacity(1);
+                }else if (map.getWorkshops().get(0).getLevel() < 4
+                        && map.getWorkshops().get(0).getMoneyForUpgrading() > map.getBudget()){
+                    eggPlant.setImage(purchaseButtonGrayImage);
+                    eggPlant.setOpacity(0.9);
                 }
             }
         };
@@ -654,22 +674,18 @@ public class MapView {
                     e.printStackTrace();
                 }
                 text.setText(Integer.toString((int)map.getWorkshops().get(1).getMoneyForUpgrading()));
-                try {
-                    if (map.getWorkshops().get(1).getLevel() == 4) {
-                        cookieBakery.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getWorkshops().get(1).getLevel() < 4
-                            && map.getWorkshops().get(1).getMoneyForUpgrading() <= map.getBudget()) {
-                        cookieBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        cookieBakery.setOpacity(1);
-                    }else if (map.getWorkshops().get(1).getLevel() < 4
-                            && map.getWorkshops().get(1).getMoneyForUpgrading() > map.getBudget()){
-                        cookieBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        cookieBakery.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWorkshops().get(1).getLevel() == 4) {
+                    cookieBakery.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getWorkshops().get(1).getLevel() < 4
+                        && map.getWorkshops().get(1).getMoneyForUpgrading() <= map.getBudget()) {
+                    cookieBakery.setImage(purchaseButtonBlueImage);
+                    cookieBakery.setOpacity(1);
+                }else if (map.getWorkshops().get(1).getLevel() < 4
+                        && map.getWorkshops().get(1).getMoneyForUpgrading() > map.getBudget()){
+                    cookieBakery.setImage(purchaseButtonGrayImage);
+                    cookieBakery.setOpacity(0.9);
                 }
             }
         };
@@ -703,22 +719,18 @@ public class MapView {
                     e.printStackTrace();
                 }
                 text.setText(Integer.toString((int)map.getWorkshops().get(2).getMoneyForUpgrading()));
-                try {
-                    if (map.getWorkshops().get(2).getLevel() == 4) {
-                        cakeBakery.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getWorkshops().get(2).getLevel() < 4
-                            && map.getWorkshops().get(2).getMoneyForUpgrading() <= map.getBudget()) {
-                        cakeBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        cakeBakery.setOpacity(1);
-                    }else if (map.getWorkshops().get(2).getLevel() < 4
-                            && map.getWorkshops().get(2).getMoneyForUpgrading() > map.getBudget()){
-                        cakeBakery.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        cakeBakery.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWorkshops().get(2).getLevel() == 4) {
+                    cakeBakery.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getWorkshops().get(2).getLevel() < 4
+                        && map.getWorkshops().get(2).getMoneyForUpgrading() <= map.getBudget()) {
+                    cakeBakery.setImage(purchaseButtonBlueImage);
+                    cakeBakery.setOpacity(1);
+                }else if (map.getWorkshops().get(2).getLevel() < 4
+                        && map.getWorkshops().get(2).getMoneyForUpgrading() > map.getBudget()){
+                    cakeBakery.setImage(purchaseButtonGrayImage);
+                    cakeBakery.setOpacity(0.9);
                 }
             }
         };
@@ -765,22 +777,18 @@ public class MapView {
                     this.stop();
                 }
                 text.setText(Integer.toString((int)map.getHelicopter().getMoneyForUpgrading()));
-                try {
-                    if (map.getHelicopter().getLevel() == 4) {
-                        upgradeHelicopter.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() <
-                            map.getBudget()) {
-                        upgradeHelicopter.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        upgradeHelicopter.setOpacity(1);
-                    }else if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() >=
-                            map.getBudget()){
-                        upgradeHelicopter.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        upgradeHelicopter.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getHelicopter().getLevel() == 4) {
+                    upgradeHelicopter.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() <
+                        map.getBudget()) {
+                    upgradeHelicopter.setImage(purchaseButtonBlueImage);
+                    upgradeHelicopter.setOpacity(1);
+                }else if (map.getHelicopter().getLevel() < 4 && map.getHelicopter().getMoneyForUpgrading() >=
+                        map.getBudget()){
+                    upgradeHelicopter.setImage(purchaseButtonGrayImage);
+                    upgradeHelicopter.setOpacity(0.9);
                 }
             }
         };
@@ -819,29 +827,27 @@ public class MapView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                try {
-                    wareHouseView.setImage(new Image(new FileInputStream(serviceFiles + "Depot\\0"
-                            + map.getWareHouse().getLevel() + ".png")));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                if(!(wareHouseView.getImage() == depotImageL1) && map.getWareHouse().getLevel() == 1)
+                    wareHouseView.setImage(depotImageL1);
+                else if(!(wareHouseView.getImage() == depotImageL2) && map.getWareHouse().getLevel() == 2)
+                    wareHouseView.setImage(depotImageL2);
+                else if(!(wareHouseView.getImage() == depotImageL3) && map.getWareHouse().getLevel() == 3)
+                    wareHouseView.setImage(depotImageL3);
+                else if(!(wareHouseView.getImage() == depotImageL4) && map.getWareHouse().getLevel() == 4)
+                    wareHouseView.setImage(depotImageL4);
                 text.setText(Integer.toString((int)map.getWareHouse().getMoneyForUpgrading()));
-                try {
-                    if (map.getWareHouse().getLevel() == 4) {
-                        upgradeWareHouse.setVisible(false);
-                        text.setVisible(false);
-                    }
-                    if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() <=
-                            map.getBudget()) {
-                        upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonBlue.png")));
-                        upgradeWareHouse.setOpacity(1);
-                    }else if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() >
-                            map.getBudget()){
-                        upgradeWareHouse.setImage(new Image(new FileInputStream(upgrade + "purchaseButtonGray.png")));
-                        upgradeWareHouse.setOpacity(0.9);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (map.getWareHouse().getLevel() == 4) {
+                    upgradeWareHouse.setVisible(false);
+                    text.setVisible(false);
+                }
+                if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() <=
+                        map.getBudget()) {
+                    upgradeWareHouse.setImage(purchaseButtonBlueImage);
+                    upgradeWareHouse.setOpacity(1);
+                }else if (map.getWareHouse().getLevel() < 4 && map.getWareHouse().getMoneyForUpgrading() >
+                        map.getBudget()){
+                    upgradeWareHouse.setImage(purchaseButtonGrayImage);
+                    upgradeWareHouse.setOpacity(0.9);
                 }
             }
         };
@@ -861,8 +867,7 @@ public class MapView {
     }
 
     private void wareHouseInfo(Group group, Map map) throws FileNotFoundException {
-        ImageView info = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop" +
-                "\\farmFrenzySaveFiles\\helpBox\\helpBox2.png")));
+        ImageView info = new ImageView(helpBoxImage2);
         info.setScaleY(0.5);
         info.setScaleX(0.5);
         info.setOpacity(0);

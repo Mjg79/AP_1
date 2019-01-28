@@ -27,7 +27,43 @@ import java.util.HashMap;
 public class WarehouseScene {
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\" ;
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
-    private Label chickenText,cowText,ostrichText,wallet;
+    private static Image wareHousePlaceImage;
+    private static Image okButtonGrayImage;
+    private static Image okButtonGreenImage;
+    private static Image cancelButtonImage;
+    private static Image eggImage;
+    private static Image featherImage;
+    private static Image hornImage;
+    private static Image oneAddBlueImage;
+    private static Image oneAddGrayImage;
+    private static Image chickenImage;
+    private static Image ostrichImage;
+    private static Image buffaloImage;
+    private static Image coinImage;
+
+    static {
+        try {
+            wareHousePlaceImage = new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\wareHousePlace.png"));
+            okButtonGrayImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGray.png"));
+            okButtonGreenImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGreen.png"));
+            cancelButtonImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "cancelButton.png"));
+            eggImage = new Image(new FileInputStream(PRODUCTFILE+"egg.png"));
+            featherImage = new Image(new FileInputStream(PRODUCTFILE+"feather.png"));
+            hornImage = new Image(new FileInputStream(PRODUCTFILE+"horn.png"));
+            oneAddBlueImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"oneAddBlue.png"));
+            oneAddGrayImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png"));
+            chickenImage = new Image(new FileInputStream(PRODUCTFILE+"chicken.png"));
+            ostrichImage = new Image(new FileInputStream(PRODUCTFILE+"ostrich.png"));
+            buffaloImage = new Image(new FileInputStream(PRODUCTFILE+"buffalo.png"));
+            coinImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"coin.png"));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Label chickenText,buffaloText,ostrichText,wallet;
+    private WareHouse wareHouse;
     private Stage primaryStage;
     private Truck truck;
     private Map map;
@@ -49,30 +85,19 @@ public class WarehouseScene {
         warehouseRoot.getChildren().add(wallet);
         this.map = map;
         truck = map.getTruck();
-        Image backGround = null;
-        try {
-            backGround = new Image(new FileInputStream(
-                    "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\wareHousePlace.png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ImageView mapViewBackGround = new ImageView(backGround);
+        ImageView mapViewBackGround = new ImageView(wareHousePlaceImage);
         mapViewBackGround.setFitWidth(1000);
         mapViewBackGround.setFitHeight(750);
         warehouseRoot.getChildren().add(mapViewBackGround);
-    }
-
-    public void show() {
-        System.out.println("dahaneto service");
     }
 
     private void cancelOrOk() throws FileNotFoundException {
         warehouseRoot.getChildren().remove(wallet);
         wallet.setText(""+truck.getWallet());
         warehouseRoot.getChildren().add(wallet);
-        ImageView grayOk = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGray.png")));
+        ImageView grayOk = new ImageView(okButtonGrayImage);
         grayOk.relocate(340,670);
-        ImageView blueOk = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"okButtonGreen.png")));
+        ImageView blueOk = new ImageView(okButtonGreenImage);
         blueOk.relocate(340,670);
         if (truck.getWallet() == 0){
             warehouseRoot.getChildren().add(grayOk);
@@ -96,7 +121,7 @@ public class WarehouseScene {
             });
             warehouseRoot.getChildren().add(blueOk);
         }
-        ImageView cancel = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "cancelButton.png")));
+        ImageView cancel = new ImageView(cancelButtonImage);
         cancel.relocate(500,670);
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -139,12 +164,18 @@ public class WarehouseScene {
         System.out.println(controller.getMap().getWareHouse().getGoods().toString());
         for (String good : controller.getMap().getWareHouse().getGoods().keySet()) {
             System.out.println(good);
-            ImageView productImage = new ImageView(new Image(new FileInputStream(PRODUCTFILE + good + ".png")));
+            ImageView productImage = null;
+            if(!(productImage.getImage() == eggImage) && good.equals("egg"))
+                productImage = new ImageView(eggImage);
+            else if(!(productImage.getImage() == featherImage) && good.equals("feather"))
+                productImage = new ImageView(featherImage);
+            else if(!(productImage.getImage() == hornImage) && good.equals("horn"))
+                productImage = new ImageView(hornImage);
             productImage.relocate(40, 125 + temp * 40);
             Label productPrice = new Label("" + getPriceOfProduct(good));
             productPrice.relocate(150, 130 + temp * 40);
             productPrice.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'A Spirit Of Doha Black'");
-            ImageView add = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddBlue.png")));
+            ImageView add = new ImageView(oneAddBlueImage);
             add.relocate(240, 130 + temp * 40);
             Button addGood = new Button();
             addGood.relocate(260, 133 + temp * 40);
@@ -180,19 +211,18 @@ public class WarehouseScene {
         }
     }
 
-
     private void addLivestocksToView(Map map) throws FileNotFoundException {
         System.out.println(map.getLiveStocks().toString());
         int chickenNumber = 0;
-        int cowNumber = 0;
+        int buffaloNumber = 0;
         int ostrichNumber = 0;
         int chickenPrice = 0;
         int ostrichPrice = 0;
-        int cowPrice = 0;
-        ImageView chicken = new ImageView(new Image(new FileInputStream(PRODUCTFILE+"chicken.png")));
+        int buffaloPrice = 0;
+        ImageView chicken = new ImageView(chickenImage);
         chicken.setScaleY(0.7);
-        ImageView cow = new ImageView(new Image(new FileInputStream(PRODUCTFILE+"cow.png")));
-        ImageView ostrich = new ImageView(new Image(new FileInputStream(PRODUCTFILE+"ostrich.png")));
+        ImageView ostrich = new ImageView(ostrichImage);
+        ImageView buffalo = new ImageView(buffaloImage);
         for(LiveStock liveStock:map.getLiveStocks()){
             if (liveStock.getType() == AnimalType.chicken) {
                 chickenPrice = liveStock.getPrice();
@@ -201,13 +231,13 @@ public class WarehouseScene {
                 ostrichPrice = liveStock.getPrice();
                 ostrichNumber++;
             }else {
-                cowNumber++;
-                cowPrice = liveStock.getPrice();
+                buffaloNumber++;
+                buffaloPrice = liveStock.getPrice();
             }
         }
         int animalTypes = 0;
         if (chickenNumber != 0) {
-            ImageView coin = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES+"coin.png")));
+            ImageView coin = new ImageView(coinImage);
             coin.relocate(850,140);
             Label price = new Label(""+chickenPrice);
             price.relocate(835,140);
@@ -230,13 +260,13 @@ public class WarehouseScene {
             warehouseRoot.getChildren().add(ostrich);
             animalTypes++;
         }
-        if (cowNumber != 0) {
-            cowText = new Label("X "+cowNumber);
-            cowText.relocate(725,130+20*animalTypes);
-            cowText.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 20;-fx-font-family: 'Bauhaus 93'");
-            cow.relocate(690, 125 + animalTypes * 20);
-            warehouseRoot.getChildren().add(cowText);
-            warehouseRoot.getChildren().add(cow);
+        if (buffaloNumber != 0) {
+            buffaloText = new Label("X "+buffaloNumber);
+            buffaloText.relocate(725,130+20*animalTypes);
+            buffaloText.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 20;-fx-font-family: 'Bauhaus 93'");
+            buffalo.relocate(690, 125 + animalTypes * 20);
+            warehouseRoot.getChildren().add(buffaloText);
+            warehouseRoot.getChildren().add(buffalo);
         }
 
     }
