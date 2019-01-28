@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class MenuButton {
-    public static Button inGameMenuButton(Group mapGroup, Scene mapScene,MapView mapView, Stage stage, Scene chooseMap,
+    public static Button inGameMenuButton(Group mapGroup, Scene mapScene, MapView mapView, Stage stage, Scene chooseMap,
                                           Scene menu){
         final  Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
         final Image menuButtonGrayImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonGray.png");
@@ -252,6 +252,8 @@ public class MenuButton {
             //TODO:handle restart
         });
 
+
+
         mapButton.setOnAction(event -> {
             Gson serializer = new Gson();
             OutputStreamWriter writer = null;
@@ -264,6 +266,7 @@ public class MenuButton {
             serializer.toJson(mapView.getController().getMap(), Map.class, writer);
             try {
                 writer.flush();
+                mapGroup.getChildren().clear();
             } catch (IOException e) {
                 e.printStackTrace();
             }

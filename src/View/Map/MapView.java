@@ -253,6 +253,7 @@ public class MapView {
 
 
     public void initializeGameMap(Group mapGroup, Scene mapScene, Map maps) throws FileNotFoundException {
+
         if (!mapGroup.getChildren().contains(backGroundPane) && !mapGroup.getChildren().contains(grassButtonPane)) {
             mapGroup.getChildren().add(backGroundPane);
             mapGroup.getChildren().add(grassButtonPane);
@@ -330,6 +331,7 @@ public class MapView {
         this.initializeGameMap(map, mapScene, maps);
         buttons(map, mapScene);
         timeShow(controller.getMap(), map, mapScene);
+
         mapBudget(map);
         upgradeWell(map, maps);
         upgradeHelicopter(map, maps);
