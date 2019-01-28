@@ -4,6 +4,7 @@ import Controller.Controller;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
 import View.Menu.MenuView;
+import View.MultiPlayerScene.MultiPlayer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,17 +24,23 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception{
         MenuView menuView = new MenuView();
         Controller controller = new Controller();
+
         Group mainMenu = new Group();
         Scene menu = new Scene(mainMenu, 800, 620);
 
         Group nameMenu = new Group();
         Scene names = new Scene(nameMenu, 818, 557);
 
+        Group multGroup = new Group();
+        Scene multScene = new Scene(multGroup, 800, 620);
+
+        MultiPlayer multiPlayer = new MultiPlayer(menu, multScene, multGroup, primaryStage);
+
         Group chooseMap = new Group();
         Scene choseMap = new Scene(chooseMap, 818, 557);
         menuView.mapChooseMenu(primaryStage, chooseMap, choseMap, menu, controller);
 
-        menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
+        menuView.mainMenu(multiPlayer, primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
         menuView.nameMenu(primaryStage, menu, nameMenu, names, mainMenu, choseMap);
 
         primaryStage.setScene(menu);

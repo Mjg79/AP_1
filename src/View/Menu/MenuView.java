@@ -5,6 +5,7 @@ import Model.MapAndCell.Map;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
 import View.Map.WarehouseScene;
+import View.MultiPlayerScene.MultiPlayer;
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -47,6 +48,8 @@ public class MenuView {
 
     private String currentAccount = "";
 
+    private MultiPlayer multiPlayers;
+
     private boolean isHaveThisAccount(String string) {
         File file = new File(accounts);
         String[] names = file.list();
@@ -86,7 +89,7 @@ public class MenuView {
     }
 
     private void setItemsMainMenu(Group mainMenu) throws FileNotFoundException {
-        Rectangle items = new Rectangle(234, 253, 320, 218);
+        Rectangle items = new Rectangle(234, 253, 320, 278);
         items.setStyle("-fx-stroke: #47211e; -fx-stroke-width: 5;  -fx-background-radius: 10;" +
                 "  -fx-border-width: 5; -fx-fill: #e5c06f;" +
                 " -fx-border-radius: 5px");
@@ -127,7 +130,7 @@ public class MenuView {
     private void refreshMainMenu(Stage stage, Scene menu, Scene names, Scene choseMap, Group mainMenu, Group nameMenu)
             throws FileNotFoundException {
         mainMenu.getChildren().clear();
-        mainMenu(stage, menu, names, choseMap, mainMenu, nameMenu);
+        mainMenu(multiPlayers, stage, menu, names, choseMap, mainMenu, nameMenu);
     }
 
 
@@ -143,12 +146,14 @@ public class MenuView {
         return name;
     }
 
-    public void mainMenu(Stage primaryStage, Scene menu, Scene names, Scene map, Group mainMenu, Group nameMenu)
+    public void mainMenu(MultiPlayer multiPlayers, Stage primaryStage, Scene menu, Scene names,
+                         Scene map, Group mainMenu, Group nameMenu)
             throws FileNotFoundException {
         this.loadPictureOfBackGround(mainMenu, menu, backGround);
         this.setItemsMainMenu(mainMenu);
         this.setNameSectionInMainMenu(mainMenu);
-
+        this.multiPlayers = multiPlayers;
+        multiPlayers.multiPlayerDesign();
         Button changeName = new Button("Click here to change the current player");
         changeName.relocate(264, 320);
         changeName.setStyle("-fx-background-color: #d57525; -fx-border-color: #81580a;" +
@@ -168,12 +173,12 @@ public class MenuView {
                 primaryStage.setScene(names);
             }
         });
-        Button play = new Button("       Play :)     ");
+        Button play = new Button("       Play Offline :)     ");
         play.setFont(Font.font("Bauhaus 93", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 18));
         play.setStyle("-fx-background-color: #6993e3; -fx-border-color: #3e48cc; -fx-border-width: 3" +
                 ";  -fx-text-fill: linear-gradient(from 0% 0% to 100% 250%, repeat, whitesmoke 0%, black 60%);" +
                 " -fx-border-radius: 5; -fx-background-radius: 10;");
-        play.relocate(331, 363);
+        play.relocate(301, 363);
         buttonOpacityChanged(play);
         mainMenu.getChildren().add(play);
 
@@ -192,13 +197,31 @@ public class MenuView {
             }
         });
 
+
+        Button multiPlayer = new Button("   MultiPlayer :)     ");
+        multiPlayer.setFont(Font.font("Bauhaus 93", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 18));
+        multiPlayer.setStyle("-fx-background-color: #6993e3; -fx-border-color: #3e48cc; -fx-border-width: 3" +
+                ";  -fx-text-fill: linear-gradient(from 0% 0% to 100% 250%, repeat, whitesmoke 0%, black 60%);" +
+                " -fx-border-radius: 5; -fx-background-radius: 10;");
+
+        buttonOpacityChanged(multiPlayer);
+        mainMenu.getChildren().add(multiPlayer);
+        multiPlayer.relocate(308, 413);
+
+        multiPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setScene(multiPlayers.getMultScene());
+            }
+        });
+
         Button exit = new Button("       Exit :(      ");
         exit.setFont(Font.font("Bauhaus 93", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 18));
         exit.setStyle("-fx-background-color: #6993e3; -fx-border-color: #3e48cc; -fx-border-width: 3" +
                 "; -fx-font-family: 'Bauhaus 93'; " +
                 " -fx-text-fill: linear-gradient(from 0% 0% to 100% 250%, repeat, whitesmoke 0%, black 60%);" +
                 "-fx-border-radius: 5; -fx-background-radius: 10;");
-        exit.relocate(331, 413);
+        exit.relocate(316, 463);
 
         exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -276,7 +299,7 @@ public class MenuView {
 
     }
 
-    private void buttonOpacityChanged(Button button) {
+    public static void buttonOpacityChanged(Button button) {
         button.setOpacity(0.8);
         button.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -493,7 +516,6 @@ public class MenuView {
 
         this.intializeMapChooseMenu(chooseMap, choseMap);
         Button backToMenu = new Button("  backToMenu  ");
-        ArrayList<Button> mapButtons = new ArrayList<>();
         backToMenu.relocate(520, 425);
         chooseMap.getChildren().add(backToMenu);
         backToMenu.setStyle("-fx-font-family: 'Bodoni MT Black'; -fx-font-size: 16; -fx-font-style: italic;" +
