@@ -1,6 +1,7 @@
 package Model.Transportation;
 
 
+import Controller.Controller;
 import Model.ElementAndBoxAndDirection.Box;
 import Model.ElementAndBoxAndDirection.Element;
 import Model.MapAndCell.Map;
@@ -173,9 +174,9 @@ public class Truck extends Element {
                 box.removeElement();
     }
 
-    public void goTruck(Map map, Group mapGroup) throws FileNotFoundException {
+    public void goTruck(Controller controller, Group mapGroup) throws FileNotFoundException {
 
-        setImageOfTruck(mapGroup, map);
+        setImageOfTruck(mapGroup, controller.getMap());
         truckView.setScaleX(-1);
         mapGroup.getChildren().add(truckView);
         SpriteAnimation truckAnimation = new SpriteAnimation(truckView, Duration.millis(50), 6,
@@ -188,7 +189,7 @@ public class Truck extends Element {
         path.setVisible(false);
         mapGroup.getChildren().add(path);
         PathTransition pathTransition = new PathTransition(
-                Duration.millis(map.getTruck().getTimeDurationForWorking()* 600), path, truckView);
+                Duration.millis(controller.getMap().getTruck().getTimeDurationForWorking()* 600), path, truckView);
         pathTransition.setAutoReverse(true);
         pathTransition.setCycleCount(2);
         pathTransition.play();
@@ -199,7 +200,7 @@ public class Truck extends Element {
                 MapView.getTruckButton().setVisible(false);
                 MapView.getTruckView().setVisible(false);
                 if ((int)pathTransition.getCurrentTime().toSeconds() ==
-                        map.getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
+                        controller.getMap().getTruck().getTimeDurationForWorking() / 2 && truckView.getScaleX() != 1) {
                     truckView.setScaleX(1);
                 }
                 if (pathTransition.getCurrentTime().toSeconds() == 0 && truckView.getScaleX() == 1) {
@@ -207,7 +208,7 @@ public class Truck extends Element {
                     mapGroup.getChildren().remove(truckView);
                     MapView.getTruckButton().setVisible(true);
                     MapView.getTruckView().setVisible(true);
-                    map.setBudget(map.getBudget()+map.getTruck().getWallet());
+                    controller.getMap().setBudget(controller.getMap().getBudget()+controller.getMap().getTruck().getWallet());
                     this.stop();
                 }
             }

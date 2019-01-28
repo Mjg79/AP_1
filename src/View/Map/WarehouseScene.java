@@ -83,7 +83,7 @@ public class WarehouseScene {
         wallet.relocate(830,615);
         wallet.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'Bauhaus 93'");
         warehouseRoot.getChildren().add(wallet);
-        this.map = map;
+        this.map = controller.getMap();
         truck = map.getTruck();
         ImageView mapViewBackGround = new ImageView(wareHousePlaceImage);
         mapViewBackGround.setFitWidth(1000);
@@ -93,13 +93,13 @@ public class WarehouseScene {
 
     private void cancelOrOk() throws FileNotFoundException {
         warehouseRoot.getChildren().remove(wallet);
-        wallet.setText(""+truck.getWallet());
+        wallet.setText(""+controller.getMap().getTruck().getWallet());
         warehouseRoot.getChildren().add(wallet);
         ImageView grayOk = new ImageView(okButtonGrayImage);
         grayOk.relocate(340,670);
         ImageView blueOk = new ImageView(okButtonGreenImage);
         blueOk.relocate(340,670);
-        if (truck.getWallet() == 0){
+        if (controller.getMap().getTruck().getWallet() == 0){
             warehouseRoot.getChildren().add(grayOk);
         }else {
             blueOk.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -109,11 +109,11 @@ public class WarehouseScene {
                     primaryStage.setScene(backScene);
                     for(String string:recentSell.keySet()){
                         for (int i=0;i<recentSell.get(string);i++)
-                            map.addElementToTruck(new Product(map.getFarmTime(),string),1);
+                            controller.getMap().addElementToTruck(new Product(controller.getMap().getFarmTime(),string),1);
                     }
-                    map.goTruck();
+                    controller.getMap().goTruck();
                     try {
-                        map.getTruck().goTruck(map,primaryGroup);
+                        controller.getMap().getTruck().goTruck(controller,primaryGroup);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -126,8 +126,8 @@ public class WarehouseScene {
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                map.getTruck().clear();
-                map.getTruck().setWallet(0);
+                controller.getMap().getTruck().clear();
+                controller.getMap().getTruck().setWallet(0);
                 MapView.resume();
                 warehouseRoot.getChildren().remove(2,warehouseRoot.getChildren().size());
                 recentSell.clear();
@@ -141,9 +141,9 @@ public class WarehouseScene {
     public void changeToWarehouse(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            addLivestocksToView(map);
-            addGoods();
+            addLivestocksToView(controller.getMap());
             cancelOrOk();
+            addGoods();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -152,11 +152,11 @@ public class WarehouseScene {
     }
 
     private int getPriceOfLiveStock(String liveStock){
-        return (new LiveStock(map.getFarmTime(),liveStock).getPrice());
+        return (new LiveStock(controller.getMap().getFarmTime(),liveStock).getPrice());
     }
 
     private int getPriceOfProduct(String good){
-        return (new Product(map.getFarmTime(),good)).getPrice();
+        return (new Product(controller.getMap().getFarmTime(),good)).getPrice();
     }
 
     private void addGoods() throws FileNotFoundException {
@@ -173,7 +173,10 @@ public class WarehouseScene {
                 productImage = new ImageView(hornImage);
             productImage.relocate(40, 125 + temp * 40);
             Label productPrice = new Label("" + getPriceOfProduct(good));
-            productPrice.relocate(150, 130 + temp * 40);
+            Label number = new Label("X " + controller.getMap().getWareHouse().getGoods().get(good));
+            number.relocate(85, 125 + temp * 40);
+            number.setStyle("-fx-text-fill: #fbfff0; -fx-font-size: 30;-fx-font-family: 'A Spirit Of Doha Black'");
+            productPrice.relocate(150, 125 + temp * 40);
             productPrice.setStyle("-fx-text-fill: #ffe700; -fx-font-size: 30;-fx-font-family: 'A Spirit Of Doha Black'");
             ImageView add = new ImageView(oneAddBlueImage);
             add.relocate(240, 130 + temp * 40);
@@ -190,7 +193,7 @@ public class WarehouseScene {
                     } else {
                         recentSell.put(good, 1);
                     }
-                    truck.setWallet(truck.getWallet() + getPriceOfProduct(good));
+                    controller.getMap().getTruck().setWallet(controller.getMap().getTruck().getWallet() + getPriceOfProduct(good));
                     try {
                         if (controller.getMap().getWareHouse().getGoods().get(good).equals(recentSell.get(good))) {
                             add.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png")));
@@ -207,6 +210,7 @@ public class WarehouseScene {
             warehouseRoot.getChildren().add(add);
             warehouseRoot.getChildren().add(productImage);
             warehouseRoot.getChildren().add(addGood);
+            warehouseRoot.getChildren().add(number);
             warehouseRoot.getChildren().add(productPrice);
         }
     }
