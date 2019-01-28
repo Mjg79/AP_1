@@ -29,37 +29,6 @@ public class HeliCopterView {
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
-    private static Image helicopterSceneImage;
-    private static Image flourImage;
-    private static Image oneAddGrayImage;
-    private static Image oneAddBlueImage;
-    private static Image cancelButtonImage;
-    private static Image okButtonGreenImage;
-    private static Image okButtonGrayImage;
-    private static Image helicopterImageL1;
-    private static Image helicopterImageL2;
-    private static Image helicopterImageL3;
-    private static Image helicopterImageL4;
-
-
-    static {
-        try {
-            helicopterSceneImage = new Image(new FileInputStream(HELICOPTERFILE + "helicopterScene.jpg"));
-            flourImage = new Image(new FileInputStream(PRODUCTFILE + "flour.png"));
-            oneAddGrayImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png"));
-            oneAddBlueImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddBlue.png"));
-            cancelButtonImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "cancelButton.png"));
-            okButtonGreenImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGreen.png"));
-            okButtonGrayImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGray.png"));
-            helicopterImageL1 = new Image(new FileInputStream(HELICOPTERFILE + "01.png"));
-            helicopterImageL2 = new Image(new FileInputStream(HELICOPTERFILE + "02.png"));
-            helicopterImageL3 = new Image(new FileInputStream(HELICOPTERFILE + "03.png"));
-            helicopterImageL4 = new Image(new FileInputStream(HELICOPTERFILE + "04.png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public HeliCopterView(Stage stage, Scene mapScene, Scene hScene, Group hGroup
                           , Group mapGroup) {
         this.mapScene = mapScene;
@@ -70,9 +39,10 @@ public class HeliCopterView {
     }
 
     private void initializeHelicopterScene() throws FileNotFoundException {
-        ImageView backGroundView = new ImageView(helicopterSceneImage);
+        ImageView backGroundView = new ImageView(new Image(
+                new FileInputStream(HELICOPTERFILE + "helicopterScene.jpg")));
         hGroup.getChildren().add(backGroundView);
-        ImageView flour = new ImageView(flourImage);
+        ImageView flour = new ImageView(new Image(new FileInputStream(PRODUCTFILE + "flour.png")));
         hGroup.getChildren().add(flour);
         flour.relocate(70, 140);
         Text price = new Text("20");
@@ -106,10 +76,18 @@ public class HeliCopterView {
                         controller.getMap().getHelicopter().getAllCost() &&
                         controller.getMap().getHelicopter().getAllCost() != 0) ||
                         controller.getMap().getBudget() == 0) {
-                    addView.setImage(oneAddGrayImage);
+                    try {
+                        addView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     flour1.setVisible(false);
                 } else {
-                    addView.setImage(oneAddBlueImage);
+                    try {
+                        addView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddBlue.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     flour1.setVisible(true);
                 }
             }
@@ -118,7 +96,8 @@ public class HeliCopterView {
     }
 
     private void setCancelButton(Controller controller) throws FileNotFoundException {
-        ImageView cancelView = new ImageView(cancelButtonImage);
+        ImageView cancelView = new ImageView(new Image(new FileInputStream(FARMFRENZYSAVEFILES
+                + "cancelButton.png")));
         hGroup.getChildren().add(cancelView);
         cancelView.relocate(225, 650);
         Button cancelButton = new Button();
@@ -167,10 +146,18 @@ public class HeliCopterView {
             @Override
             public void handle(long now) {
                 if (controller.getMap().getHelicopter().isHelicopterContainsAny()) {
-                    okView.setImage(okButtonGreenImage);
+                    try {
+                        okView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGreen.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     okButton.setVisible(true);
                 } else {
-                    okView.setImage(okButtonGrayImage);
+                    try {
+                        okView.setImage(new Image(new FileInputStream(FARMFRENZYSAVEFILES + "okButtonGray.png")));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     okButton.setVisible(false);
                 }
             }
@@ -185,14 +172,12 @@ public class HeliCopterView {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(!(helicopterView.getImage() == helicopterImageL1) && controller.getMap().getHelicopter().getLevel() == 1)
-                    helicopterView.setImage(helicopterImageL1);
-                else if(!(helicopterView.getImage() == helicopterImageL2) && controller.getMap().getHelicopter().getLevel() == 2)
-                    helicopterView.setImage(helicopterImageL2);
-                else if(!(helicopterView.getImage() == helicopterImageL3) && controller.getMap().getHelicopter().getLevel() == 3)
-                    helicopterView.setImage(helicopterImageL3);
-                else if(!(helicopterView.getImage() == helicopterImageL4) && controller.getMap().getHelicopter().getLevel() == 4)
-                    helicopterView.setImage(helicopterImageL4);
+                try {
+                    helicopterView.setImage(new Image(new FileInputStream(HELICOPTERFILE + "0" +
+                            controller.getMap().getHelicopter().getLevel() + ".png")));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         };
         timer.start();

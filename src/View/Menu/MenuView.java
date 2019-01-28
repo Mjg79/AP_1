@@ -483,7 +483,7 @@ public class MenuView {
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
         Map map1 = controller.getMap();
-        WarehouseScene warehouseScene = new WarehouseScene(mapScene,map1,map,controller);
+        WarehouseScene warehouseScene = new WarehouseScene(controller, mapScene, controller.getMap(), map);
 
         MapView mapView = new MapView(controller,stage ,mapScene,  hScene, choseMap, menu,warehouseScene);
 
@@ -508,7 +508,7 @@ public class MenuView {
             }
         });
         for (int i = 0; i < 6; i++)
-        makeButtons(chooseMap, stage, mapScene, controller, mapView, map, 370, 120 + 50 * i,
+        makeButtons(chooseMap, stage, mapScene, controller,  mapView, map, 370, 120 + 50 * i,
                 "map" + Integer.toString(i + 1));
 
     }
@@ -531,6 +531,7 @@ public class MenuView {
 
                     }
                     try {
+                        mapView.getWarehouseScene().show();
                         mapView.gameMap(map, mapScene, controller.getMap());
                         mapView.setFileName(getCurrentAccount() + "\\" + name + ".json");
                     } catch (FileNotFoundException e) {

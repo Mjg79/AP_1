@@ -11,6 +11,7 @@ public class WareHouse extends Element {
     private HashMap<String, Integer> liveStocks = new HashMap<>();
 
     {
+        goods.put("egg", 10);
         volume = 80;
         level = 1;
         x = 20;//truly is a constant for specifying the x of wareHouse in map
@@ -72,7 +73,7 @@ public class WareHouse extends Element {
         if (!(element instanceof LiveStock)) {// if it is not a live stock
             if ((volume - current) >= element.getVolume() * count) {
                 current += element.getVolume() * count;
-                System.out.println("salam be sah adflkj");
+                System.out.println(this.getGoods().toString());
                 if (goods.containsKey(element.getName())) {
                     int previousCount = goods.get(element.getName());
                     goods.put(element.getName(), previousCount + count);

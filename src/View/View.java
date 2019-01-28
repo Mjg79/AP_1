@@ -10,6 +10,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class View extends Application {
+    private static final String backGround =
+            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png";
+    private static final String accounts = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\accounts";
+
+    private static final String serviceFiles =
+            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
+    private static final String farmFrenzyScenesDesign =
+            "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -24,9 +32,6 @@ public class View extends Application {
         Group chooseMap = new Group();
         Scene choseMap = new Scene(chooseMap, 818, 557);
         menuView.mapChooseMenu(primaryStage, chooseMap, choseMap, menu, controller);
-
-        Group map = new Group();
-        Scene mapScene = new Scene(map, 1000, 750);
 
         menuView.mainMenu(primaryStage, menu, names, choseMap,  mainMenu, nameMenu);
         menuView.nameMenu(primaryStage, menu, nameMenu, names, mainMenu, choseMap);

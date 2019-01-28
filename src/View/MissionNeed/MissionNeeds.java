@@ -1,6 +1,7 @@
-package View;
+package View.MissionNeed;
 
 import Model.MapAndCell.Map;
+import View.View;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
