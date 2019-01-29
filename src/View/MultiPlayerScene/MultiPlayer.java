@@ -1,6 +1,7 @@
 package View.MultiPlayerScene;
 
 import Controller.ServerController;
+import Model.ControlSystem;
 import View.Menu.MenuView;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -116,8 +117,11 @@ public class MultiPlayer {
             @Override
             public void handle(MouseEvent event) {
                 try {
+                    mHost = new MakeHost(multScene, stage);
+                    mHost.showMakeHost();
+                    stage.setScene(mHost.getMakeHostScene());
                     serverController.setServer(new ServerSocket(8050));
-                    serverController.joinToServer();
+                    ControlSystem.getControlSystem().setServerController(serverController);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package View.MultiPlayerScene;
 import Controller.ClientController;
 import Controller.Profile;
 import Controller.ServerController;
+import Model.ControlSystem;
 import View.Buttons.GeneralButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -205,10 +206,13 @@ public class JoinHost {
                     Socket client = new Socket(serverIP, serverrPort);
                     makeUserNameInPlayersFile(name.getText(), userName.getText());
                     clientController = new ClientController(client, userName.getText());
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                userName.clear();
+                name.clear();
+                enterIP.clear();
+                enterPort.clear();
 
             }
         });

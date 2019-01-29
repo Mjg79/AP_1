@@ -28,12 +28,10 @@ public class ServerController extends Controller {
     }
 
     public void joinToServer() throws IOException {
-        while (true) {
             System.out.println("server is waiting...");
             Socket client = server.accept();
             System.out.println("connected...");
 //            clients.put(name, client);
-        }
     }
 
 

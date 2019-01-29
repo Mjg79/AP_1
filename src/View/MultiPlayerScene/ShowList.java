@@ -13,9 +13,8 @@ public class ShowList {
     private Stage stage;
     private ServerController serverController;
 
-    public ShowList(Stage stage, ServerController serverController) {
+    public ShowList(Stage stage) {
         this.stage = stage;
-        this.serverController = serverController;
     }
 
     public void ShowList() throws IOException {
