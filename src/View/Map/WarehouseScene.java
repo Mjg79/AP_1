@@ -164,7 +164,7 @@ public class WarehouseScene {
         System.out.println(controller.getMap().getWareHouse().getGoods().toString());
         for (String good : controller.getMap().getWareHouse().getGoods().keySet()) {
             System.out.println(good);
-            ImageView productImage = null;
+            ImageView productImage = new ImageView();
             if(!(productImage.getImage() == eggImage) && good.equals("egg"))
                 productImage = new ImageView(eggImage);
             else if(!(productImage.getImage() == featherImage) && good.equals("feather"))

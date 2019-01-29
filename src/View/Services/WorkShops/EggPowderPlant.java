@@ -51,35 +51,31 @@ public class EggPowderPlant {
     public static void setEggPlantView(Group mapGroup, Map map) throws FileNotFoundException {
         eggPlantView.relocate(144, 194);
         int level = map.getWorkshops().get(0).getLevel();
-        if (!mapGroup.getChildren().contains(eggPlantView)) {
-            mapGroup.getChildren().add(eggPlantView);
-            previousLevel = 0;
-        }
         if (previousLevel != level) {
+            if (!mapGroup.getChildren().contains(eggPlantView))
+                mapGroup.getChildren().add(eggPlantView);
             if (!(eggPlantView.getImage() == eggPowderPlantImageL1) && level == 1){
                 eggPlantView.setImage(eggPowderPlantImageL1);
-                eggAnimation = new  SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
-                        0, 0, 128, 114);
+                new  SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
+                        0, 0, 128, 114).play();
             }
             if (!(eggPlantView.getImage() == eggPowderPlantImageL2) && level == 2){
                 eggPlantView.setImage(eggPowderPlantImageL2);
-                eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
-                        0, 0,144, 132);
+                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4,
+                        0, 0,144, 132).play();
             }
             if (!(eggPlantView.getImage() == eggPowderPlantImageL3) && level == 3){
                 eggPlantView.setImage(eggPowderPlantImageL3);
-                eggAnimation = new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
-                        164, 150);
+                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
+                        164, 150).play();
             }
             if (!(eggPlantView.getImage() == eggPowderPlantImageL4) && level == 4){
                 eggPlantView.setImage(eggPowderPlantImageL4);
-                eggAnimation =  new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
-                        186, 158);
+                new SpriteAnimation(eggPlantView, Duration.millis(1), 16, 4, 0, 0,
+                        186, 158).play();
             }
             previousLevel = level;
-            eggAnimation.setCycleCount(1);
-            eggAnimation.play();
-            System.out.println("workShop level: " + level);
+               System.out.println("workShop level: " + level);
         }
     }
     public static void showEggPlantInWorking(Map map) {

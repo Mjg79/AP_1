@@ -8,8 +8,8 @@ public class ClientController extends Controller {
     private Socket clientSocket;
     private String name;
 
-    public ClientController(String serverIP, int serverPort, String name) throws IOException {
-      clientSocket = new Socket(serverIP, serverPort);
+    public ClientController(Socket clientSocket, String name) throws IOException {
+      this.clientSocket = clientSocket;
       this.name = name;
     }
 

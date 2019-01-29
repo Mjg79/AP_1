@@ -1,10 +1,12 @@
 package View.MultiPlayerScene;
 
+import Controller.ServerController;
 import View.Menu.MenuView;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +19,9 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
+import java.net.ServerSocket;
+import java.net.SocketException;
 
 import static View.Menu.MenuView.buttonOpacityChanged;
 
@@ -25,8 +30,12 @@ public class MultiPlayer {
     private transient Scene multScene;
     private transient Group multGroup;
     private transient Stage stage;
+    private transient ShowList showList;
+    private transient JoinHost jHost;
+    private transient MakeHost mHost;
+    private transient ServerController serverController = new ServerController();
 
-    public MultiPlayer(Scene menuScene, Scene multScene, Group multGroup, Stage primaryStage) {
+    public MultiPlayer(Scene menuScene, Scene multScene, Group multGroup, Stage primaryStage) throws IOException {
         this.menuScene = menuScene;
         this.multScene = multScene;
         this.multGroup = multGroup;
@@ -107,9 +116,8 @@ public class MultiPlayer {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    MakeHost makeHost1 = new MakeHost(stage, multScene);
-                    makeHost1.hostDesign();
-                    stage.setScene(makeHost1.getHostScene());
+                    serverController.setServer(new ServerSocket(8050));
+                    serverController.joinToServer();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,8 +127,17 @@ public class MultiPlayer {
         joinHost.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //TODO: JOIN HOST;
+                try {
+                    jHost = new JoinHost(multScene, stage);
+                    stage.setScene(jHost.getJoinScene());
+                    jHost.showJoinHost();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
             }
+
         });
 
     }

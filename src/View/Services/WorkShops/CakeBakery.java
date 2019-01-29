@@ -49,42 +49,37 @@ public class CakeBakery {
     private transient static ImageView cakeBakeryView = new ImageView();
     private boolean isUpgraded = false;
     private Duration duration;
-    private transient static  SpriteAnimation cakeAnimation;
+    private transient static SpriteAnimation cakeAnimation;
     private static int previousLevel = 0;
 
     public static void setCakeBakeryView(Group mapGroup, Map map) throws FileNotFoundException {
         cakeBakeryView.relocate(84, 430);
         int level = map.getWorkshops().get(2).getLevel();
-        if (!mapGroup.getChildren().contains(cakeBakeryView)) {
-            mapGroup.getChildren().add(cakeBakeryView);
-            previousLevel = 0;
-        }
         if (previousLevel != level) {
+            if (!mapGroup.getChildren().contains(cakeBakeryView))
+                mapGroup.getChildren().add(cakeBakeryView);
             if (!(cakeBakeryView.getImage() == cakeBckeryImageL1) && level == 1) {
                 cakeBakeryView.setImage(cakeBckeryImageL1);
-                cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
-                        0, 0, 184, 172);
-            }
-            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL2) && level == 2){
+                new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
+                        0, 0, 184, 172).play();
+            } else if (!(cakeBakeryView.getImage() == cakeBckeryImageL2) && level == 2) {
                 cakeBakeryView.setImage(cakeBckeryImageL2);
-                cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
-                        0, 0,158, 148);
-            }
-            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL3) && level == 3){
+                new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,
+                        0, 0, 158, 148).play();
+            } else if (!(cakeBakeryView.getImage() == cakeBckeryImageL3) && level == 3) {
                 cakeBakeryView.setImage(cakeBckeryImageL3);
-                cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
-                        170, 168);
-            }
-            else if (!(cakeBakeryView.getImage() == cakeBckeryImageL4) && level == 4){
+                new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        170, 168).play();
+            } else if (!(cakeBakeryView.getImage() == cakeBckeryImageL4) && level == 4) {
                 cakeBakeryView.setImage(cakeBckeryImageL4);
-                cakeAnimation =  new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
-                        176, 170);
+                new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        176, 170).play();
             }
             previousLevel = level;
-            cakeAnimation.setCycleCount(1);
-            cakeAnimation.play();
         }
     }
+
+
     public static void showCookieBakeryInWorking(Map map) {
         cakeBakeryView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

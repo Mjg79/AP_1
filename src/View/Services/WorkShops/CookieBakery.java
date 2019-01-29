@@ -51,34 +51,30 @@ public class CookieBakery {
     public static void setCookieBakeryView(Group mapGroup, Map map) throws FileNotFoundException {
         cookieBakeryView.relocate(695, 151);
         int level = map.getWorkshops().get(1).getLevel();
-        if (!mapGroup.getChildren().contains(cookieBakeryView)) {
-            mapGroup.getChildren().add(cookieBakeryView);
-            previousLevel = 0;
-        }
         if (previousLevel != level) {
-            if (!(cookieBakeryView.getImage() == cookieBakeryImageL1) && level == 1){
+            if (!mapGroup.getChildren().contains(cookieBakeryView))
+                mapGroup.getChildren().add(cookieBakeryView);
+        if (!(cookieBakeryView.getImage() == cookieBakeryImageL1) && level == 1){
                 cookieBakeryView.setImage(cookieBakeryImageL1);
-                cookieAnimation = new  SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
-                        0, 0, 134, 142);
+                new  SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
+                        0, 0, 134, 142).play();
             }
             if (!(cookieBakeryView.getImage() == cookieBakeryImageL2) && level == 2){
                 cookieBakeryView.setImage(cookieBakeryImageL2);
-                cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
-                        0, 0,158, 150);
+                new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
+                        0, 0,158, 150).play();
             }
             if (!(cookieBakeryView.getImage() == cookieBakeryImageL3) && level == 3){
                 cookieBakeryView.setImage(cookieBakeryImageL3);
-                cookieAnimation = new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
-                        158, 166);
+                new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        158, 166).play();
             }
             if (!(cookieBakeryView.getImage() == cookieBakeryImageL4) && level == 4){
                 cookieBakeryView.setImage(cookieBakeryImageL4);
-                cookieAnimation =  new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
-                        166, 170);
+                new SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4, 0, 0,
+                        166, 170).play();
             }
             previousLevel = level;
-            cookieAnimation.setCycleCount(1);
-            cookieAnimation.play();
         }
     }
     public static void showCookieBakeryInWorking(Map map) {

@@ -341,32 +341,21 @@ public class MapView {
 
         showAndUpgradeWareHouse(map, maps);
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                try {
-                    maps.getWell().setWellView(map);
-                    EggPowderPlant.setEggPlantView(map, maps);
-                    CookieBakery.setCookieBakeryView(map, maps);
-                    CakeBakery.setCakeBakeryView(map, maps);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        timer.start();
         maps.getWell().setWellView(map);
         maps.getWell().showWellInWorking(maps);
         maps.getWell().wellInfo(map);
 
+        EggPowderPlant.setEggPlantView(map, maps);
         EggPowderPlant.showEggPlantInWorking(maps);
         EggPowderPlant.eggPlantInfo(map, maps);
         showHelicopterInfo(maps, map);
 
+
+        CookieBakery.setCookieBakeryView(map, maps);
         CookieBakery.showCookieBakeryInWorking(maps);
         CookieBakery.cookieBakeryInfo(map, maps);
 
+        CakeBakery.setCakeBakeryView(map, maps);
         CakeBakery.showCookieBakeryInWorking(maps);
         CakeBakery.cakeBakeryInfo(map, maps);
     }
@@ -501,13 +490,13 @@ public class MapView {
     }
 
     private void showHelicopter(Map map, Group group) throws FileNotFoundException {
-        if(!(helicopterView.getImage() == helicopterImageL1) && controller.getMap().getTruck().getLevel() == 1)
+        if(!(helicopterView.getImage() == helicopterImageL1) && controller.getMap().getHelicopter().getLevel() == 1)
             helicopterView.setImage(helicopterImageL1);
-        else if(!(helicopterView.getImage() == helicopterImageL2) && controller.getMap().getTruck().getLevel() == 2)
+        else if(!(helicopterView.getImage() == helicopterImageL2) && controller.getMap().getHelicopter().getLevel() == 2)
             helicopterView.setImage(helicopterImageL2);
-        else if(!(helicopterView.getImage() == helicopterImageL3) && controller.getMap().getTruck().getLevel() == 3)
+        else if(!(helicopterView.getImage() == helicopterImageL3) && controller.getMap().getHelicopter().getLevel() == 3)
             helicopterView.setImage(helicopterImageL3);
-        else if(!(helicopterView.getImage() == helicopterImageL4) && controller.getMap().getTruck().getLevel() == 4)
+        else if(!(helicopterView.getImage() == helicopterImageL4) && controller.getMap().getHelicopter().getLevel() == 4)
             helicopterView.setImage(helicopterImageL4);
         if (!map.getHelicopter().isInWareHouse()) {
             hButton.setVisible(false);

@@ -65,5 +65,6 @@ public class MakeHost {
         imageView.setFitWidth(441);
         imageView.setFitHeight(100);
         hostGroup.getChildren().add(imageView);
+        serverController.getClients().get("ali");
     }
 }
