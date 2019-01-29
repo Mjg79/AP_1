@@ -55,10 +55,11 @@ public class CakeBakery {
     public static void setCakeBakeryView(Group mapGroup, Map map) throws FileNotFoundException {
         cakeBakeryView.relocate(84, 430);
         int level = map.getWorkshops().get(2).getLevel();
+        if (!mapGroup.getChildren().contains(cakeBakeryView)) {
+            mapGroup.getChildren().add(cakeBakeryView);
+            previousLevel = 0;
+        }
         if (previousLevel != level) {
-            if (!mapGroup.getChildren().contains(cakeBakeryView))
-                mapGroup.getChildren().add(cakeBakeryView);
-
             if (!(cakeBakeryView.getImage() == cakeBckeryImageL1) && level == 1) {
                 cakeBakeryView.setImage(cakeBckeryImageL1);
                 cakeAnimation = new SpriteAnimation(cakeBakeryView, Duration.millis(1), 16, 4,

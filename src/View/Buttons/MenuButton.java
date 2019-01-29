@@ -16,10 +16,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
 public class MenuButton {
     public static Button inGameMenuButton(Group mapGroup, Scene mapScene, MapView mapView, Stage stage, Scene chooseMap,
@@ -249,7 +246,28 @@ public class MenuButton {
         });
 
         restartButton.setOnAction(event -> {
-            //TODO:handle restart
+            restartButton.setGraphic(menuButtonBlueView);
+            mapGroup.getChildren().removeAll(menuBarView, continueButton, mainMenuButton, restartButton, mapButton, optiansButton, helpButton);
+            Gson deserializer = new Gson();
+            try {
+                mapView.getController().setMap(deserializer.fromJson(new FileReader(mapView.getFileName()), Map.class));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            restartButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mapScene.setCursor(Cursor.HAND);
+                }
+            });
+            restartButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mapScene.setCursor(Cursor.DEFAULT);
+                }
+            });
+            MapView.resume();
+            //TODO:handle resume game and bluing game buttons if needed
         });
 
 

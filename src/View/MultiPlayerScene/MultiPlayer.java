@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static View.Menu.MenuView.buttonOpacityChanged;
 
@@ -105,7 +106,13 @@ public class MultiPlayer {
         makeHost.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //TODO: MAKE HOST;
+                try {
+                    MakeHost makeHost1 = new MakeHost(stage, multScene);
+                    makeHost1.hostDesign();
+                    stage.setScene(makeHost1.getHostScene());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

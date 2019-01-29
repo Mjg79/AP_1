@@ -7,12 +7,13 @@ import java.util.HashMap;
 
 public class ServerController extends Controller {
     private ServerSocket server = new ServerSocket(8050);
-    private String ip;
+    private final static String ip = "192.168.1.5";
     private HashMap<String, Socket> clients = new HashMap<>();
 
-    public ServerController(String ip) throws IOException {
-        this.ip = ip;
+    public ServerController() throws IOException {
+
     }
+
 
     public ServerSocket getServer() {
         return server;

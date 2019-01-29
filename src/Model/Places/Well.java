@@ -115,20 +115,23 @@ public class Well extends Element {
 
     public void setWellView(Group mapGroup) throws FileNotFoundException {
         wellView.relocate(414, 74);
+        if (!mapGroup.getChildren().contains(wellView)) {
+            mapGroup.getChildren().add(wellView);
+            previousLevel = 0;
+        }
         if (previousLevel != level) {
-            if (!mapGroup.getChildren().contains(wellView))
-                mapGroup.getChildren().add(wellView);
             wellView.setImage(new Image(new FileInputStream(serviceFiles + "Well\\0" + level + ".png")));
             if (level == 1)
-                new SpriteAnimation(wellView, Duration.millis(1), 16, 4,
-                        0, 0, 150, 136).play();
+                wellAnimation = new SpriteAnimation(wellView, Duration.millis(1), 16, 4,
+                        0, 0, 150, 136);
             if (level == 2)
-                new SpriteAnimation(wellView, Duration.millis(1), 16, 4,
-                        0, 0, 148, 150).play();
+                wellAnimation = new SpriteAnimation(wellView, Duration.millis(1), 16, 4,
+                        0, 0, 148, 150);
             if (level == 3)
-                new SpriteAnimation(wellView, Duration.millis(1), 16, 4, 0, 0,
-                        144, 158).play();
-            previousLevel = level;
+                wellAnimation = new SpriteAnimation(wellView, Duration.millis(1), 16, 4, 0, 0,
+                        144, 158);
+            wellAnimation.setCycleCount(1);
+            wellAnimation.play();
         }
     }
     public void showWellInWorking(Map map) {

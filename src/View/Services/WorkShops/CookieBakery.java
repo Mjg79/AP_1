@@ -51,9 +51,11 @@ public class CookieBakery {
     public static void setCookieBakeryView(Group mapGroup, Map map) throws FileNotFoundException {
         cookieBakeryView.relocate(695, 151);
         int level = map.getWorkshops().get(1).getLevel();
+        if (!mapGroup.getChildren().contains(cookieBakeryView)) {
+            mapGroup.getChildren().add(cookieBakeryView);
+            previousLevel = 0;
+        }
         if (previousLevel != level) {
-            if (!mapGroup.getChildren().contains(cookieBakeryView))
-                mapGroup.getChildren().add(cookieBakeryView);
             if (!(cookieBakeryView.getImage() == cookieBakeryImageL1) && level == 1){
                 cookieBakeryView.setImage(cookieBakeryImageL1);
                 cookieAnimation = new  SpriteAnimation(cookieBakeryView, Duration.millis(1), 16, 4,
