@@ -1,16 +1,20 @@
 package View.MultiPlayerScene;
 
+import Controller.Profile;
 import Controller.ServerController;
 import View.Map.MapView;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,6 +28,7 @@ public class ServerShowList {
     private  ServerController serverController;
     private transient ArrayList <Label> labels;
     private transient AnimationTimer timer;
+    private transient int previousNum = 0;
 
     public ServerShowList(Stage stage, ServerController controller, MapView mapView) {
         labels = new ArrayList<>();
@@ -53,25 +58,50 @@ public class ServerShowList {
 
     public void designList() throws IOException, ClassNotFoundException {
         initializeJoinScene();
-
         joinPlayers();
-        final int[] i = {0};
+
+        Label showDatas = new Label("Name\t\t\t\tuserName\t\tnameOfGamePlayed\t\tport");
+        showGroup.getChildren().add(showDatas);
+        showDatas.setStyle("-fx-font-size: 20; -fx-opacity: 1; -fx-font-family:'A Spirit Of Doha Black';" +
+                " -fx-font-weight: BOLD; -fx-text-fill: #cf5e2c");
+        showDatas.relocate(140, 120);
+
+        showPlayers();
+        startButton();
+
+    }
+
+    private void joinPlayers() throws IOException, ClassNotFoundException {
+        serverController.joinToServer();
+    }
+
+    private void showPlayers() {
+        Profile profile = serverController.getServerProfile();
+        Label label = new Label(profile.getName() + "\t\t\t\t" + profile.getUserName() + "\t\t\t\t" +
+                profile.getNumOfGames() + "\t\t\t\t" + "8050");
+        labels.add(label);
+        label.setStyle("-fx-font-size: 20; -fx-opacity: 1; -fx-font-family:'A Spirit Of Doha Black';" +
+                " -fx-font-weight: BOLD; -fx-text-fill: #6d3617");
+        showGroup.getChildren().add(label);
+        label.relocate(140, 150);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                System.out.println("the i is : " + i[0]);
-                i[0]++;
-                if (i[0] == 500) {
-                    System.out.println("finishadding");
-                    serverController.setStop(false);
+                if (previousNum != serverController.getClients().size()) {
+                    Profile profile = serverController.getProfiles().get(serverController.getProfiles().size() - 1);
+                    Label label = new Label(profile.getName() + "\t\t\t\t" + profile.getUserName() +
+                            "\t\t\t\t" + profile.getNumOfGames()+ "\t\t\t\t"
+                            + serverController.getClients().get(profile).getPort());
+                    showGroup.getChildren().add(label);
+                    label.relocate(140, 30 * serverController.getClients().size() + 150);
+                    labels.add(label);
+                    label.setStyle("-fx-font-size: 20; -fx-opacity: 1; -fx-font-family:'A Spirit Of Doha Black';" +
+                            " -fx-font-weight: BOLD; -fx-text-fill: #6d3617");
+                    previousNum = serverController.getClients().size();
                 }
             }
         };
-        timer.stop();
-    }
-
-    public void joinPlayers() throws IOException, ClassNotFoundException {
-        serverController.joinToServer();
+        timer.start();
     }
 
 
@@ -82,4 +112,33 @@ public class ServerShowList {
     public Stage getStage() {
         return stage;
     }
+
+
+    private void startButton() {
+        Button start  = new Button("start");
+        start.setScaleX(1.5);
+        start.setScaleY(1.5);
+        start.relocate(550, 480);
+        start.setStyle("-fx-background-color: #b5e627; -fx-background-radius: 10px" +
+                "; -fx-font-family: 'Bodoni MT Black' ; -fx-font-size: 12;-fx-border-radius: 5px;" +
+                " -fx-border-color: #03ea39; -fx-border-width: 3px;");
+        showGroup.getChildren().add(start);
+
+
+        start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    serverController.startGame();
+                    Group map = new Group();
+                    Scene mapScene = new Scene(map, 1000, 750);
+                    mapView.gameMap(map, mapScene, serverController.getMap());
+                    stage.setScene(mapScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 }

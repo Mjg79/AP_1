@@ -2,6 +2,7 @@ package View.MultiPlayerScene;
 
 import Controller.Profile;
 import Controller.ServerController;
+import Model.ControlSystem;
 import View.Buttons.GeneralButton;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
@@ -22,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Scanner;
 
@@ -158,10 +160,11 @@ public class MakeHost {
             @Override
             public void handle(MouseEvent event) {
                 try {
+                    serverController.setServerProfile(new Profile(name.getText(), userName.getText()));
                     showList = new ServerShowList(stage, serverController, makeMapView());
                     stage.setScene(showList.getShowScene());
                     showList.designList();
-                    makeUserNameInPlayersFile(MakeHost.this.name.getText(), userName.getText());
+                    makeUserNameInPlayersFile(name.getText(), userName.getText());
                 }  catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {

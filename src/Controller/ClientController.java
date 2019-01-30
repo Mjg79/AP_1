@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ClientController extends Controller {
-    private int port = 8060;
     private Socket clientSocket;
-    private String name;
+    private Profile profile;
 
-    public ClientController(Socket clientSocket, String name) throws IOException {
+    public ClientController(Socket clientSocket, Profile profile) throws IOException {
       this.clientSocket = clientSocket;
-      this.name = name;
+      this.profile = profile;
     }
 
     public Socket getClientSocket() {
         return  clientSocket;
     }
 
-    public String getName() {
-        return name;
+    public Profile getProfile() {
+        return profile;
     }
 }

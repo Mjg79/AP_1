@@ -33,7 +33,7 @@ public class Map {
     private String name;
     private boolean isMissionCompleted = false;
     private double farmTime = 0;
-    private int budget = 90000;
+    private int budget = 120;
     private WareHouse wareHouse = new WareHouse();
     private Well well = new Well();
     private Truck truck = new Truck();
@@ -51,33 +51,13 @@ public class Map {
     private Cell[][] cells = new Cell[36][36];
 
     {
-        //TODO:clear 6 line below
-        HashMap<String,Integer> hashMap = new HashMap<>();
-        hashMap.put("chicken", 12);
-        hashMap.put("egg", 12);
-        hashMap.put("flour", 7);
-        missionNeeds = hashMap;
-        HashMap<String, Integer> salam = new HashMap<>();
-        salam.put("chicken", 0);
-        salam.put("egg", 0);
-        salam.put("flour", 0);
-        gatherElements = salam;
         workshops.add(new WorkShop("EggPowderedPlant", 5, 5));
         workshops.add(new WorkShop("CookieBakery", 34, 6));
         workshops.add(new WorkShop("CakeBakery", 6, 34));
         for (int i = 0; i <= 35; i++)
             for (int j = 0; j <= 35; j++)
                 cells[i][j] = new Cell(i, j);
-
     }
-//TODO: pick it
-//    public Map(String name, HashMap<String, Integer> missionNeeds) {
-//        this.name = name;
-//        this.missionNeeds = missionNeeds;
-//        for (String needs: missionNeeds.keySet())
-//            gatherElements.put(needs, 0);
-//    }
-
     /////////////////////////SETTER_AND_GETTER///////////////////////
 
 
@@ -245,18 +225,19 @@ public class Map {
 
     //////////////////////////CHECK_MISSION_NEEDS/////////////////////////
     private void gatherForMissionNeeds(String purpose) {
-        for (String needs: missionNeeds.keySet())
-            if (needs.equals(purpose)) {
-                if (gatherElements.get(purpose) < missionNeeds.get(purpose))
-                gatherElements.put(purpose, gatherElements.get(purpose) + 1);
-                break;
+        if (missionNeeds.size() != 0) {
+            for (String needs : missionNeeds.keySet())
+                if (needs.equals(purpose)) {
+                    if (gatherElements.get(purpose) < missionNeeds.get(purpose))
+                        gatherElements.put(purpose, gatherElements.get(purpose) + 1);
+                    break;
+                }
+            if (gatherElements.equals(missionNeeds)) {
+                isMissionCompleted = true;
+                System.out.println("mission completed.");
             }
-        if (gatherElements.equals(missionNeeds)) {
-            isMissionCompleted = true;
-            System.out.println("mission completed.");
         }
     }
-
 
     public boolean isMissionCompleted() {
         return isMissionCompleted;

@@ -1,19 +1,21 @@
 package Controller;
 
 import Data.DataReader;
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 
 public class ServerController extends Controller {
     private ServerSocket server;
     private final static String ip = "localhost";
     private HashMap<Profile, Socket> clients = new HashMap<>();
+    private ArrayList<Profile> profiles  = new ArrayList<>();
+    private Profile serverProfile;
     private boolean stop = false;
 
     public ServerController() throws IOException {
@@ -36,19 +38,57 @@ public class ServerController extends Controller {
         this.stop = stop;
     }
 
+    public void setServerProfile(Profile profile) {
+        this.serverProfile = profile;
+    }
+
     public void joinToServer() throws IOException, ClassNotFoundException {
-//        while (!stop) {
-            System.out.println("server waited...");
-//            Socket client = server.accept();
-//            ObjectInputStream objectReader = new ObjectInputStream(client.getInputStream());
-//            Profile profile = (Profile)objectReader.readObject();
-            System.out.println("connected...");
-//            clients.put(profile, client);
-//        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!stop) {
+                    System.out.println("server waited...");
+                    Socket client = null;
+                    try {
+                        client = server.accept();
+                        System.out.println("connected...");
+                        ObjectInputStream objectReader = new ObjectInputStream(client.getInputStream());
+                        Profile profile = (Profile) objectReader.readObject();
+                        profiles.add(profile);
+                        System.out.println("ahsant: " + profile.getUserName());
+                        clients.put(profile, client);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        });
+        thread.setPriority(Thread.MAX_PRIORITY);
+        thread.start();
     }
 
 
     public HashMap<Profile, Socket> getClients() {
         return clients;
+    }
+
+    public ArrayList<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public Profile getServerProfile() {
+        return serverProfile;
+    }
+
+    public void startGame() throws IOException {
+        for (Profile profile: getClients().keySet()) {
+            Formatter formatter = new Formatter(getClients().get(profile).getOutputStream());
+            formatter.format("true\n");
+            formatter.flush();
+        }
     }
 }

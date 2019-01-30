@@ -31,7 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+import Controller.Profile;
 import static java.util.stream.Collectors.toList;
 
 public class MenuView {

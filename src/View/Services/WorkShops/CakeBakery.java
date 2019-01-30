@@ -115,7 +115,8 @@ public class CakeBakery {
         info.setScaleY(0.7);
         info.setScaleX(0.7);
         info.relocate(-30, 380);
-        group.getChildren().add(info);
+        if (!group.getChildren().contains(info))
+            group.getChildren().add(info);
         Label input = new Label();
         input.setStyle("-fx-text-fill: #fae00e ;-fx-font-size: 18; -fx-font-family: 'A Spirit Of Doha Black'");
         Label level = new Label();

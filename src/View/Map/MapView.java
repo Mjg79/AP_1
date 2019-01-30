@@ -33,6 +33,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.java2d.cmm.Profile;
 
 import java.io.*;
 
@@ -53,8 +54,8 @@ public class MapView {
     private transient Scene chooseMap;
     private transient Scene menu;
 
-    public MapView(Controller controller, Stage primaryStage,Scene mapScene, Scene helicopterScene
-    , Scene chooseMap, Scene menu,WarehouseScene warehouseScene) {
+    public MapView(Controller controller, Stage primaryStage, Scene mapScene, Scene helicopterScene
+    , Scene chooseMap, Scene menu, WarehouseScene warehouseScene) {
         this.controller = controller;
         MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;

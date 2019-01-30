@@ -114,11 +114,10 @@ public class MultiPlayer {
             @Override
             public void handle(MouseEvent event) {
                 try {
+                    serverController.setServer(new ServerSocket(8050));
                     mHost = new MakeHost(multScene, stage, serverController);
                     mHost.showMakeHost();
                     stage.setScene(mHost.getMakeHostScene());
-                    serverController.setServer(new ServerSocket(8050));
-                    ControlSystem.getControlSystem().setServerController(serverController);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
