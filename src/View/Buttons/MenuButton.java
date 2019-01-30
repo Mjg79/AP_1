@@ -1,5 +1,8 @@
 package View.Buttons;
 
+import Controller.Controller;
+import Model.Animal.LiveStocks.LiveStock;
+import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
 import View.Map.MapView;
 import com.google.gson.Gson;
@@ -20,7 +23,7 @@ import java.io.*;
 
 public class MenuButton {
     public static Button inGameMenuButton(Group mapGroup, Scene mapScene, MapView mapView, Stage stage, Scene chooseMap,
-                                          Scene menu){
+                                          Scene menu, Controller controller){
         final  Image menuBarImage = new Image("View/farmFrenzySaveFiles/buttons/InGameMenuButtons/menuBar.png");
         final Image menuButtonGrayImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonGray.png");
         final Image menuButtonBlueImage = new Image("View/farmFrenzySaveFiles/buttons/menuButtonBlue.png");
@@ -237,6 +240,10 @@ public class MenuButton {
             }
             serializer.toJson(mapView.getController().getMap(), Map.class, writer);
             try {
+                for(LiveStock liveStock : controller.getMap().getLiveStocks())
+                    mapGroup.getChildren().remove(liveStock.getLiveStockView());
+                for(WildAnimal wildAnimal : controller.getMap().getWildAnimals())
+                    mapGroup.getChildren().remove(wildAnimal.getWildAnimalView());
                 writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -283,12 +290,14 @@ public class MenuButton {
 
             serializer.toJson(mapView.getController().getMap(), Map.class, writer);
             try {
+                for(LiveStock liveStock : controller.getMap().getLiveStocks())
+                    mapGroup.getChildren().remove(liveStock.getLiveStockView());
+                for(WildAnimal wildAnimal : controller.getMap().getWildAnimals())
+                    mapGroup.getChildren().remove(wildAnimal.getWildAnimalView());
                 writer.flush();
-                mapGroup.getChildren().clear();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mapGroup.getChildren().removeAll();
             stage.setScene(chooseMap);
         });
 

@@ -162,26 +162,6 @@ public class WildAnimal extends Animal {
                 }
         });
 
-        wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mapGroup.getChildren().remove(cageView);
-                mapGroup.getChildren().remove(wildAnimalView);
-                map.pickUpAndPutInWareHouse(x, y);
-
-            }
-        });
-
-        cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                isCaged = true;
-                mapGroup.getChildren().remove(cageView);
-                mapGroup.getChildren().remove(wildAnimalView);
-                map.pickUpAndPutInWareHouse(x, y);
-            }
-        });
-
         cageView.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

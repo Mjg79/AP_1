@@ -316,7 +316,7 @@ public class MapView {
         this.setBuyBuffaloView(mapGroup, mapScene);
         this.setBuyCatView(mapGroup, mapScene);
         this.setBuyDogView(mapGroup, mapScene);
-        MenuButton.inGameMenuButton(mapGroup, mapScene, this,  primaryStage, chooseMap, menu);
+        MenuButton.inGameMenuButton(mapGroup, mapScene, this,  primaryStage, chooseMap, menu, controller);
     }
 
     public  Controller getController() {
