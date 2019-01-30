@@ -2,12 +2,10 @@ package View.MultiPlayerScene;
 
 import Controller.ServerController;
 import Model.ControlSystem;
-import View.Menu.MenuView;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +18,6 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.SocketException;
 
@@ -31,7 +28,7 @@ public class MultiPlayer {
     private transient Scene multScene;
     private transient Group multGroup;
     private transient Stage stage;
-    private transient ShowList showList;
+    private transient ServerShowList showList;
     private transient JoinHost jHost;
     private transient MakeHost mHost;
     private transient ServerController serverController = new ServerController();
@@ -117,7 +114,7 @@ public class MultiPlayer {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    mHost = new MakeHost(multScene, stage);
+                    mHost = new MakeHost(multScene, stage, serverController);
                     mHost.showMakeHost();
                     stage.setScene(mHost.getMakeHostScene());
                     serverController.setServer(new ServerSocket(8050));

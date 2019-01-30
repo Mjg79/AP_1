@@ -1,8 +1,11 @@
 package View.MultiPlayerScene;
 
-import Controller.ClientController;
 import Controller.Profile;
+import Controller.ServerController;
 import View.Buttons.GeneralButton;
+import View.Helicopter.HeliCopterView;
+import View.Map.MapView;
+import View.Map.WarehouseScene;
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -19,24 +22,26 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
 public class MakeHost {
     private transient Group makeHostGroup = new Group();
-    private transient Scene makeHostScene = new Scene(makeHostGroup, 800, 620);
+    private transient Scene makeHostScene = new Scene(makeHostGroup, 800, 600);
     private transient Scene hostScene;
     private transient Stage stage;
     private transient TextField name;
     private transient TextField userName;
     private transient Label label = new Label("this userName is already existed.");
+    private transient ServerController serverController;
+    private transient ServerShowList showList;
 
     private static final String PLAYERS = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json";
 
-    public MakeHost(Scene hostScene, Stage stage) throws SocketException {
+    public MakeHost(Scene hostScene, Stage stage, ServerController serverController) throws SocketException {
         this.hostScene = hostScene;
         this.stage = stage;
+        this.serverController = serverController;
     }
 
     private void initializeJoinScene() throws FileNotFoundException {
@@ -148,16 +153,41 @@ public class MakeHost {
             }
         };
         timer.start();
+
         ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
+                    showList = new ServerShowList(stage, serverController, makeMapView());
+                    stage.setScene(showList.getShowScene());
+                    showList.designList();
                     makeUserNameInPlayersFile(MakeHost.this.name.getText(), userName.getText());
-                } catch (IOException e) {
+                }  catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+                name.clear();
+                userName.clear();
             }
         });
+    }
+
+    private MapView makeMapView() throws FileNotFoundException {
+        Group map = new Group();
+        Scene mapScene = new Scene(map, 1000, 750);
+
+        Group hGroup = new Group();
+        Scene hScene = new Scene(hGroup, 1000, 750);
+        WarehouseScene warehouseScene = new WarehouseScene(serverController, mapScene
+                , serverController.getMap(), map);
+
+        HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
+                hScene, hGroup, map);
+        heliCopterView.helicopterShow(serverController);
+
+        return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene);
+
     }
 
     private void makeCancelButton() {

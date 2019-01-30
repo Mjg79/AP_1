@@ -505,7 +505,6 @@ public class MenuView {
 
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
-        Map map1 = controller.getMap();
         WarehouseScene warehouseScene = new WarehouseScene(controller, mapScene, controller.getMap(), map);
 
         MapView mapView = new MapView(controller,stage ,mapScene,  hScene, choseMap, menu,warehouseScene);

@@ -31,7 +31,7 @@ import java.util.Scanner;
 
 public class JoinHost {
     private transient Group joinGroup = new Group();
-    private transient Scene joinScene = new Scene(joinGroup, 800, 620);
+    private transient Scene joinScene = new Scene(joinGroup, 800, 600);
     private transient Scene hostScene;
     private transient Stage stage;
     private transient ClientController clientController;
