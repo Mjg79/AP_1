@@ -29,6 +29,7 @@ public class WildAnimal extends Animal {
     {
         name = "lion";
         volume = 10;
+        price = 100;
     }
 
 
