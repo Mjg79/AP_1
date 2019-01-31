@@ -2,16 +2,11 @@ package View.MultiPlayerScene;
 
 import Controller.ClientController;
 import Controller.Profile;
-import Controller.ServerController;
-import Model.ControlSystem;
 import View.Buttons.GeneralButton;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
 import View.Map.WarehouseScene;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,9 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.io.*;
-import java.lang.management.PlatformLoggingMXBean;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
@@ -296,7 +289,7 @@ public class JoinHost {
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(clientController);
 
-        return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene);
+        return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene, "online");
 
     }
 

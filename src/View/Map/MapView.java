@@ -12,6 +12,7 @@ import View.Buttons.GeneralButton;
 import View.Buttons.GrassButton;
 import View.Buttons.LiveStocks.*;
 import View.Buttons.MenuButton;
+import View.Chat.ChatRoom;
 import View.MissionNeed.MissionNeed;
 import View.MissionNeed.MissionNeeds;
 import View.Services.WorkShops.CakeBakery;
@@ -33,7 +34,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.java2d.cmm.Profile;
 
 import java.io.*;
 
@@ -53,9 +53,11 @@ public class MapView {
     private transient String fileName;
     private transient Scene chooseMap;
     private transient Scene menu;
+    private transient String mode;
+    private transient ChatRoom chatRoom;
 
     public MapView(Controller controller, Stage primaryStage, Scene mapScene, Scene helicopterScene
-    , Scene chooseMap, Scene menu, WarehouseScene warehouseScene) {
+    , Scene chooseMap, Scene menu, WarehouseScene warehouseScene, String mode) {
         this.controller = controller;
         MapView.mapScene = mapScene;
         this.primaryStage = primaryStage;
@@ -63,6 +65,7 @@ public class MapView {
         this.menu = menu;
         this.warehouseScene = warehouseScene;
         this.helicopterScene = helicopterScene;
+        this.mode = mode;
     }
 
 
@@ -76,6 +79,8 @@ public class MapView {
     private static final String animalBuy =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\buttons\\buyAnimal\\";
     private static final String upgrade = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\upgrade\\";
+    private static final String CHATROOM = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\chat\\";
+
     private static Image backGroundImage;
     private static Image chickenAfterImage;
     private static Image chickenBeforeImage;
@@ -357,6 +362,8 @@ public class MapView {
         CakeBakery.setCakeBakeryView(map, maps);
         CakeBakery.showCookieBakeryInWorking(maps);
         CakeBakery.cakeBakeryInfo(map, maps);
+
+        makeChatScene(mapScene, map, controller);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -897,6 +904,23 @@ public class MapView {
         };
         timer.start();
         Brightness.changeBrightNess4(current, volume, info, level,  wareHouseView);
+    }
+
+
+    private void makeChatScene(Scene mapScene, Group mapGroup, Controller controller) throws FileNotFoundException {
+        ImageView chat = new ImageView(new Image(new FileInputStream(CHATROOM + "chatButton.png")));
+        chat.relocate(270, -20);
+        chat.setScaleX(0.3);
+        chat.setScaleY(0.3);
+//        if (mode.equals("online"))
+            mapGroup.getChildren().add(chat);
+        chatRoom = new ChatRoom(mapScene, controller, primaryStage);
+        chat.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setScene(chatRoom.getChatScene());
+            }
+        });
     }
 
 }

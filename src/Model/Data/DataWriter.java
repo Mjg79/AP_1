@@ -1,4 +1,4 @@
-package Data;
+package Model.Data;
 
 import java.io.IOException;
 import java.net.Socket;

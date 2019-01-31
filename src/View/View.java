@@ -1,8 +1,6 @@
 package View;
 
 import Controller.Controller;
-import View.Helicopter.HeliCopterView;
-import View.Map.MapView;
 import View.Menu.MenuView;
 import View.MultiPlayerScene.MultiPlayer;
 import javafx.application.Application;

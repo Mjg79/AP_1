@@ -78,7 +78,7 @@ public class Helicopter extends Element {
     @Override
     public boolean upgrade() {
         if (level < 5) {
-            numOfBoxes += 2;
+            numOfBoxes += 1;
             boxes.add(new Box());
             boxes.add(new Box());
             moneyForUpgrading += 100;

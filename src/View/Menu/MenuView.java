@@ -31,7 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import Controller.Profile;
+
 import static java.util.stream.Collectors.toList;
 
 public class MenuView {
@@ -507,7 +507,7 @@ public class MenuView {
         Scene hScene = new Scene(hGroup, 1000, 750);
         WarehouseScene warehouseScene = new WarehouseScene(controller, mapScene, controller.getMap(), map);
 
-        MapView mapView = new MapView(controller,stage ,mapScene,  hScene, choseMap, menu,warehouseScene);
+        MapView mapView = new MapView(controller,stage ,mapScene,  hScene, choseMap, menu,warehouseScene, "offline");
 
         HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
                 hScene, hGroup, map);

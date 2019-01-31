@@ -2,7 +2,6 @@ package View.MultiPlayerScene;
 
 import Controller.Profile;
 import Controller.ServerController;
-import Model.ControlSystem;
 import View.Buttons.GeneralButton;
 import View.Helicopter.HeliCopterView;
 import View.Map.MapView;
@@ -23,8 +22,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class MakeHost {
@@ -165,6 +164,7 @@ public class MakeHost {
                     stage.setScene(showList.getShowScene());
                     showList.designList();
                     makeUserNameInPlayersFile(name.getText(), userName.getText());
+                    makeBazarFile();
                 }  catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -174,6 +174,22 @@ public class MakeHost {
                 userName.clear();
             }
         });
+    }
+
+    private void makeBazarFile() throws IOException {
+        HashMap<String, Integer> goods = new HashMap<>();
+        goods.put("flour", 10);
+        goods.put("cookie", 10);
+        goods.put("cake", 10);
+        goods.put("egg", 10);
+        goods.put("powderedEgg", 10);
+        goods.put("feather", 10);
+        goods.put("horn", 10);
+        Gson serializer = new Gson();
+        OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream("C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiplayer\\bazar.json"));
+        serializer.toJson(goods, HashMap.class, writer);
+        writer.flush();
     }
 
     private MapView makeMapView() throws FileNotFoundException {
@@ -189,7 +205,7 @@ public class MakeHost {
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(serverController);
 
-        return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene);
+        return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene ,"online");
 
     }
 
