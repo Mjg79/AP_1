@@ -909,12 +909,13 @@ public class MapView {
 
     private void makeChatScene(Scene mapScene, Group mapGroup, Controller controller) throws FileNotFoundException {
         ImageView chat = new ImageView(new Image(new FileInputStream(CHATROOM + "chatButton.png")));
-        chat.relocate(270, -20);
+        chat.relocate(270, 0);
         chat.setScaleX(0.3);
         chat.setScaleY(0.3);
 //        if (mode.equals("online"))
             mapGroup.getChildren().add(chat);
         chatRoom = new ChatRoom(mapScene, controller, primaryStage);
+        chatRoom.makeChatRoom();
         chat.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

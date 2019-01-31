@@ -40,6 +40,11 @@ public class WarehouseScene {
     private static Image ostrichImage;
     private static Image buffaloImage;
     private static Image coinImage;
+    private static Image lionImage;
+    private static Image cookieImage;
+    private static Image flourImage;
+    private static Image cakeImage;
+    private static Image powderedEggImage;
 
     static {
         try {
@@ -49,6 +54,10 @@ public class WarehouseScene {
             cancelButtonImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "cancelButton.png"));
             eggImage = new Image(new FileInputStream(PRODUCTFILE+"egg.png"));
             featherImage = new Image(new FileInputStream(PRODUCTFILE+"feather.png"));
+            cakeImage = new Image(new FileInputStream(PRODUCTFILE+"cake.png"));
+            cookieImage = new Image(new FileInputStream(PRODUCTFILE+"cookie.png"));
+            powderedEggImage = new Image(new FileInputStream(PRODUCTFILE+"powderedEgg.png"));
+            flourImage = new Image(new FileInputStream(PRODUCTFILE+"flour.png"));
             hornImage = new Image(new FileInputStream(PRODUCTFILE+"horn.png"));
             oneAddBlueImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"oneAddBlue.png"));
             oneAddGrayImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES + "oneAddGray.png"));
@@ -56,6 +65,7 @@ public class WarehouseScene {
             ostrichImage = new Image(new FileInputStream(PRODUCTFILE+"ostrich.png"));
             buffaloImage = new Image(new FileInputStream(PRODUCTFILE+"buffalo.png"));
             coinImage = new Image(new FileInputStream(FARMFRENZYSAVEFILES+"coin.png"));
+            lionImage = new Image(new FileInputStream(PRODUCTFILE + "CagedLion.png"));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -165,13 +175,28 @@ public class WarehouseScene {
         for (String good : controller.getMap().getWareHouse().getGoods().keySet()) {
             System.out.println(good);
             ImageView productImage = new ImageView();
-            if(!(productImage.getImage() == eggImage) && good.equals("egg"))
+            if(good.equals("egg"))
                 productImage = new ImageView(eggImage);
-            else if(!(productImage.getImage() == featherImage) && good.equals("feather"))
+            else if(good.equals("feather"))
                 productImage = new ImageView(featherImage);
-            else if(!(productImage.getImage() == hornImage) && good.equals("horn"))
+            else if(good.equals("horn"))
                 productImage = new ImageView(hornImage);
-            productImage.relocate(40, 125 + temp * 40);
+            if (good.equals("lion")) {
+                productImage = new ImageView(lionImage);
+                productImage.setScaleX(0.5);
+                productImage.setScaleY(0.5);
+                productImage.relocate(27, 115 + temp * 40);
+            }
+            if (good.equals("powderedEgg"))
+                productImage = new ImageView(powderedEggImage);
+            if (good.equals("cookie"))
+                productImage = new ImageView(cookieImage);
+            if (good.equals("cake"))
+                productImage = new ImageView(cakeImage);
+            if (good.equals("flour"))
+                productImage = new ImageView(flourImage);
+            if (!good.equals("lion"))
+                productImage.relocate(40, 125 + temp * 40);
             Label productPrice = new Label("" + getPriceOfProduct(good));
             Label number = new Label("X " + controller.getMap().getWareHouse().getGoods().get(good));
             number.relocate(85, 125 + temp * 40);
