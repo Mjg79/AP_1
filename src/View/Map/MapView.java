@@ -1,5 +1,5 @@
 package View.Map;
-import Controller.Controller;
+import Controller.*;
 import Model.Animal.Cat;
 import Model.Animal.Dog;
 import Model.Animal.LiveStocks.LiveStock;
@@ -15,6 +15,7 @@ import View.Buttons.MenuButton;
 import View.Chat.ChatRoom;
 import View.MissionNeed.MissionNeed;
 import View.MissionNeed.MissionNeeds;
+import View.ScoreBoard.ScoreBoardScene;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
@@ -36,6 +37,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MapView {
     private  Controller controller;
@@ -55,6 +58,8 @@ public class MapView {
     private transient Scene menu;
     private transient String mode;
     private transient ChatRoom chatRoom;
+    private transient ScoreBoardScene scoreBoardScene;
+
 
     public MapView(Controller controller, Stage primaryStage, Scene mapScene, Scene helicopterScene
     , Scene chooseMap, Scene menu, WarehouseScene warehouseScene, String mode) {
@@ -66,6 +71,7 @@ public class MapView {
         this.warehouseScene = warehouseScene;
         this.helicopterScene = helicopterScene;
         this.mode = mode;
+        scoreBoardScene = new ScoreBoardScene(primaryStage,mapScene);
     }
 
 
@@ -80,6 +86,7 @@ public class MapView {
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\buttons\\buyAnimal\\";
     private static final String upgrade = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\upgrade\\";
     private static final String CHATROOM = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\chat\\";
+    private static final String FARMFRENZY = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
 
     private static Image backGroundImage;
     private static Image chickenAfterImage;
@@ -112,6 +119,7 @@ public class MapView {
     private static Image depotImageL2;
     private static Image depotImageL3;
     private static Image depotImageL4;
+
 
     static {
         try {
@@ -150,6 +158,25 @@ public class MapView {
             e.printStackTrace();
         }
     }
+
+    private ImageView scoreBoardButton;
+
+    {
+        try {
+            scoreBoardButton = new ImageView(new Image(new FileInputStream(
+                        FARMFRENZY+"scoreBoard.png")));
+            scoreBoardButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    scoreBoardScene.setScene();
+                }
+            });
+            scoreBoardButton.relocate(0,600);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private ImageView chickenView = new ImageView();
     private ImageView ostrichView = new ImageView();
@@ -296,6 +323,8 @@ public class MapView {
         moneyAndTransportationView.relocate(620, 0);
         if (!mapGroup.getChildren().contains(moneyAndTransportationView))
             mapGroup.getChildren().add(moneyAndTransportationView);
+        if (mode.equals("online"))
+            mapGroup.getChildren().add(scoreBoardButton);
     }
 
 
@@ -377,6 +406,14 @@ public class MapView {
             @Override
             public void handle(long now) {
                 label.setText("Budget\n" + Integer.toString(controller.getMap().getBudget()));
+                if (mode.equals("online")) {
+                    try {
+                        updateJsonFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         };
         animationTimer.start();
@@ -912,7 +949,7 @@ public class MapView {
         chat.relocate(270, 0);
         chat.setScaleX(0.3);
         chat.setScaleY(0.3);
-//        if (mode.equals("online"))
+        if (mode.equals("online"))
             mapGroup.getChildren().add(chat);
         chatRoom = new ChatRoom(mapScene, controller, primaryStage);
         chatRoom.makeChatRoom();
@@ -922,6 +959,37 @@ public class MapView {
                 primaryStage.setScene(chatRoom.getChatScene());
             }
         });
+    }
+
+    private void updateJsonFile() throws IOException {
+        InputStream inputStream = new FileInputStream(
+                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json");
+        Scanner scanner = new Scanner(inputStream);
+        ArrayList<Profile> profiles = new ArrayList<Profile>();
+        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(
+                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json"));
+        Gson serializer = new Gson();
+        Gson deserializer = new Gson();
+        while (scanner.hasNextLine()){
+            String sentence = scanner.nextLine();
+            profiles.add(deserializer.fromJson(sentence, Profile.class));
+        }
+        for (Profile profile :profiles) {
+            if (controller instanceof ClientController) {
+                if (profile.getUserName().equals(((ClientController) controller).getProfile().getUserName())){
+                    profile.setBudget(controller.getMap().getBudget());
+                }
+            } else {
+                if (profile.getUserName().equals(((ClientController) controller).getProfile().getUserName())){
+                    profile.setBudget(controller.getMap().getBudget());
+                }
+            }
+            serializer.toJson(profile, Profile.class, writer);
+            writer.write("\n");
+            writer.flush();
+            writer.close();
+        }
+
     }
 
 }

@@ -1,13 +1,20 @@
 package Controller;
 
-import java.io.Serializable;
-
-public class Profile implements Serializable {
+public class Profile {
     private String name;
     private String userName;
     private int transaction = 0;
     private int budget = 120;
-    private int numOfGames = 0;
+    private int numberOfGames = 1;
+
+
+    public void setNumberOfGames(int numberOfGames) {
+        this.numberOfGames = numberOfGames;
+    }
+
+    public int getNumberOfGames() {
+        return numberOfGames;
+    }
 
     public Profile(String name, String userName) {
         this.userName = userName;
@@ -44,13 +51,5 @@ public class Profile implements Serializable {
 
     public void setBudget(int budget) {
         this.budget = budget;
-    }
-
-    public int getNumOfGames() {
-        return numOfGames;
-    }
-
-    public void increaseNumOfGames() {
-        this.numOfGames ++;
     }
 }
