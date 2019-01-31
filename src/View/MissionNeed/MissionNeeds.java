@@ -26,6 +26,7 @@ public class MissionNeeds {
           mapGroup.getChildren().add(line);
           ImageView imageView = new ImageView();
           Label needNumber = new Label();
+          System.out.println(mission);
           imageView.setImage(new Image(new FileInputStream(PRODUCTS + mission + ".png")));
           imageView.relocate(792 + number * 50, 624);
           imageView.setScaleX(0.8);

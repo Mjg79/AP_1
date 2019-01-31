@@ -10,6 +10,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +22,8 @@ import java.util.stream.Stream;
 
 public class Controller {
     private Map map = new Map();
+    private ServerSocket serverSocket = null;
+    private Socket socket;
 //    private View view = new View();
     private String instruction;
     private ArrayList<Element> elements = new ArrayList<>();
