@@ -12,7 +12,7 @@ public class ServerController extends Controller {
     private final static String ip = "localhost";
     private HashMap<Profile, Socket> clients = new HashMap<>();
     private ArrayList<Profile> profiles  = new ArrayList<>();
-    private Profile serverProfile;
+    private Profile profile;
     private boolean stop = false;
 
     public ServerController() throws IOException {
@@ -35,9 +35,6 @@ public class ServerController extends Controller {
         this.stop = stop;
     }
 
-    public void setServerProfile(Profile profile) {
-        this.serverProfile = profile;
-    }
 
     public void joinToServer() throws IOException, ClassNotFoundException {
         Thread thread = new Thread(new Runnable() {
@@ -77,11 +74,9 @@ public class ServerController extends Controller {
         return profiles;
     }
 
-    public Profile getServerProfile() {
-        return serverProfile;
-    }
 
     public void startGame() throws IOException {
+
         for (Profile profile: getClients().keySet()) {
             Formatter formatter = new Formatter(getClients().get(profile).getOutputStream());
             formatter.format("true\n");

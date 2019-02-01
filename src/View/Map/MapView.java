@@ -38,6 +38,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Scanner;
 
 public class MapView {
@@ -59,7 +60,7 @@ public class MapView {
     private transient String mode;
     private transient ChatRoom chatRoom;
     private transient ScoreBoardScene scoreBoardScene;
-
+    private transient int previousBudget = 120;
 
     public MapView(Controller controller, Stage primaryStage, Scene mapScene, Scene helicopterScene
     , Scene chooseMap, Scene menu, WarehouseScene warehouseScene, String mode) {
@@ -71,7 +72,6 @@ public class MapView {
         this.warehouseScene = warehouseScene;
         this.helicopterScene = helicopterScene;
         this.mode = mode;
-        scoreBoardScene = new ScoreBoardScene(primaryStage,mapScene);
     }
 
 
@@ -158,25 +158,6 @@ public class MapView {
             e.printStackTrace();
         }
     }
-
-    private ImageView scoreBoardButton;
-
-    {
-        try {
-            scoreBoardButton = new ImageView(new Image(new FileInputStream(
-                        FARMFRENZY+"jadval\\scoreBoard.png")));
-            scoreBoardButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    scoreBoardScene.setScene();
-                }
-            });
-            scoreBoardButton.relocate(0,600);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private ImageView chickenView = new ImageView();
     private ImageView ostrichView = new ImageView();
@@ -323,9 +304,7 @@ public class MapView {
         moneyAndTransportationView.relocate(620, 0);
         if (!mapGroup.getChildren().contains(moneyAndTransportationView))
             mapGroup.getChildren().add(moneyAndTransportationView);
-        if (mode.equals("online"))
-            if(!mapGroup.getChildren().contains(scoreBoardButton))
-                mapGroup.getChildren().add(scoreBoardButton);
+
     }
 
 
@@ -394,6 +373,8 @@ public class MapView {
         CakeBakery.cakeBakeryInfo(map, maps);
 
         makeChatScene(mapScene, map, controller);
+        makeLeaderBoardScene(mapScene, map);
+        refreshPlayerData(maps);
     }
 
     private void mapBudget(Group mapGroup) {
@@ -407,14 +388,6 @@ public class MapView {
             @Override
             public void handle(long now) {
                 label.setText("Budget\n" + Integer.toString(controller.getMap().getBudget()));
-                if (mode.equals("online")) {
-                    try {
-                        updateJsonFile();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
             }
         };
         animationTimer.start();
@@ -962,35 +935,81 @@ public class MapView {
         });
     }
 
-    private void updateJsonFile() throws IOException {
-        InputStream inputStream = new FileInputStream(
-                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json");
-        Scanner scanner = new Scanner(inputStream);
-        ArrayList<Profile> profiles = new ArrayList<Profile>();
-        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(
-                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json"));
-        Gson serializer = new Gson();
-        Gson deserializer = new Gson();
-        while (scanner.hasNextLine()){
-            String sentence = scanner.nextLine();
-            profiles.add(deserializer.fromJson(sentence, Profile.class));
-        }
-        for (Profile profile :profiles) {
-            if (controller instanceof ClientController) {
-                if (profile.getUserName().equals(((ClientController) controller).getProfile().getUserName())){
-                    profile.setBudget(controller.getMap().getBudget());
-                }
-            } else {
-                if (profile.getUserName().equals(((ClientController) controller).getProfile().getUserName())){
-                    profile.setBudget(controller.getMap().getBudget());
-                }
-            }
-            serializer.toJson(profile, Profile.class, writer);
-            writer.write("\n");
-            writer.flush();
-            writer.close();
+    private void makeLeaderBoardScene(Scene mapScene, Group mapGroup) throws FileNotFoundException {
+        ImageView leader = new ImageView(new Image(new FileInputStream(FARMFRENZY + "menu.png")));
+        leader.relocate(410, 0);
+        leader.setScaleY(0.5);
+        leader.setScaleX(0.8);
+        Label label = new Label("LeaderBoard");
+        label.relocate(445, 18);
+        label.setStyle("-fx-font-family: 'A Spirit Of Doha Black'; -fx-text-fill: #ffe700; -fx-font-size: 20");
+
+        if (mode.equals("online")) {
+            mapGroup.getChildren().add(leader);
+            mapGroup.getChildren().add(label);
         }
 
+        scoreBoardScene = new ScoreBoardScene(mapScene, primaryStage);
+
+        label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    primaryStage.setScene(scoreBoardScene.getScoreScene());
+                    scoreBoardScene.designScoreBoard();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        leader.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    primaryStage.setScene(scoreBoardScene.getScoreScene());
+                    scoreBoardScene.designScoreBoard();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void refreshPlayerData(Map map) {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (previousBudget != map.getBudget()) {
+                    try {
+                        Gson gson = new Gson();
+                        Scanner scanner = new Scanner(new FileInputStream(FARMFRENZY + "multiPlayer\\players.json"));
+                        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(FARMFRENZY +
+                                "multiPlayer\\vaset.json"));
+                        while (scanner.hasNextLine()) {
+                            Profile profile = gson.fromJson(scanner.nextLine(), Profile.class);
+                            if (profile.getUserName().equals(controller.getProfile().getUserName())) {
+                                profile.setBudget(map.getBudget());
+                            }
+                            gson.toJson(profile, Profile.class, writer);
+                            writer.write("\n");
+                            writer.flush();
+                        }
+                        scanner = new Scanner(new FileInputStream(FARMFRENZY + "multiPlayer\\vaset.json"));
+                        writer = new OutputStreamWriter(new FileOutputStream(FARMFRENZY + "multiPlayer\\" +
+                                "players.json"));
+                        while (scanner.hasNextLine()) {
+                            gson.toJson(new Gson().fromJson(scanner.nextLine(), Profile.class), Profile.class, writer);
+                            writer.write("\n");
+                            writer.flush();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    previousBudget = map.getBudget();
+                }
+            }
+        };
+        timer.start();
     }
 
 }

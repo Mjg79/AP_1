@@ -2,6 +2,7 @@ package View.MultiPlayerScene;
 
 import Controller.Profile;
 import Controller.ServerController;
+import View.Buttons.GeneralButton;
 import View.Map.MapView;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -80,7 +81,7 @@ public class ServerShowList {
     }
 
     private void showPlayers() {
-        Profile profile = serverController.getServerProfile();
+        Profile profile = serverController.getProfile();
         Label label = new Label(profile.getName() + "\t\t\t\t" + profile.getUserName() + "\t\t\t\t" +
                 profile.getNumOfGames() + "\t\t\t\t" + "8050");
         labels.add(label);
@@ -128,6 +129,7 @@ public class ServerShowList {
                 " -fx-border-color: #03ea39; -fx-border-width: 3px;");
         showGroup.getChildren().add(start);
 
+        GeneralButton.buttonAppearanceWithCursor(start, showScene);
 
         start.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

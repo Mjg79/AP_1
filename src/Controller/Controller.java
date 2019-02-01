@@ -22,9 +22,7 @@ import java.util.stream.Stream;
 
 public class Controller {
     private Map map = new Map();
-    private ServerSocket serverSocket = null;
-    private Socket socket;
-//    private View view = new View();
+    protected Profile profile;
     private String instruction;
     private ArrayList<Element> elements = new ArrayList<>();
     private boolean isIdentified = false;
@@ -71,6 +69,15 @@ public class Controller {
     private String getInstruction() {
         return instruction;
     }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
 
     private boolean isScaleInMap(int x, int y) {
         if (Math.abs(x - 20) <= 15 && Math.abs(y - 20) <= 15) {

@@ -159,7 +159,7 @@ public class MakeHost {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    serverController.setServerProfile(new Profile(name.getText(), userName.getText()));
+                    serverController.setProfile(new Profile(name.getText(), userName.getText()));
                     Group map = new Group();
                     Scene mapScene = new Scene(map, 1000, 750);
                     showList = new ServerShowList(stage, serverController, makeMapView(map, mapScene), mapScene, map);

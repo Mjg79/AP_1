@@ -2,7 +2,7 @@ package Controller;
 
 import java.io.Serializable;
 
-public class Profile implements Serializable {
+public class Profile implements Serializable, Comparable<Profile>  {
     private String name;
     private String userName;
     private int transaction = 0;
@@ -53,5 +53,10 @@ public class Profile implements Serializable {
 
     public void setBudget(int budget) {
         this.budget = budget;
+    }
+
+    @Override
+    public int compareTo(Profile profile) {
+        return  profile.getBudget() - this.getBudget();
     }
 }

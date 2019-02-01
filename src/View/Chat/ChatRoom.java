@@ -179,7 +179,7 @@ public class ChatRoom {
                             }
                         }
                         if (controller instanceof ServerController) {
-                            Profile profile = ((ServerController) controller).getServerProfile();
+                            Profile profile = ((ServerController) controller).getProfile();
                             for (Profile profile1 : ((ServerController) controller).getProfiles()) {
                                 try {
                                     Formatter formatter = new Formatter(((ServerController) controller)
