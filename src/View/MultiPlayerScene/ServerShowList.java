@@ -29,12 +29,16 @@ public class ServerShowList {
     private transient ArrayList <Label> labels;
     private transient AnimationTimer timer;
     private transient int previousNum = 0;
+    private transient Scene mapScene;
+    private transient Group map;
 
-    public ServerShowList(Stage stage, ServerController controller, MapView mapView) {
+    public ServerShowList(Stage stage, ServerController controller, MapView mapView, Scene scene, Group map) {
         labels = new ArrayList<>();
         this.stage = stage;
         this.serverController = controller;
         this.mapView = mapView;
+        this.map = map;
+        this.mapScene = scene;
     }
 
     private void initializeJoinScene() throws FileNotFoundException {
@@ -130,8 +134,6 @@ public class ServerShowList {
             public void handle(MouseEvent event) {
                 try {
                     serverController.startGame();
-                    Group map = new Group();
-                    Scene mapScene = new Scene(map, 1000, 750);
                     mapView.gameMap(map, mapScene, serverController.getMap());
                     stage.setScene(mapScene);
                 } catch (IOException e) {
