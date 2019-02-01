@@ -141,20 +141,20 @@ public class WildAnimal extends Animal {
             cageView.setViewport(new Rectangle2D(260 * (numOfClickedOnCage % 3), 260 * (numOfClickedOnCage / 3), 260, 260));
         cageView.relocate(195 + (int) getX() * 9, 200 + (int) getY() * 6);
 
-        wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                map.pickUpAndPutInWareHouse(x, y);
-                mapGroup.getChildren().remove(cageView);
-                mapGroup.getChildren().remove(wildAnimalView);
-            }
-        });
         cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if((numOfClickedOnCage >= 8)) {
                     map.pickUpAndPutInWareHouse(x, y);
                     mapGroup.getChildren().remove(cageView);
                     mapGroup.getChildren().remove(wildAnimalView);
+                }
+                else {
+                    numOfClickedOnCage++;
+                    if(timeLeftFromLastClick <= 24)
+                        cageView.setImage(cageImageBuild);
+                    timeLeftFromLastClick = 50;
+                }
             }
         });
         cageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -197,6 +197,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalNorthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northEast) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageNorthWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
@@ -209,6 +210,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalSouthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southEast) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageSouthWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
@@ -220,6 +222,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalNorthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northWest) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageNorthWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 120, 106);
@@ -232,6 +235,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalSouthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southWest) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageSouthWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     4, 0, 0, 118, 90);
@@ -244,6 +248,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalNorthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.north) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageNorth);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     6, 0, 0, 94, 116);
@@ -255,6 +260,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalSouthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.south) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageSouth);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     5, 0, 0, 96, 92);
@@ -266,6 +272,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.east) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(-1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24,
                     3, 0, 0, 138, 92);
@@ -277,6 +284,7 @@ public class WildAnimal extends Animal {
     private void wildAnimalWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.west) && getName().equals("lion")) {
             wildAnimalView.setImage(lionImageWest);
+            wildAnimalView.setViewport(new Rectangle2D(0, 0, 60, 60));
             wildAnimalView.setScaleX(1);
             wildAnimalAnimation = new SpriteAnimation(wildAnimalView, duration, 24, 3,
                     0, 0, 138, 92);
