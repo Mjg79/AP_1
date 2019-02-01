@@ -107,7 +107,7 @@ public class Dog extends Animal {
 
     private void dogSouthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southEast)) {
-            dogView.setImage(dogImageNorthWest);
+            dogView.setImage(dogImageSouthWest);
             dogView.setScaleX(-1);
             dogAnimation = new SpriteAnimation(dogView, duration, 25,
                     5, 0, 0, 92, 84);

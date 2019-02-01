@@ -58,24 +58,24 @@ public class MultiPlayer {
 
 
     public void multiPlayerDesign() throws FileNotFoundException {
-            ImageView backGround = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\" +
-                    "farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png")));
+        ImageView backGround = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\" +
+                "farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png")));
 
-            multGroup.getChildren().add(backGround);
+        multGroup.getChildren().add(backGround);
 
-            Rectangle items = new Rectangle(234, 253, 320, 278);
-            items.setStyle("-fx-stroke: #47211e; -fx-stroke-width: 5;  -fx-background-radius: 10;" +
-                    "  -fx-border-width: 5; -fx-fill: #e5c06f;" +
-                    " -fx-border-radius: 5px");
-            multGroup.getChildren().add(items);
+        Rectangle items = new Rectangle(234, 253, 320, 278);
+        items.setStyle("-fx-stroke: #47211e; -fx-stroke-width: 5;  -fx-background-radius: 10;" +
+                "  -fx-border-width: 5; -fx-fill: #e5c06f;" +
+                " -fx-border-radius: 5px");
+        multGroup.getChildren().add(items);
 
-            Image image = new Image(new FileInputStream(
-                    "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Logo.png"));
-            javafx.scene.image.ImageView imageView = new ImageView(image);
-            imageView.relocate(180, 130);
-            imageView.setFitWidth(441);
-            imageView.setFitHeight(100);
-            multGroup.getChildren().add(imageView);
+        Image image = new Image(new FileInputStream(
+                "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Logo.png"));
+        javafx.scene.image.ImageView imageView = new ImageView(image);
+        imageView.relocate(180, 130);
+        imageView.setFitWidth(441);
+        imageView.setFitHeight(100);
+        multGroup.getChildren().add(imageView);
 
         Button makeHost = new Button("       Make Host      ");
         makeHost.setFont(Font.font("Bauhaus 93", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 18));

@@ -105,25 +105,12 @@ public class ChatRoom {
     public void makeChatRoom() throws FileNotFoundException {
         initializeChatRoom();
         makeButtonMap();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                    sendMessage();
-            }
-        });
-        thread.start();
-
-        Thread thread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getMessage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread2.start();
+        sendMessage();
+        try {
+            getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -172,54 +159,108 @@ public class ChatRoom {
     private void sendMessage() {
         message.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.ENTER) {
-                if (controller instanceof ClientController) {
-                   //TODO: WHAT TO DO WHAT NOT TO DO
-                    putYourTextInChat(message.getText());
-                    message.clear();
-                }
-                if (controller instanceof ServerController) {
-                    Profile profile = ((ServerController) controller).getServerProfile();
-                    for (Profile profile1: ((ServerController) controller).getProfiles()) {
-                        try {
-                            Formatter formatter = new Formatter(((ServerController) controller)
-                                    .getClients().get(profile1).getOutputStream());
-                            formatter.format(profile.getUserName() + ": " + message.getText() + "\n");
-                            formatter.flush();
-                            putYourTextInChat(message.getText());
-                            message.clear();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (controller instanceof ClientController) {
+                            System.out.println("jende manam manam kiram bkhor kosse ammat 123");
+                            try {
+                                Formatter formatter = new Formatter(((ClientController) controller).getClientSocket()
+                                        .getOutputStream());
+                                System.out.println("jende manam manam kiram bkhor kosse ammat234");
+
+                                formatter.format(((ClientController) controller).getProfile().getUserName() +
+                                        ": " + message.getText() + "\n");
+                                System.out.println("jende manam manam kiram bkhor kosse ammat243");
+                                formatter.close();
+                                System.out.println("jende manam manam kiram bkhor kosse ammat432");
+
+                                putYourTextInChat(message.getText());
+                                message.clear();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        if (controller instanceof ServerController) {
+                            Profile profile = ((ServerController) controller).getServerProfile();
+                            for (Profile profile1 : ((ServerController) controller).getProfiles()) {
+                                try {
+                                    Formatter formatter = new Formatter(((ServerController) controller)
+                                            .getClients().get(profile1).getOutputStream());
+                                    formatter.format(profile.getUserName() + ": " + message.getText() + "\n");
+                                    formatter.close();
+                                    putYourTextInChat(message.getText());
+                                    message.clear();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
                     }
-                }
+                });
+                thread.start();
             }
         });
     }
 
     private void getMessage() throws IOException {
-//        if (controller instanceof ServerController) {
-//                for (DataReader dataReader : dataReaders) {
-//                    String input = dataReader.getInput();
-//                    if (!input.equals("")) {
-//                        String[] split = input.split(":");
-//                        for (DataWriter dataWriter : dataWriters) {
-//                            if (dataWriter.getProfile().getUserName().equals(split[0]))
-//                                continue;
-//                            dataWriter.setSentence(input);
-//                        }
-//        }
-//                putYourTextInChat(input);
-//    }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (controller instanceof ServerController) {
+
+                    String input;
+                    for (Profile profile : ((ServerController) controller).getClients().keySet()) {
+                        Scanner scanner = null;
+                        try {
+                            scanner = new Scanner(((ServerController) controller).getClients().get(profile).
+                                    getInputStream());
+                            System.out.println("kosse nanat1234");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        input = scanner.nextLine();
+                        System.out.println("kosse nanat 1235: " + input);
+
+                        putOthersTextInChat(input);
+                        System.out.println("kosse nanash1453");
+                        for (Profile profile1: ((ServerController) controller).getClients().keySet()) {
+                            if (profile.equals(profile1))
+                                continue;
+                            Formatter formatter = null;
+                            try {
+                                formatter = new Formatter(((ServerController) controller).getClients()
+                                        .get(profile).getOutputStream());
+                                formatter.format(input + "\n");
+                                formatter.flush();
+                                putOthersTextInChat(input);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
 
 
-            if (controller instanceof ClientController) {
 
-                Scanner scanner = new Scanner(dataReader.getSocket().getInputStream());
-                while (true) {
+        if (controller instanceof ClientController) {
+
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(dataReader.getSocket().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            while (true) {
                     String line = scanner.nextLine();
-                        putOthersTextInChat(line);
+                    putOthersTextInChat(line);
                 }
             }
+            }
+        });
+        thread.start();
+
     }
 
     private void makeButtonMap() {

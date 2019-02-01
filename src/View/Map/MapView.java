@@ -324,7 +324,8 @@ public class MapView {
         if (!mapGroup.getChildren().contains(moneyAndTransportationView))
             mapGroup.getChildren().add(moneyAndTransportationView);
         if (mode.equals("online"))
-            mapGroup.getChildren().add(scoreBoardButton);
+            if(!mapGroup.getChildren().contains(scoreBoardButton))
+                mapGroup.getChildren().add(scoreBoardButton);
     }
 
 

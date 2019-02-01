@@ -8,8 +8,8 @@ public class ClientController extends Controller {
     private Profile profile;
 
     public ClientController(Socket clientSocket, Profile profile) throws IOException {
-      this.clientSocket = clientSocket;
-      this.profile = profile;
+        this.clientSocket = clientSocket;
+        this.profile = profile;
     }
 
     public Socket getClientSocket() {

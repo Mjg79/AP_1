@@ -2,12 +2,11 @@ package View.MultiPlayerScene;
 
 import Controller.ClientController;
 import Controller.Profile;
-import Controller.ServerController;
-import Model.ControlSystem;
 import View.Buttons.GeneralButton;
+import View.Helicopter.HeliCopterView;
+import View.Map.MapView;
+import View.Map.WarehouseScene;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,16 +21,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.io.*;
-import java.lang.management.PlatformLoggingMXBean;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
 public class JoinHost {
     private transient Group joinGroup = new Group();
-    private transient Scene joinScene = new Scene(joinGroup, 800, 620);
+    private transient Scene joinScene = new Scene(joinGroup, 800, 600);
     private transient Scene hostScene;
     private transient Stage stage;
     private transient ClientController clientController;
@@ -40,6 +37,7 @@ public class JoinHost {
     private transient TextField name;
     private transient TextField userName;
     private transient Label label = new Label("this userName is already existed.");
+    private transient ClientShowList clientShowList;
 
     private static final String PLAYERS = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\multiPlayer\\players.json";
 
@@ -153,7 +151,7 @@ public class JoinHost {
         try {
             if (isDuplicateUserName(userName))
                 label.setVisible(true);
-                else
+            else
                 label.setVisible(false);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -200,20 +198,30 @@ public class JoinHost {
         ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                String serverIP = serverIp.getText();
-                int serverrPort = Integer.parseInt(serverPort.getText());
                 try {
-                    Socket client = new Socket(serverIP, serverrPort);
-                    makeUserNameInPlayersFile(name.getText(), userName.getText());
-                    clientController = new ClientController(client, userName.getText());
+                    Socket client = new Socket(serverIp.getText(), Integer.parseInt(serverPort.getText()));
+
+                    ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
+                    Profile profile = new Profile(name.getText(), userName.getText());
+                    outputStream.writeObject(profile);//client give its data to server
+
+
+                    makeUserNameInPlayersFile(name.getText(), userName.getText());//make new userName in players.json
+                    clientController = new ClientController(client, profile);
+                    //make client controller for player who joined in host
+
+                    clientShowList = new ClientShowList(stage, clientController, makeMapView());
+                    stage.setScene(clientShowList.getShowScene());
+                    clientShowList.designClientList();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 userName.clear();
                 name.clear();
                 enterIP.clear();
                 enterPort.clear();
-
             }
         });
     }
@@ -234,7 +242,7 @@ public class JoinHost {
                 userName.clear();
                 enterPort.clear();
                 enterIP.clear();
-               stage.setScene(hostScene);
+                stage.setScene(hostScene);
             }
         });
     }
@@ -255,6 +263,7 @@ public class JoinHost {
             if (profile.getUserName().equals(userName))
                 return true;
         }
+
         return false;
     }
 
@@ -266,4 +275,22 @@ public class JoinHost {
         writer.write("\n");
         writer.flush();
     }
+
+    private MapView makeMapView() throws FileNotFoundException {
+        Group map = new Group();
+        Scene mapScene = new Scene(map, 1000, 750);
+
+        Group hGroup = new Group();
+        Scene hScene = new Scene(hGroup, 1000, 750);
+        WarehouseScene warehouseScene = new WarehouseScene(clientController, mapScene
+                , clientController.getMap(), map);
+
+        HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
+                hScene, hGroup, map);
+        heliCopterView.helicopterShow(clientController);
+
+        return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene, "online");
+
+    }
+
 }
