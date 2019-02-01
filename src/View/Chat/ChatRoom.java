@@ -22,6 +22,8 @@ import Controller.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -36,8 +38,6 @@ public class ChatRoom {
     private int numOfMes = 0;
     private DataReader dataReader;
     private DataWriter dataWriter;
-    private ArrayList<DataReader> dataReaders = new ArrayList<>();
-    private ArrayList<DataWriter> dataWriters = new ArrayList<>();
     private transient Label text = new Label();
 
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
@@ -54,26 +54,7 @@ public class ChatRoom {
         this.mapScene = mapScene;
         this.controller = controller;
         this.stage = stage;
-        if (controller instanceof ClientController) {
-            dataReader = new DataReader(((ClientController) controller).getClientSocket(),
-                    ((ClientController) controller).getProfile());
-            dataWriter = new DataWriter(((ClientController) controller).getClientSocket(),
-                    ((ClientController) controller).getProfile());
-            dataReader.start();
-            dataWriter.start();
-        }
-//
-//        if (controller instanceof ServerController) {
-//            System.out.println("profile size is: " + ((ServerController) controller).getClients().size());
-//            for (Profile profile : ((ServerController) controller).getClients().keySet()) {
-//                DataReader dataReader = new DataReader(((ServerController) controller).getClients().get(profile), profile);
-//                dataReaders.add(dataReader);
-//                dataReader.start();
-//                DataWriter dataWriter = new DataWriter(((ServerController) controller).getClients().get(profile), profile);
-//                dataWriters.add(dataWriter);
-//                dataWriter.start();
-//            }
-//        }
+
     }
 
     private void initializeChatRoom() throws FileNotFoundException {
@@ -105,8 +86,8 @@ public class ChatRoom {
     public void makeChatRoom() throws FileNotFoundException {
         initializeChatRoom();
         makeButtonMap();
-        sendMessage();
         try {
+            sendMessage();
             getMessage();
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,104 +140,45 @@ public class ChatRoom {
     private void sendMessage() {
         message.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.ENTER) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (controller instanceof ClientController) {
-                            System.out.println("jende manam manam kiram bkhor kosse ammat 123");
-                            try {
-                                Formatter formatter = new Formatter(((ClientController) controller).getClientSocket()
-                                        .getOutputStream());
+                if (controller instanceof ClientController) {
+                    String user = controller.getProfile().getUserName();
+                    makeWriterThread(((ClientController) controller).getClientSocket(), user + ": " +
+                           message.getText());
+                    putYourTextInChat(message.getText());
+                    message.clear();
+                }
 
-                                formatter.format(((ClientController) controller).getProfile().getUserName() +
-                                        ": " + message.getText() + "\n");
-                                formatter.close();
-
-                                putYourTextInChat(message.getText());
-                                message.clear();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (controller instanceof ServerController) {
-                            Profile profile = ((ServerController) controller).getProfile();
-                            for (Profile profile1 : ((ServerController) controller).getProfiles()) {
-                                try {
-                                    Formatter formatter = new Formatter(((ServerController) controller)
-                                            .getClients().get(profile1).getOutputStream());
-                                    formatter.format(profile.getUserName() + ": " + message.getText() + "\n");
-                                    formatter.close();
-                                    putYourTextInChat(message.getText());
-                                    message.clear();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
+                if (controller instanceof ServerController) {
+                    String userName = ((ServerController) controller).getProfile().getUserName();
+                    for (Profile profile : ((ServerController) controller).getClients().keySet()) {
+                        System.out.println("the socket is: " + ((ServerController) controller).getClients().get(profile).toString());
+                        makeWriterThread(((ServerController) controller).getClients().get(profile),
+                                userName + ": " + message.getText());
                     }
-                });
-                thread.start();
+                    putYourTextInChat(message.getText());
+                    message.clear();
+                }
+
             }
         });
     }
 
     private void getMessage() throws IOException {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (controller instanceof ServerController) {
-
-                    String input;
-                    for (Profile profile : ((ServerController) controller).getClients().keySet()) {
-                        Scanner scanner = null;
-                        try {
-                            scanner = new Scanner(((ServerController) controller).getClients().get(profile).
-                                    getInputStream());
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        input = scanner.nextLine();
-
-                        putOthersTextInChat(input);
-                        for (Profile profile1: ((ServerController) controller).getClients().keySet()) {
-                            if (profile.equals(profile1))
-                                continue;
-                            Formatter formatter = null;
-                            try {
-                                formatter = new Formatter(((ServerController) controller).getClients()
-                                        .get(profile).getOutputStream());
-                                formatter.format(input + "\n");
-                                formatter.flush();
-                                putOthersTextInChat(input);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-
+        if (controller instanceof ServerController) {
+            for (Profile profile: ((ServerController) controller).getClients().keySet()) {
+                makeReaderThreadToSendOtherClients((ServerController) controller,
+                        ((ServerController) controller).getClients().get(profile));
+            }
+        }
 
 
         if (controller instanceof ClientController) {
-
-            Scanner scanner = null;
-            try {
-                scanner = new Scanner(dataReader.getSocket().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            while (true) {
-                    String line = scanner.nextLine();
-                    putOthersTextInChat(line);
-                }
-            }
-            }
-        });
-        thread.start();
-
+            System.out.println("in gettingMessage: " + ((ClientController) controller).getClientSocket().toString());
+            makeReaderThread(((ClientController) controller).getClientSocket());
+        }
     }
+
+
 
     private void makeButtonMap() {
         Button button = new Button("map");
@@ -275,4 +197,64 @@ public class ChatRoom {
         });
     }
 
+    private void makeWriterThread(Socket socket, String string) {
+        Thread threadWriter = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Formatter formatter = new Formatter(socket.getOutputStream());
+                    formatter.format(string + "\n");
+                    formatter.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        threadWriter.start();
+    }
+
+    private void makeReaderThread(Socket socket) {
+        Thread threadReader = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Scanner scanner = new Scanner(socket.getInputStream());
+                    while (true) {
+                        System.out.println("I'm waiting...");
+                        String string = scanner.nextLine();
+                        putOthersTextInChat(string);
+                        System.out.println("I got it...");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        threadReader.start();
+    }
+
+
+    private void makeReaderThreadToSendOtherClients(ServerController server, Socket socket) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        Scanner scanner = new Scanner(socket.getInputStream());
+                        String input = scanner.nextLine();
+                        putOthersTextInChat(input);
+                        String[] split = input.split(":");
+                        for (Profile profile: server.getClients().keySet()) {
+                            if (profile.getUserName().equals(split[0]))
+                                continue;
+                            makeWriterThread(server.getClients().get(profile), input);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
 }
