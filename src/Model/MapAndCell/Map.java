@@ -608,7 +608,7 @@ public class Map {
     }
 
     public void addElementToTruck(Element element, int count) {
-        if (wareHouse.isHaveThisElement(element) && this.truck.isInWareHouse()) {
+           if (wareHouse.isHaveThisElement(element) && this.truck.isInWareHouse()) {
             if (count != 1) {
                 this.addAllOfAnElementToTruck(element);
             }else {
@@ -738,14 +738,14 @@ public class Map {
     ///////////////////////////UPGRADE_ELEMENT////////////////////
     private void upgradeWareHouse() {
         if (wareHouse.upgrade())
-            budgetDecreament((int) wareHouse.getMoneyForUpgrading());
+            budgetDecreament((int) wareHouse.getMoneyForUpgrading() - 50);
     }
 
     private void upgradeWorkshop(String workShopName) {
         for (WorkShop workShop: workshops)
             if (workShop.getName().equals(workShopName))
                 if (workShop.upgrade())
-                    budgetDecreament((int) workShop.getMoneyForUpgrading());
+                    budgetDecreament((int) workShop.getMoneyForUpgrading() - 100);
     }
 
     private void upgradeCat() {
@@ -756,7 +756,7 @@ public class Map {
 
     private void upgradeWell() {
         if (well.upgrade())
-            budgetDecreament((int) well.getMoneyForUpgrading());
+            budgetDecreament((int) well.getMoneyForUpgrading() - 50);
     }
 
     private void upgradeTruck() {
@@ -766,7 +766,7 @@ public class Map {
 
     private void upgradeHelicopter() {
         if (helicopter.upgrade())
-            budgetDecreament((int) helicopter.getMoneyForUpgrading());
+            budgetDecreament((int) helicopter.getMoneyForUpgrading() - 100);
     }
 
     public void upgrade(String name) {
@@ -776,11 +776,11 @@ public class Map {
                     this.upgradeTruck();
                 break;
             case "helicopter":
-                if (budget >= this.getTruck().getMoneyForUpgrading())
+                if (budget >= this.getHelicopter().getMoneyForUpgrading())
                     this.upgradeHelicopter();
                 break;
             case "wareHouse":
-                if (budget >= this.getTruck().getMoneyForUpgrading())
+                if (budget >= this.getWareHouse().getMoneyForUpgrading())
                     this.upgradeWareHouse();
                 break;
             case "well":
