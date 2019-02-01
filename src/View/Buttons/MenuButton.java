@@ -1,6 +1,8 @@
 package View.Buttons;
 
 import Controller.Controller;
+import Model.Animal.Cat;
+import Model.Animal.Dog;
 import Model.Animal.LiveStocks.LiveStock;
 import Model.Animal.WildAnimals.WildAnimal;
 import Model.MapAndCell.Map;
@@ -244,6 +246,10 @@ public class MenuButton {
                     mapGroup.getChildren().remove(liveStock.getLiveStockView());
                 for(WildAnimal wildAnimal : controller.getMap().getWildAnimals())
                     mapGroup.getChildren().remove(wildAnimal.getWildAnimalView());
+                for(Cat cat : controller.getMap().getCats())
+                    mapGroup.getChildren().remove(cat.getCatView());
+                for(Dog dog : controller.getMap().getDogs())
+                    mapGroup.getChildren().remove(dog.getDogView());
                 writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -294,6 +300,10 @@ public class MenuButton {
                     mapGroup.getChildren().remove(liveStock.getLiveStockView());
                 for(WildAnimal wildAnimal : controller.getMap().getWildAnimals())
                     mapGroup.getChildren().remove(wildAnimal.getWildAnimalView());
+                for(Cat cat : controller.getMap().getCats())
+                    mapGroup.getChildren().remove(cat.getCatView());
+                for(Dog dog : controller.getMap().getDogs())
+                    mapGroup.getChildren().remove(dog.getDogView());
                 writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
