@@ -163,17 +163,13 @@ public class ChatRoom {
                     @Override
                     public void run() {
                         if (controller instanceof ClientController) {
-                            System.out.println("jende manam manam kiram bkhor kosse ammat 123");
                             try {
                                 Formatter formatter = new Formatter(((ClientController) controller).getClientSocket()
                                         .getOutputStream());
-                                System.out.println("jende manam manam kiram bkhor kosse ammat234");
 
                                 formatter.format(((ClientController) controller).getProfile().getUserName() +
                                         ": " + message.getText() + "\n");
-                                System.out.println("jende manam manam kiram bkhor kosse ammat243");
                                 formatter.close();
-                                System.out.println("jende manam manam kiram bkhor kosse ammat432");
 
                                 putYourTextInChat(message.getText());
                                 message.clear();
@@ -216,15 +212,12 @@ public class ChatRoom {
                         try {
                             scanner = new Scanner(((ServerController) controller).getClients().get(profile).
                                     getInputStream());
-                            System.out.println("kosse nanat1234");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         input = scanner.nextLine();
-                        System.out.println("kosse nanat 1235: " + input);
 
                         putOthersTextInChat(input);
-                        System.out.println("kosse nanash1453");
                         for (Profile profile1: ((ServerController) controller).getClients().keySet()) {
                             if (profile.equals(profile1))
                                 continue;

@@ -162,19 +162,19 @@ public class MapView {
     private ImageView scoreBoardButton;
 
     {
-        try {
-            scoreBoardButton = new ImageView(new Image(new FileInputStream(
-                        FARMFRENZY+"scoreBoard.png")));
-            scoreBoardButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    scoreBoardScene.setScene();
-                }
-            });
-            scoreBoardButton.relocate(0,600);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            scoreBoardButton = new ImageView(new Image(new FileInputStream(
+//                        FARMFRENZY+"scoreBoard.png")));
+//            scoreBoardButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    scoreBoardScene.setScene();
+//                }
+//            });
+//            scoreBoardButton.relocate(0,600);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -323,9 +323,9 @@ public class MapView {
         moneyAndTransportationView.relocate(620, 0);
         if (!mapGroup.getChildren().contains(moneyAndTransportationView))
             mapGroup.getChildren().add(moneyAndTransportationView);
-        if (mode.equals("online"))
-            if(!mapGroup.getChildren().contains(scoreBoardButton))
-                mapGroup.getChildren().add(scoreBoardButton);
+//        if (mode.equals("online"))
+//            if(!mapGroup.getChildren().contains(scoreBoardButton))
+//                mapGroup.getChildren().add(scoreBoardButton);
     }
 
 
