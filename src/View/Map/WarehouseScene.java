@@ -166,6 +166,8 @@ public class WarehouseScene {
     }
 
     private int getPriceOfProduct(String good){
+        if (good.equals("lion"))
+            return 100;
         return (new Product(controller.getMap().getFarmTime(),good)).getPrice();
     }
 
