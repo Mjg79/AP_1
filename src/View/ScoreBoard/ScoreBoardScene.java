@@ -1,10 +1,8 @@
 package View.ScoreBoard;
 
-import Controller.Controller;
 import Controller.Profile;
 import View.Buttons.GeneralButton;
 import com.google.gson.Gson;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,10 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.awt.color.ProfileDataException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;

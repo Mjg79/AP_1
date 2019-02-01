@@ -1,7 +1,6 @@
 package View.Helicopter;
 
 import Controller.Controller;
-import Model.MapAndCell.Map;
 import Model.Products.Product;
 import View.Buttons.GeneralButton;
 import View.Map.MapView;

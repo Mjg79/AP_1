@@ -1,7 +1,5 @@
 package View.Chat;
 
-import Controller.Controller;
-import Controller.Profile;
 import Model.Data.DataReader;
 import Model.Data.DataWriter;
 import javafx.animation.AnimationTimer;
@@ -22,9 +20,7 @@ import Controller.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
 

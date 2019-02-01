@@ -1,7 +1,6 @@
 package View.MultiPlayerScene;
 
 import Controller.ServerController;
-import Model.ControlSystem;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,6 +14,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import Controller.ServerController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -115,7 +115,7 @@ public class MultiPlayer {
             public void handle(MouseEvent event) {
                 try {
                     serverController.setServer(new ServerSocket(8050));
-                    mHost = new MakeHost(multScene, stage, serverController);
+                    mHost = new MakeHost(multScene, stage, (ServerController)serverController);
                     mHost.showMakeHost();
                     stage.setScene(mHost.getMakeHostScene());
                 } catch (IOException e) {

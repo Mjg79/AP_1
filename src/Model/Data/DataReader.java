@@ -3,7 +3,6 @@ package Model.Data;
 import Controller.Profile;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 

@@ -26,7 +26,7 @@ public class ServerShowList {
     private Scene showScene = new Scene(showGroup, 800, 600);
     private MapView mapView;
     private Stage stage;
-    private  ServerController serverController;
+    private ServerController serverController;
     private transient ArrayList <Label> labels;
     private transient AnimationTimer timer;
     private transient int previousNum = 0;

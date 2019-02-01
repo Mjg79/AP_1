@@ -45,6 +45,7 @@ public class MakeHost {
         this.serverController = serverController;
     }
 
+
     private void initializeJoinScene() throws FileNotFoundException {
         ImageView backGround = new ImageView(new Image(new FileInputStream("C:\\Users\\Home\\Desktop\\" +
                 "farmFrenzySaveFiles\\farmFrenzyScenesDesign\\back.png")));

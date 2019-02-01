@@ -1,15 +1,11 @@
 package View.Buttons;
 
-import Controller.Controller;
-import Model.MapAndCell.Cell;
 import Model.MapAndCell.Map;
 import Model.Products.Forage.Forage;
 import View.Map.MapView;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
