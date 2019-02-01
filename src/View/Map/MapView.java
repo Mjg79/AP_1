@@ -19,6 +19,7 @@ import View.ScoreBoard.ScoreBoardScene;
 import View.Services.WorkShops.CakeBakery;
 import View.Services.WorkShops.CookieBakery;
 import View.Services.WorkShops.EggPowderPlant;
+import View.View;
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -33,6 +34,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -119,6 +122,8 @@ public class MapView {
     private static Image depotImageL2;
     private static Image depotImageL3;
     private static Image depotImageL4;
+    private static Media backGroundMedia;
+    private static Media wildAnimalMeida;
 
 
     static {
@@ -154,12 +159,16 @@ public class MapView {
             depotImageL2 = new Image(new FileInputStream(serviceFiles + "Depot\\02.png"));
             depotImageL3 = new Image(new FileInputStream(serviceFiles + "Depot\\03.png"));
             depotImageL4 = new Image(new FileInputStream(serviceFiles + "Depot\\04.png"));
+            backGroundMedia = new Media(View.class.getResource("farmFrenzySaveFiles/soundTracks/backGroundSoundTrack.mp3").toExternalForm());
+            wildAnimalMeida = new Media(View.class.getResource("farmFrenzySaveFiles/soundTracks/lionSound.WAV").toExternalForm());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     private ImageView scoreBoardButton;
+    private static MediaPlayer backGroundMediaPlayer = new MediaPlayer(backGroundMedia);
+    private static MediaPlayer wildAnimalMediaPlayer = new MediaPlayer(wildAnimalMeida);
 
     {
 //        try {
@@ -294,6 +303,8 @@ public class MapView {
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
+        backGroundMediaPlayer.play();
+
 
         if (!mapGroup.getChildren().contains(truckView))
         mapGroup.getChildren().add(truckView);
@@ -438,8 +449,10 @@ public class MapView {
                 if (now > lastTime + (second/10) && isPlaying) {
                     lastTime = now;
                     time += 1;
-                    if (time == 10)
+                    if (time == 10){
                         map.addWildAnimal();
+                        wildAnimalMediaPlayer.play();
+                    }
                     timerLabel.setText(Integer.toString((int) time / 600) + ":" + ((int)time / 10 % 60 < 10 ? "0"
                             : "") + Integer.toString(((int)time/10)% 60));
                     try {
@@ -603,7 +616,12 @@ public class MapView {
     public static void pause(){
         isPaused = true;
         isPlaying = false;
+        backGroundMediaPlayer.pause();
         ChickenButton.pause();
+        OstrichButton.pause();
+        BuffaloButton.pause();
+        DogButton.pause();
+        CatButton.pause();
         GeneralButton.buttonAppearanceDefault(hButton, mapScene);
         GeneralButton.buttonAppearanceDefault(truckButton, mapScene);
     }
@@ -611,7 +629,12 @@ public class MapView {
     public static void resume(){
         isResumed = true;
         isPlaying = true;
+        backGroundMediaPlayer.play();
         ChickenButton.resume();
+        OstrichButton.resume();
+        BuffaloButton.resume();
+        DogButton.resume();
+        CatButton.resume();
         GeneralButton.buttonAppearanceWithCursor(hButton, mapScene);
         GeneralButton.buttonAppearanceWithCursor(truckButton, mapScene);
     }
