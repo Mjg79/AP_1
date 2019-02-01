@@ -3,7 +3,6 @@ package Model.Animal;
 import Model.ElementAndBoxAndDirection.Direction;
 import View.Animations.SpriteAnimation;
 import javafx.animation.Animation;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -97,7 +96,6 @@ public class Dog extends Animal {
     private void dogNorthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northEast)) {
             dogView.setImage(dogImageNorthWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(-1);
             dogAnimation = new SpriteAnimation(dogView, duration, 25,
                     5, 0, 0, 92, 98);
@@ -110,7 +108,6 @@ public class Dog extends Animal {
     private void dogSouthEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southEast)) {
             dogView.setImage(dogImageSouthWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(-1);
             dogAnimation = new SpriteAnimation(dogView, duration, 25,
                     5, 0, 0, 92, 84);
@@ -122,7 +119,6 @@ public class Dog extends Animal {
     private void dogNorthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.northWest)) {
             dogView.setImage(dogImageNorthWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(1);
             dogAnimation = new SpriteAnimation(dogView, duration, 25,
                     5, 0, 0, 92, 98);
@@ -135,7 +131,6 @@ public class Dog extends Animal {
     private void dogSouthWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.southWest)) {
             dogView.setImage(dogImageSouthWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(1);
             dogAnimation = new SpriteAnimation(dogView, duration, 25,
                     5, 0, 0, 92, 84);
@@ -149,7 +144,6 @@ public class Dog extends Animal {
     private void dogNorthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.north)) {
             dogView.setImage(dogImageNorth);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(1);
             dogAnimation = new SpriteAnimation(dogView, duration, 24,
                     6, 0, 0, 66, 100);
@@ -161,7 +155,6 @@ public class Dog extends Animal {
     private void dogSouthMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.south)) {
             dogView.setImage(dogImageSouth);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(1);
             dogAnimation = new SpriteAnimation(dogView, duration, 24,
                     6, 0, 0, 66, 84);
@@ -173,7 +166,6 @@ public class Dog extends Animal {
     private void dogEastMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.east)) {
             dogView.setImage(dogImageWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(-1);
             dogAnimation = new SpriteAnimation(dogView, duration, 24,
                     6, 0, 0, 108, 86);
@@ -185,7 +177,6 @@ public class Dog extends Animal {
     private void dogWestMoving(Duration duration) throws FileNotFoundException {
         if (getDirection().equals(Direction.west)) {
             dogView.setImage(dogImageWest);
-            dogView.setViewport(new Rectangle2D(0, 0, 60, 60));
             dogView.setScaleX(1);
             dogAnimation = new SpriteAnimation(dogView, duration, 24, 6,
                     0, 0, 108, 86);
