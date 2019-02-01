@@ -163,6 +163,7 @@ public class ChatRoom {
                     @Override
                     public void run() {
                         if (controller instanceof ClientController) {
+                            System.out.println("jende manam manam kiram bkhor kosse ammat 123");
                             try {
                                 Formatter formatter = new Formatter(((ClientController) controller).getClientSocket()
                                         .getOutputStream());
@@ -212,6 +213,7 @@ public class ChatRoom {
                         try {
                             scanner = new Scanner(((ServerController) controller).getClients().get(profile).
                                     getInputStream());
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

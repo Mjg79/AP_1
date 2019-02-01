@@ -209,8 +209,9 @@ public class JoinHost {
                     makeUserNameInPlayersFile(name.getText(), userName.getText());//make new userName in players.json
                     clientController = new ClientController(client, profile);
                     //make client controller for player who joined in host
-
-                    clientShowList = new ClientShowList(stage, clientController, makeMapView());
+                    Group map = new Group();
+                    Scene mapScene = new Scene(map, 1000, 750);
+                    clientShowList = new ClientShowList(stage, clientController, makeMapView(map, mapScene), mapScene, map);
                     stage.setScene(clientShowList.getShowScene());
                     clientShowList.designClientList();
                 } catch (IOException e) {
@@ -276,20 +277,17 @@ public class JoinHost {
         writer.flush();
     }
 
-    private MapView makeMapView() throws FileNotFoundException {
-        Group map = new Group();
-        Scene mapScene = new Scene(map, 1000, 750);
-
+    private MapView makeMapView(Group map, Scene mapScene) throws FileNotFoundException {
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
-        WarehouseScene warehouseScene = new WarehouseScene(clientController, mapScene
-                , clientController.getMap(), map);
+        WarehouseScene warehouseScene = new WarehouseScene(clientController, mapScene, clientController.getMap(), map);
+
+        MapView mapView = new MapView(clientController,stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene, "offline");
 
         HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(clientController);
-
-        return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene, "online");
+        return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene ,"online");
 
     }
 

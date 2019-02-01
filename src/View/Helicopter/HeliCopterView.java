@@ -130,9 +130,15 @@ public class HeliCopterView {
         cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("nannnnnna jende haroomzadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee34444");
                 controller.getMap().getHelicopter().clear();
+
+                System.out.println("nannnnnna jende haroomzadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee3444");
                 controller.getMap().getHelicopter().clearSalesGood();
+
+                System.out.println("nannnnnna jende haroomzadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee3443");
                 MapView.resume();
+                System.out.println("kosse ammat");
                 stage.setScene(mapScene);
             }
         });

@@ -26,12 +26,16 @@ public class ClientShowList {
     private transient ArrayList<Label> labels;
     private transient AnimationTimer timer;
     private transient int previousNum = 0;
+    private transient Group map;
+    private transient Scene mapScene;
 
-    public ClientShowList(Stage stage, ClientController controller, MapView mapView) {
+    public ClientShowList(Stage stage, ClientController controller, MapView mapView, Scene mapScene, Group map) {
         labels = new ArrayList<>();
         this.stage = stage;
         this.clientController = controller;
         this.mapView = mapView;
+        this.map = map;
+        this.mapScene = mapScene;
     }
 
     private void initializeJoinScene() throws FileNotFoundException {
@@ -82,8 +86,6 @@ public class ClientShowList {
             System.out.println("input is: " + input);
             if (input.equals("true")) {
                 try {
-                    Group map = new Group();
-                    Scene mapScene = new Scene(map, 1000, 750);
                     mapView.gameMap(map, mapScene, clientController.getMap());
                     stage.setScene(mapScene);
 

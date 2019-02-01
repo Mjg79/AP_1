@@ -160,7 +160,9 @@ public class MakeHost {
             public void handle(MouseEvent event) {
                 try {
                     serverController.setServerProfile(new Profile(name.getText(), userName.getText()));
-                    showList = new ServerShowList(stage, serverController, makeMapView());
+                    Group map = new Group();
+                    Scene mapScene = new Scene(map, 1000, 750);
+                    showList = new ServerShowList(stage, serverController, makeMapView(map, mapScene), mapScene, map);
                     stage.setScene(showList.getShowScene());
                     showList.designList();
                     makeUserNameInPlayersFile(name.getText(), userName.getText());
@@ -192,20 +194,17 @@ public class MakeHost {
         writer.flush();
     }
 
-    private MapView makeMapView() throws FileNotFoundException {
-        Group map = new Group();
-        Scene mapScene = new Scene(map, 1000, 750);
-
+    private MapView makeMapView(Group map, Scene mapScene) throws FileNotFoundException {
         Group hGroup = new Group();
         Scene hScene = new Scene(hGroup, 1000, 750);
-        WarehouseScene warehouseScene = new WarehouseScene(serverController, mapScene
-                , serverController.getMap(), map);
+        WarehouseScene warehouseScene = new WarehouseScene(serverController, mapScene, serverController.getMap(), map);
+
+        MapView mapView = new MapView(serverController,stage ,mapScene,  hScene, makeHostScene, makeHostScene, warehouseScene, "offline");
 
         HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(serverController);
-
-        return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene,warehouseScene ,"online");
+        return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene ,"online");
 
     }
 
