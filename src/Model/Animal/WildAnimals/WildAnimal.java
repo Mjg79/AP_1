@@ -141,20 +141,22 @@ public class WildAnimal extends Animal {
             cageView.setViewport(new Rectangle2D(260 * (numOfClickedOnCage % 3), 260 * (numOfClickedOnCage / 3), 260, 260));
         cageView.relocate(195 + (int) getX() * 9, 200 + (int) getY() * 6);
 
+        wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                map.pickUpAndPutInWareHouse(x, y);
+                mapGroup.getChildren().remove(cageView);
+                mapGroup.getChildren().remove(wildAnimalView);
+            }
+        });
+
         cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if((numOfClickedOnCage >= 8)) {
                     map.pickUpAndPutInWareHouse(x, y);
                     mapGroup.getChildren().remove(cageView);
                     mapGroup.getChildren().remove(wildAnimalView);
-                }
-                else {
-                    numOfClickedOnCage++;
-                    if(timeLeftFromLastClick <= 24)
-                        cageView.setImage(cageImageBuild);
-                    timeLeftFromLastClick = 50;
-                }
+
             }
         });
         cageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
