@@ -211,7 +211,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("flour") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("flour") == 0.0 ||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 10) {
                         addView.setImage(oneAddGrayImage);
                         flour1.setVisible(false);
                     } else {
@@ -262,7 +264,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("powderedEgg") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("powderedEgg") == 0.0||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 50) {
                         addView.setImage(oneAddGrayImage);
                         powderedEgg1.setVisible(false);
                     } else {
@@ -313,7 +317,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("cookie") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("cookie") == 0.0||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 100) {
                         addView.setImage(oneAddGrayImage);
                         cookie1.setVisible(false);
                     } else {
@@ -364,7 +370,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("cake") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("cake") == 0.0||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 100) {
                         addView.setImage(oneAddGrayImage);
                         cake1.setVisible(false);
                     } else {
@@ -415,7 +423,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("egg") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("egg") == 0.0||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 10) {
                         addView.setImage(oneAddGrayImage);
                         egg1.setVisible(false);
                     } else {
@@ -466,7 +476,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("feather") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("feather") == 0.0||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 100) {
                         addView.setImage(oneAddGrayImage);
                         feather1.setVisible(false);
                     } else {
@@ -517,7 +529,9 @@ public class HeliCopterViewOnline {
                     if ((controller.getMap().getHelicopter().getMapBudget() ==
                             controller.getMap().getHelicopter().getAllCost() &&
                             controller.getMap().getHelicopter().getAllCost() != 0) ||
-                            controller.getMap().getBudget() == 0 || (double)goods.get("horn") == 0.0) {
+                            controller.getMap().getBudget() == 0 || (double)goods.get("horn") == 0.0 ||
+                            controller.getMap().getBudget() <
+                                    controller.getMap().getHelicopter().getAllCost() + 1000) {
                         addView.setImage(oneAddGrayImage);
                         horn1.setVisible(false);
                     } else {
