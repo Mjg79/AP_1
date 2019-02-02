@@ -4,6 +4,7 @@ import Controller.ClientController;
 import Controller.Profile;
 import View.Buttons.GeneralButton;
 import View.Helicopter.HeliCopterView;
+import View.Helicopter.HeliCopterViewOnline;
 import View.Map.MapView;
 import View.Map.WarehouseScene;
 import com.google.gson.Gson;
@@ -284,7 +285,7 @@ public class JoinHost {
 
         MapView mapView = new MapView(clientController,stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene, "offline");
 
-        HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
+        HeliCopterViewOnline heliCopterView = new HeliCopterViewOnline(stage, mapScene,
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(clientController);
         return new MapView(clientController, stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene ,"online");

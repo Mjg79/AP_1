@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.Products.Product;
 import View.Buttons.GeneralButton;
 import View.Map.MapView;
+import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
 
 public class HeliCopterView {
     private transient Scene mapScene;
@@ -25,9 +28,11 @@ public class HeliCopterView {
     private transient Group hGroup;
     private transient Stage stage;
     private transient Group mapGroup;
+
     private static final String HELICOPTERFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Helicopter\\";
     private static final String PRODUCTFILE = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\Products\\";
     private static final String FARMFRENZYSAVEFILES = "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\";
+
     private static Image helicopterSceneImage;
     private static Image flourImage;
     private static Image oneAddGrayImage;

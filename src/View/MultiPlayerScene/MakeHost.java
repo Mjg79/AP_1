@@ -4,6 +4,7 @@ import Controller.Profile;
 import Controller.ServerController;
 import View.Buttons.GeneralButton;
 import View.Helicopter.HeliCopterView;
+import View.Helicopter.HeliCopterViewOnline;
 import View.Map.MapView;
 import View.Map.WarehouseScene;
 import com.google.gson.Gson;
@@ -202,7 +203,7 @@ public class MakeHost {
 
         MapView mapView = new MapView(serverController,stage ,mapScene,  hScene, makeHostScene, makeHostScene, warehouseScene, "offline");
 
-        HeliCopterView heliCopterView = new HeliCopterView(stage, mapScene,
+        HeliCopterViewOnline heliCopterView = new HeliCopterViewOnline(stage, mapScene,
                 hScene, hGroup, map);
         heliCopterView.helicopterShow(serverController);
         return new MapView(serverController, stage ,mapScene,  hScene, hostScene, hostScene, warehouseScene ,"online");
