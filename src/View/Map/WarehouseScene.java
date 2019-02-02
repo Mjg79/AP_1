@@ -8,6 +8,7 @@ import Model.Places.WareHouse;
 import Model.Products.Product;
 import Model.Transportation.Truck;
 import View.Buttons.GeneralButton;
+import com.google.gson.Gson;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,8 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.HashMap;
 
 public class WarehouseScene {
@@ -213,6 +213,17 @@ public class WarehouseScene {
             addGood.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
+                    try {
+                        HashMap goods = new Gson().fromJson(
+                                new FileReader(FARMFRENZYSAVEFILES + "multiPlayer\\bazar.json"), HashMap.class);
+                        goods.put(good, (double)goods.get(good) + 1);
+                        OutputStreamWriter writer = new OutputStreamWriter(
+                                new FileOutputStream(FARMFRENZYSAVEFILES + "multiPlayer\\bazar.json"));
+                        new Gson().toJson(goods, HashMap.class, writer);
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (recentSell.containsKey(good)) {
                         recentSell.replace(good, recentSell.get(good) + 1);
                     } else {

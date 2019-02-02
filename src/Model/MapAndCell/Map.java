@@ -33,7 +33,7 @@ public class Map {
     private String name;
     private boolean isMissionCompleted = false;
     private double farmTime = 0;
-    private int budget = 120;
+    private int budget = 3000;
     private WareHouse wareHouse = new WareHouse();
     private Well well = new Well();
     private Truck truck = new Truck();
