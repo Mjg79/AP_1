@@ -144,18 +144,34 @@ public class WildAnimal extends Animal {
         wildAnimalView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                map.pickUpAndPutInWareHouse(x, y);
-                mapGroup.getChildren().remove(cageView);
-                mapGroup.getChildren().remove(wildAnimalView);
+                if((numOfClickedOnCage >= 8)) {
+                    map.pickUpAndPutInWareHouse(x, y);
+                    mapGroup.getChildren().remove(cageView);
+                    mapGroup.getChildren().remove(wildAnimalView);
+                }
+                else {
+                    numOfClickedOnCage++;
+                    if(timeLeftFromLastClick <= 24)
+                        cageView.setImage(cageImageBuild);
+                    timeLeftFromLastClick = 50;
+                }
             }
         });
 
         cageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if((numOfClickedOnCage >= 8)) {
                     map.pickUpAndPutInWareHouse(x, y);
                     mapGroup.getChildren().remove(cageView);
                     mapGroup.getChildren().remove(wildAnimalView);
+                }
+                else {
+                    numOfClickedOnCage++;
+                    if(timeLeftFromLastClick <= 24)
+                        cageView.setImage(cageImageBuild);
+                    timeLeftFromLastClick = 50;
+                }
 
             }
         });
@@ -182,6 +198,7 @@ public class WildAnimal extends Animal {
         }
         else if(timeLeftFromLastClick == 0){
             isCaged = false;
+            numOfClickedOnCage = 0;
             cageView.setImage(cageImageBuild);
             cageView.setViewport(new Rectangle2D(0, 0, 260, 260));
             suitableSpriteAnimationForWild(mapGroup, scene, map, farmTime, Duration.millis(1000));

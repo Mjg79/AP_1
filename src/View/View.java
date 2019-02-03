@@ -6,7 +6,12 @@ import View.MultiPlayerScene.MultiPlayer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.FileNotFoundException;
 
 public class View extends Application {
     private static final String backGround =
@@ -17,11 +22,23 @@ public class View extends Application {
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyPlacesAndOthers\\Service\\";
     private static final String farmFrenzyScenesDesign =
             "C:\\Users\\Home\\Desktop\\farmFrenzySaveFiles\\farmFrenzyScenesDesign\\";
+    private static Media backGroundMedia;
+    static {
+        backGroundMedia = new Media(View.class.getResource("farmFrenzySaveFiles/soundTracks/backGroundSoundTrack.mp3").toExternalForm());
+    }
+    private static MediaPlayer backGroundMediaPlayer = new MediaPlayer(backGroundMedia);
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         MenuView menuView = new MenuView();
         Controller controller = new Controller();
+        backGroundMediaPlayer.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                backGroundMediaPlayer.seek(Duration.ZERO);
+            }
+        });
+        backGroundMediaPlayer.play();
 
         Group mainMenu = new Group();
         Scene menu = new Scene(mainMenu, 800, 620);

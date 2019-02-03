@@ -38,6 +38,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.Scanner;
@@ -120,7 +121,6 @@ public class MapView {
     private static Image depotImageL2;
     private static Image depotImageL3;
     private static Image depotImageL4;
-    private static Media backGroundMedia;
     private static Media wildAnimalMeida;
 
     static {
@@ -156,7 +156,6 @@ public class MapView {
             depotImageL2 = new Image(new FileInputStream(serviceFiles + "Depot\\02.png"));
             depotImageL3 = new Image(new FileInputStream(serviceFiles + "Depot\\03.png"));
             depotImageL4 = new Image(new FileInputStream(serviceFiles + "Depot\\04.png"));
-            backGroundMedia = new Media(View.class.getResource("farmFrenzySaveFiles/soundTracks/backGroundSoundTrack.mp3").toExternalForm());
             wildAnimalMeida = new Media(View.class.getResource("farmFrenzySaveFiles/soundTracks/lionSound.WAV").toExternalForm());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -171,7 +170,6 @@ public class MapView {
     private ImageView dogView = new ImageView();
     private ImageView catView = new ImageView();
     private ImageView wareHouseView = new ImageView();
-    private static MediaPlayer backGroundMediaPlayer = new MediaPlayer(backGroundMedia);
     private static MediaPlayer wildAnimalMediaPlayer = new MediaPlayer(wildAnimalMeida);
 
     public static Button getTruckButton() {
@@ -281,7 +279,6 @@ public class MapView {
         mapViewBackGround.setFitWidth(mapScene.getWidth());
         mapViewBackGround.setFitHeight(mapScene.getHeight());
         backGroundPane.getChildren().add(mapViewBackGround);
-        backGroundMediaPlayer.play();
 
         if (!mapGroup.getChildren().contains(truckView))
         mapGroup.getChildren().add(truckView);
@@ -585,7 +582,6 @@ public class MapView {
     public static void pause(){
         isPaused = true;
         isPlaying = false;
-        backGroundMediaPlayer.pause();
         ChickenButton.pause();
         OstrichButton.pause();
         BuffaloButton.pause();
@@ -598,7 +594,6 @@ public class MapView {
     public static void resume(){
         isResumed = true;
         isPlaying = true;
-        backGroundMediaPlayer.play();
         ChickenButton.resume();
         OstrichButton.resume();
         BuffaloButton.resume();
